@@ -1,0 +1,122 @@
+{
+	"version": 1,
+	"info": { 
+		"name": <string: organization-service>,
+		"version": <string: MAJOR.MINOR.PATCH>,
+		"api": <integer>,
+		"description": <string>,
+		"keywords": [<string>],
+		"date": <string: YYYY-MM-DD>,
+		"authors": [
+			{
+				"name": <string>,
+			 	"email": <string: EMAIL>,
+			 	"url": <string: URL>
+			}
+		],
+		"contributors": [
+			{
+				"name": <string>,
+			 	"email": <string: EMAIL>,
+			 	"url": <string: URL>
+			}
+		],
+		"homepage": <string: URL>,
+		"repository": {
+			"type": <string>,
+			"url": <string: URL>
+		},
+		"bugs": {
+			"url": <string: URL>,
+			"email": <string: EMAIL>
+		},
+		"termsOfService": <string: URL>,
+		"license": <string: SPDX Format>
+	},
+
+	"config": {
+		"location": <string: "directory" or URL>,
+
+		"dependencies": {
+			"<serviceName>": {
+				"api": <integer>, 
+				"url": <string: "directory" or URL>
+			}
+		}
+	},
+
+	"operations": {
+		"<operationName>": {
+			"request": {
+				"path": <string: URL Path>,
+				"method": <string: HTTP Method>,
+				"parameters": [
+					{
+						"name": <string>,
+						"in": <string: "query" or "path">,
+						"description": <string>, 
+						"required": <boolean>,
+						"type": <string>,
+					}
+				],
+
+				"body": {
+					"<objectName>": {
+						"type": <string>,
+						"description": <string>,
+						"properties": {
+							"<objectName>": {
+								"type": <string>,
+								"description": <string>,
+								"required": <boolean>
+							}
+						},
+						"required": <boolean>
+					}
+				}
+			},
+
+			"responses": {
+				"<responseName>": {
+					"statusCode": <integer>,
+					"description": <string>,
+					"body": {
+						"<objectName>": {
+							"type": <string>,
+							"description": <string>,
+							"properties": {
+								"<objectName>": {
+									"type": <string>,
+									"description": <string>,
+									"required": <boolean>
+								}
+							},
+							"required": <boolean>
+						}
+					}
+				}
+			},
+
+			"errors": {
+				"<errorName>": {
+					"statusCode": <integer>,
+					"description": <string>,
+					"body": {
+						"<objectName>": {
+							"type": <string>,
+							"description": <string>,
+							"properties": {
+								"<objectName>": {
+									"type": <string>,
+									"description": <string>,
+									"required": <boolean>
+								}
+							},
+							"required": <boolean>
+						}
+					}
+				}
+			}
+		}
+	}
+}
