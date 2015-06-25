@@ -1,12 +1,12 @@
 {
-	"version": 1,
+	"microrestSpecification": 1,
 	"info": {
 		"name": "example-helloworld",
 		"version": "0.0.1",
 		"api": 1,
 		"description": "Greets everybody with Hello World",
 		"keywords": ["Hello World", "Greets"],
-		"date": "20150603",
+		"date": "2015-06-03",
 		"authors": [
 			{
 				"name": "Carlos Lozano Sánchez",
@@ -17,7 +17,7 @@
 		"contributors": [
 			{
 				"name": "Markus Hillenbrand",
-			 	"email": "hillenbr@rhrk.uni-kl.de",
+			 	"email": "hillenbr@rhrk.uni-kl.de"
 			}
 		],
 		"homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs",
@@ -28,7 +28,7 @@
 	},
 
 	"config": {
-		"location": "directory",
+		"location": "directory"
 	},
 
 	"operations": {
@@ -42,10 +42,9 @@
 						"in": "path",
 						"description": "Name of the user that whishes a greet",
 						"required": true,
-						"type": "string",
+						"type": "string"
 					}
-
-				],
+				]
 			},
 
 			"responses": {
@@ -65,7 +64,7 @@
 			"errors": {
 				"BAD REQUEST": {
 					"statusCode": 400,
-					"description": "The request has an invalid username",
+					"description": "The request has an invalid username"
 				}
 			}
 		}

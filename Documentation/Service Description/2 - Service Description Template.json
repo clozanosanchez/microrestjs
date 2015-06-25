@@ -1,5 +1,5 @@
 {
-	"version": 1,
+	"microrestSpecification": 1,
 	"info": { 
 		"name": <string: organization-service>,
 		"version": <string: MAJOR.MINOR.PATCH>,
