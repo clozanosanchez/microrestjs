@@ -1,0 +1,9 @@
+{
+	"services": {
+        "path": "./services"
+    },
+    
+    "server": {
+        "port": 8080
+    }
+}

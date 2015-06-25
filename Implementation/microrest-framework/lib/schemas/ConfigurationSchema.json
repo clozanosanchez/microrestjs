@@ -1,0 +1,27 @@
+{
+    "title": "Microrestjs Configuration Specification",
+    "type": "object",
+    "properties": {
+        "services": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": ["path"]
+        }, "server": {
+            "type": "object",
+            "properties": {
+                "port": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535
+                }
+            },
+            "required": ["port"]
+        }
+    },
+    "required": ["services", "server"]
+}

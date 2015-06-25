@@ -1,0 +1,9 @@
+{
+    "services": {
+        "path": "./test/env/services/good/five"
+    },
+    
+    "server": {
+        "port": 0
+    }
+}

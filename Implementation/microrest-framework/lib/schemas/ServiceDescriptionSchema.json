@@ -1,0 +1,319 @@
+{
+    "title": "Microrestjs Service Description Specification",
+    "type": "object",
+    "properties": {
+        "microrestSpecification": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+        },
+        "info": {
+            "type": "object",
+            "properties":{
+                "$ref": "#/informationObject"
+            },
+            "required": ["name", "version", "api"]
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/configurationObject"
+            },
+            "required": ["location"]
+        },
+        "operations": {
+            "type": "object",
+            "patternProperties": {
+                "^[a-z]+[a-zA-Z0-9_]*$": {
+                    "type": "object",
+                    "properties": {
+                         "$ref": "#/operationsProperties"
+                    },
+                    "required": ["request", "responses"]
+                }
+            }
+        }
+    },
+    "required": ["microrestSpecification", "info", "config", "operations"],
+
+    "informationObject": {
+        "name": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "version": {
+            "type": "string",
+            "format": "version",
+            "minLength": 5
+        },
+        "api": {
+            "$ref": "#/definitions/positiveInteger"
+        },
+        "description1": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "keywords": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/nonEmptyString"
+            },
+            "uniqueItems": true
+        },
+        "date": {
+            "type": "string",
+            "format": "full-date",
+            "minLength": 10,
+            "maxLength": 10
+        },
+        "authors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "$ref": "#/personObject"
+                },
+                "required": ["name"]
+            },
+            "uniqueItems": true
+        },
+        "contributors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "$ref": "#/personObject"
+                },
+                "required": ["name"]
+            },
+            "uniqueItems": true
+        },
+        "homepage": {
+            "$ref": "#/definitions/url"
+        },
+        "repository": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/repositoryObject"
+            },
+            "required": ["type", "url"]
+        },
+        "bugs": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/bugsObject"
+            },
+            "anyOf": [
+                {
+                    "required": ["url"]
+                },
+                {
+                    "required": ["email"]
+                }
+            ]
+        },
+        "termsOfService": {
+            "$ref": "#/definitions/url"
+        },
+        "license": {
+            "$ref": "#/definitions/nonEmptyString"
+        }
+    },
+
+    "personObject": {
+        "name": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "email": {
+            "$ref": "#/definitions/email"
+        },
+        "url": {
+            "$ref": "#/definitions/url"
+        }
+    },
+
+    "repositoryObject": {
+        "type": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "url": {
+            "$ref": "#/definitions/url"
+        }
+    },
+
+    "bugsObject": {
+        "url": {
+            "$ref": "#/definitions/url"
+        },
+        "email": {
+            "$ref": "#/definitions/email"
+        }
+    },  
+
+    "configurationObject": {
+        "location": {
+            "$ref": "#/definitions/directory"
+        },
+        "dependencies": {
+            "type": "object",
+            "patternProperties": {
+                "^[a-zA-Z0-9]+$": {
+                    "type": "object",
+                    "properties": {
+                        "$ref": "#/dependenciesObject"
+                    },
+                    "required": ["api", "url"]
+                }
+            }
+        }
+    },
+
+    "dependenciesObject": {
+        "api": {
+            "$ref": "#/definitions/positiveInteger"
+        },
+        "url": {
+            "$ref": "#/definitions/directory"
+        }
+    },
+
+    "operationsProperties": {
+        "request": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/requestObject"
+            },
+            "required": ["path", "method"]
+        },
+        "responses": {
+            "type": "object",
+            "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                    "type": "object",
+                    "properties": {
+                        "$ref": "#/responsesObject"
+                    },
+                    "required": ["statusCode"]
+                }
+            }
+        },
+        "errors": {
+            "type": "object",
+            "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                    "type": "object",
+                    "properties": {
+                        "$ref": "#/errorsObject"
+                    },
+                    "required": ["statusCode"]
+                }
+            }
+        }
+    },
+
+    "requestObject": {
+        "path": {
+            "type": "string",
+            "format": "url-path",
+            "minLength": 1
+        },
+        "method": {
+            "type": "string",
+            "format": "http-method",
+            "minLength": 3
+        },
+        "parameters": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "$ref": "#/parameterObject"
+                },
+                "required": ["name", "in", "required", "type"]
+            },
+            "uniqueItems": true
+        },
+        "body": {
+
+        }
+    },
+
+    "responsesObject": {
+        "statusCode": {
+            "$ref": "#/definitions/statusCode"
+        },
+        "description": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "body": {
+
+        }
+    },
+
+    "errorsObject": {
+        "statusCode": {
+            "$ref": "#/definitions/statusCode"
+        },
+        "description": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "body": {
+
+        }
+    },
+
+    "parameterObject": {
+        "name": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "in": {
+            "type": "string",
+            "format": "url-parameter",
+            "minLength": 1
+        },
+        "description": {
+            "$ref": "#/definitions/nonEmptyString"
+        },
+        "required": {
+            "type": "boolean"
+        },
+        "type": {
+            "type": "string",
+            "format": "type-url-parameter",
+            "minLength": 1
+        }
+    },
+
+    "bodyObject": {
+
+    },
+
+    "definitions": {
+        "positiveInteger": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "nonEmptyString": {
+            "type": "string",
+            "minLength": 1
+        },
+        "url": {
+            "type": "string",
+            "format": "url",
+            "minLength": 1
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+        },
+        "directory": {
+            "type": "string",
+            "format": "directory",
+            "minLength": 1        
+        },
+        "statusCode": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+        }
+    }
+}

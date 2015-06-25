@@ -1,0 +1,53 @@
+{
+  "name": "microrest-framework",
+  "description": "Framework to develop RESTful web services",
+  "version": "0.0.1",
+  "author": "Carlos Lozano Sánchez <carloslozano@freshhy.com>",
+  "contributors": [
+    "Markus Hillenbrand <hillenbr@rhrk.uni-kl.de>"  
+  ],
+  "license": "MIT",
+  "repository": "",
+  "homepage": "",
+  "keywords": [
+    "microrest",
+    "framework",
+    "web",
+    "service",
+    "rest",
+    "restful",
+    "api"
+  ],
+  "dependencies": {
+    "express": "4.13.0",
+    "check-types": "3.3.0",
+    "ajv": "0.6.0",
+    "json-schema-deref-local": "0.2.1"
+  },
+  "devDependencies": {
+    "istanbul": "0.3.16",
+    "mocha": "2.2.5",
+    "should": "7.0.1",
+    "mockery": "1.4.0",
+    "jsdoc": "3.3.2",
+    "gulp": "3.9.0"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "files": [
+    "LICENSE",
+    "History.md",
+    "Readme.md",
+    "Launcher.js",
+    "lib/"
+  ],
+  "scripts": {
+    "test": "mocha --reporter spec --bail --check-leaks --timeout 5000 test/",
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha  --report lcovonly -- --reporter spec --check-leaks --timeout 5000 test/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks --timeout 5000 test/",
+    "test-tap": "mocha --reporter tap --check-leaks --timeout 5000 test/",
+    "doc": "jsdoc --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js",
+    "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js"
+  }
+}
