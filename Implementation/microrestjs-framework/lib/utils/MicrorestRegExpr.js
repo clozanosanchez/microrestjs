@@ -10,7 +10,7 @@
  * @module
  */
 
-var VERSION_PATTERN = '^\\d+.\\d+.\\d+$';
+var VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
 var FULL_DATE_PATTERN = '^\\d\\d\\d\\d-\\d\\d-\\d\\d$';
 var URL_PATTERN = '^https?:\\/\\/([^/\\n\\r\\s]+\\.[^/\\n\\r\\s]+)(\\/([^\\?#\\n\\r\\s]+)?(\\?([^\\?#\\/\\n\\r\\s]+))?(#([^\\?#\\/\\n\\r\\s]+))?)*$';
 var URL_PATH_PATTERN = '^\\/$|^(\\/:?[a-zA-Z0-9_]+)+$';
