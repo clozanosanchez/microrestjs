@@ -47,6 +47,7 @@ module.exports.check = function check(schema, object) {
         format: 'full'
     };
     var validator = new Ajv(validatorOptions);
+    validator.addFormat('name', regExpr.name);
     validator.addFormat('version', regExpr.version);
     validator.addFormat('full-date', regExpr.fullDate);
     validator.addFormat('url', regExpr.url);

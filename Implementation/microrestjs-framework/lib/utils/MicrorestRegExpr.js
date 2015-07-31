@@ -10,6 +10,7 @@
  * @module
  */
 
+var NAME_PATTERN = '^[a-zA-Z0-9]+([_-]*[a-zA-Z0-9])*$';
 var VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
 var FULL_DATE_PATTERN = '^\\d\\d\\d\\d-\\d\\d-\\d\\d$';
 var URL_PATTERN = '^https?:\\/\\/([^/\\n\\r\\s]+\\.[^/\\n\\r\\s]+)(\\/([^\\?#\\n\\r\\s]+)?(\\?([^\\?#\\/\\n\\r\\s]+))?(#([^\\?#\\/\\n\\r\\s]+))?)*$';
@@ -23,6 +24,7 @@ var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
 
 /**
  * Regular Expressions to check:
+ *   - The name of the services
  *   - The version of the services
  *   - Dates
  *   - URLs
@@ -38,6 +40,7 @@ var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
  * @constant {Object}
  */
 module.exports = {
+    name: NAME_PATTERN,
     version: VERSION_PATTERN,
     fullDate: FULL_DATE_PATTERN,
     url: URL_PATTERN,

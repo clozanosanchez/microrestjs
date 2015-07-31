@@ -24,21 +24,24 @@
         "operations": {
             "type": "object",
             "patternProperties": {
-                "^[a-z]+[a-zA-Z0-9_]*$": {
+                "^[a-z]+[a-zA-Z0-9]*$": {
                     "type": "object",
                     "properties": {
                          "$ref": "#/operationsProperties"
                     },
                     "required": ["request", "responses"]
                 }
-            }
+            },
+            "additionalProperties": false
         }
     },
     "required": ["microrestSpecification", "info", "config", "operations"],
 
     "informationObject": {
         "name": {
-            "$ref": "#/definitions/nonEmptyString"
+            "type": "string",
+            "format": "name",
+            "minLength": 1
         },
         "version": {
             "type": "string",
@@ -155,14 +158,15 @@
         "dependencies": {
             "type": "object",
             "patternProperties": {
-                "^[a-zA-Z0-9]+$": {
+                "^[a-zA-Z0-9]+([_-]*[a-zA-Z0-9])*$": {
                     "type": "object",
                     "properties": {
                         "$ref": "#/dependenciesObject"
                     },
                     "required": ["api", "url"]
                 }
-            }
+            },
+            "additionalProperties": false
         }
     },
 
@@ -186,26 +190,28 @@
         "responses": {
             "type": "object",
             "patternProperties": {
-                "^[a-zA-Z0-9_]+$": {
+                "^[a-zA-Z0-9]+([_-]*[a-zA-Z0-9])*$": {
                     "type": "object",
                     "properties": {
                         "$ref": "#/responsesObject"
                     },
                     "required": ["statusCode"]
                 }
-            }
+            },
+            "additionalProperties": false
         },
         "errors": {
             "type": "object",
             "patternProperties": {
-                "^[a-zA-Z0-9_]+$": {
+                "^[a-zA-Z0-9]+([_-]*[a-zA-Z0-9])*$": {
                     "type": "object",
                     "properties": {
                         "$ref": "#/errorsObject"
                     },
                     "required": ["statusCode"]
                 }
-            }
+            },
+            "additionalProperties": false
         }
     },
 
