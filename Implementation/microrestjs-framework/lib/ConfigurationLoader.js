@@ -18,6 +18,7 @@ var checkSchema = require('./utils/CheckSchema');
  *
  * @public
  * @static
+ * @function
  * @returns {Object} - The configuration as an object.
  * @throws an Error if the configuration file cannot be found.
  * @throws an Error if the configuration is not valid because the Microrestjs Configuration Specification

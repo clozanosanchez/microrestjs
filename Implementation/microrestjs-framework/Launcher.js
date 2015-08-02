@@ -12,6 +12,7 @@
  * Launches the Microrestjs Framework.
  *
  * @private
+ * @function
  */
 function _main() {
     var microrest = require('./lib/Microrest').getInstance();

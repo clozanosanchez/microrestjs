@@ -39,6 +39,7 @@ function Server() {
  * Listens HTTP requests from the specified port.
  *
  * @public
+ * @function
  * @param {integer} port - Port to listen the received requests.
  * @throws an Error if the port parameter is not valid.
  */
@@ -54,6 +55,7 @@ Server.prototype.listen = function listen(port) {
  * Routes all the HTTP requests of the service.
  *
  * @public
+ * @function
  * @param {Service} service - Service to be routed.
  * @throws an Error if the service parameter is not valid.
  */

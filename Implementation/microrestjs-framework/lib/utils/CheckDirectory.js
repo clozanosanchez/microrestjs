@@ -18,6 +18,7 @@ var checkTypes = require('check-types');
  *
  * @public
  * @static
+ * @function
  * @param {String} path - Path to be checked.
  * @returns {Boolean} - true, if the path is a directory; false, otherwise.
  * @throws an Error if the path parameter is not valid.
@@ -36,6 +37,7 @@ module.exports.isDirectorySync = function isDirectorySync(path) {
  *
  * @public
  * @static
+ * @function
  * @param {String} path - Path to be checked.
  * @param {isDirectoryCallback} callback - Callback to receive the error or the result of the operation.
  */

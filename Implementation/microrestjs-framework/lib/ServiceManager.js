@@ -12,6 +12,7 @@
 
 var fs = require('fs');
 var checkTypes = require('check-types');
+var logger = require('winston').loggers.get('ServiceManager');
 
 var checkDirectory = require('./utils/CheckDirectory');
 var runnableServiceFactory = require('./RunnableServiceFactory');
@@ -21,6 +22,7 @@ var runnableServiceFactory = require('./RunnableServiceFactory');
  *
  * @public
  * @static
+ * @function
  * @returns {ServiceManager} - ServiceManager instance.
  */
 module.exports.getInstance = function getInstance() {
@@ -43,6 +45,7 @@ function ServiceManager() {
  * If any service has a problem to be loaded, such service will be skipt.
  *
  * @public
+ * @function
  * @param {String} servicesRootPath - Path that contains the services to be loaded.
  * @throws an Error if the servicesPath parameter is not valid.
  */
@@ -80,6 +83,7 @@ ServiceManager.prototype.loadServices = function loadServices(servicesRootPath) 
  * Then, registers all of them into the Service Directory.
  *
  * @public
+ * @function
  * @param {Server} server - Server where the services have to be deployed.
  * @throws an Error if the server parameter is not valid.
  */
@@ -98,6 +102,7 @@ ServiceManager.prototype.registerServices = function registerServices(server) {
  * If any service has a problem to be loaded, such service will be skipt.
  *
  * @private
+ * @function
  * @param {String} servicesRootPath - Path that contains the services to be loaded.
  * @param {String[]} servicesNames - Names of the services to be loaded.
  * @returns {Object} - All the loaded services; {}, if there are not services.
@@ -121,7 +126,7 @@ function _loadAllServices(servicesRootPath, servicesNames) {
 
         var specificService = runnableServiceFactory.createService(specificServiceName, specificServicePath);
         if (checkTypes.assigned(specificService) && checkTypes.object(specificService)) {
-            console.log('The service \'' + specificServiceName + '\' has been loaded successfully.');
+            logger.info('The service %s has been loaded successfully.', specificServiceName);
             allServices[specificServiceName] = specificService;
         }
     }

@@ -23,6 +23,7 @@ var regExpr = require('./MicrorestRegExpr');
  *
  * @public
  * @static
+ * @function
  * @param {Object} schema - Schema that must be respected.
  * @param {Object} object - Object that will be checked.
  * @returns {Boolean} - true if the object respects the schema.

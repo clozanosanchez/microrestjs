@@ -19,15 +19,16 @@
     "api"
   ],
   "dependencies": {
-    "express": "4.13.0",
-    "check-types": "3.3.0",
-    "ajv": "0.6.0",
-    "json-schema-deref-local": "0.2.1"
+    "express": "4.13.2",
+    "check-types": "3.3.1",
+    "ajv": "0.6.11",
+    "json-schema-deref-local": "0.2.1",
+    "winston": "1.0.1"
   },
   "devDependencies": {
-    "istanbul": "0.3.16",
+    "istanbul": "0.3.17",
     "mocha": "2.2.5",
-    "should": "7.0.1",
+    "should": "7.0.2",
     "mockery": "1.4.0",
     "jsdoc": "3.3.2",
     "gulp": "3.9.0"

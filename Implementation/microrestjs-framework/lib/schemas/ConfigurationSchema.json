@@ -11,7 +11,9 @@
                 }
             },
             "required": ["path"]
-        }, "server": {
+        }, 
+
+        "server": {
             "type": "object",
             "properties": {
                 "port": {
@@ -21,7 +23,20 @@
                 }
             },
             "required": ["port"]
+        }, 
+
+        "logger": {
+            "type": "object",
+            "properties": {
+                "enable": {
+                    "type": "boolean"
+                },
+                "level": {
+                    "type": "string"
+                }
+            },
+            "required": ["enable", "level"]
         }
     },
-    "required": ["services", "server"]
+    "required": ["services", "server", "logger"]
 }
