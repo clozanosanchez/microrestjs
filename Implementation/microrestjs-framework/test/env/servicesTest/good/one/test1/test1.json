@@ -28,7 +28,13 @@
 	},
 
 	"config": {
-		"location": "directory"
+		"location": "directory",
+		"dependencies": {
+			"hello-world": {
+				"api": 1,
+				"url": "directory"
+			}
+		}
 	},
 
 	"operations": {

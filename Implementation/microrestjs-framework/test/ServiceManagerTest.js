@@ -143,6 +143,6 @@ describe('Functionality: ServiceManager.loadServices()', function loadServicesFu
     });
 });
 
-describe('Functionality: ServiceManager.registerServices()' , function registerServicesFunctionalityTest() {
+describe('Functionality: ServiceManager.registerServices()', function registerServicesFunctionalityTest() {
     it('NOT IMPLEMENTED');
 });

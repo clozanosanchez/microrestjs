@@ -1,7 +1,8 @@
 'use strict';
 
-module.exports.greet = function greet() {
-};
+module.exports.greetNull = null;
+
+module.exports.greetNotFunction = 'Not a function';
 
 module.exports.onCreateService = function onCreateService() {
 };
