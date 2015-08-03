@@ -38,7 +38,7 @@ function RunnableService(context) {
     //Initializes the internal state
     Service.call(this, context);
     this.callableServices = {};
-    this.logger = null;
+    this.logger = new Logger();
 }
 
 RunnableService.prototype = Object.create(Service.prototype);

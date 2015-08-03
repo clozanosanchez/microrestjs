@@ -10,6 +10,8 @@
  * @module
  */
 
+var checkTypes = require('check-types');
+
 /**
  * Service represents a microrestjs service.
  *
@@ -19,7 +21,11 @@
  */
 function Service(context) {
     //Initializes the internal state
-    this.context = context;
+    if (checkTypes.not.assigned(context)) {
+        this.context = {};
+    } else {
+        this.context = context;
+    }
 }
 
 /**
@@ -41,6 +47,10 @@ Service.prototype.getContext = function getContext() {
  * @returns {String} - the name of the service as defined in the context.
  */
 Service.prototype.getServiceName = function getServiceName() {
+    if (checkTypes.not.assigned(this.context) || checkTypes.not.assigned(this.context.info) || checkTypes.not.assigned(this.context.info.name)) {
+        return '';
+    }
+
     return this.context.info.name;
 };
 
