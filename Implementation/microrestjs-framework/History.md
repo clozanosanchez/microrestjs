@@ -1,5 +1,6 @@
 v0.1.0-beta
 ===========
+  * Better support for RunnableServices and CallableServices.
   * Enables the server capabilities to listen and route HTTP requests.
   * Enables SSL capabilities for secure network communications.
   * Enables the service discoverability.
