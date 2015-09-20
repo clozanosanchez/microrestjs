@@ -8,16 +8,20 @@
  * @copyright 2015 Carlos Lozano Sánchez
  */
 
-/**
- * Launches the Microrestjs Framework.
- *
- * @private
- * @function
- */
-function _main() {
-    var microrest = require('./lib/Microrest').getInstance();
+var microrest = require('./lib/Microrest').getInstance();
 
-    microrest.run();
-}
+process.on('SIGINT', function _gracefulShutdown() {
+    microrest.shutdown();
+    microrest = null;
+    process.exit(0);
+});
 
-_main();
+process.on('SIGTERM', function _gracefulShutdown() {
+    microrest.shutdown();
+    microrest = null;
+    process.exit(0);
+});
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+microrest.run();

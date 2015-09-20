@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Factory to create Runnable Services.
+ * Factory that creates RunnableServices.
  *
  * @author Carlos Lozano Sánchez
  * @license MIT
@@ -26,15 +26,15 @@ var callableServiceFactory = require('./CallableServiceFactory');
  * @param {String} serviceName - Name of the service to be created.
  * @param {String} servicePath - Path that contains the service to be created.
  * @returns {Object|null} - The RunnableService instance, if it could be created; null, otherwise.
- * @throws an Error if the serviceName parameter is not valid.
- * @throws an Error if the servicePath parameter is not valid.
+ * @throws an Error if the serviceName parameter is an empty string.
+ * @throws an Error if the servicePath parameter is an empty string.
  */
 module.exports.createService = function createService(serviceName, servicePath) {
-    if (checkTypes.not.assigned(serviceName) || checkTypes.not.string(serviceName) || checkTypes.not.unemptyString(serviceName)) {
+    if (checkTypes.not.string(serviceName) || checkTypes.not.unemptyString(serviceName)) {
         throw new Error('The parameter serviceName must be a non-empty string.');
     }
 
-    if (checkTypes.not.assigned(servicePath) || checkTypes.not.string(servicePath) || checkTypes.not.unemptyString(servicePath)) {
+    if (checkTypes.not.string(servicePath) || checkTypes.not.unemptyString(servicePath)) {
         throw new Error('The parameter servicePath must be a non-empty string.');
     }
 
@@ -69,32 +69,24 @@ module.exports.createService = function createService(serviceName, servicePath) 
 function _instantiateService(serviceContext, serviceFunctionality) {
     var runnableService = require('./RunnableService').getInstance(serviceContext);
 
-    if (checkTypes.not.assigned(serviceFunctionality.onCreateService) || checkTypes.not.function(serviceFunctionality.onCreateService)) {
-        runnableService.onCreateService = function onCreateService() {};
-    } else {
+    if (checkTypes.function(serviceFunctionality.onCreateService)) {
         runnableService.onCreateService = serviceFunctionality.onCreateService;
     }
 
-    if (checkTypes.not.assigned(serviceFunctionality.onStartOperation) || checkTypes.not.function(serviceFunctionality.onStartOperation)) {
-        runnableService.onStartOperation = function onStartOperation() {};
-    } else {
+    if (checkTypes.function(serviceFunctionality.onStartOperation)) {
         runnableService.onStartOperation = serviceFunctionality.onStartOperation;
     }
 
-    if (checkTypes.not.assigned(serviceFunctionality.onFinishOperation) || checkTypes.not.function(serviceFunctionality.onFinishOperation)) {
-        runnableService.onFinishOperation = function onFinishOperation() {};
-    } else {
+    if (checkTypes.function(serviceFunctionality.onFinishOperation)) {
         runnableService.onFinishOperation = serviceFunctionality.onFinishOperation;
     }
 
-    if (checkTypes.not.assigned(serviceFunctionality.onDestroyService) || checkTypes.not.function(serviceFunctionality.onDestroyService)) {
-        runnableService.onDestroyService = function onDestroyService() {};
-    } else {
+    if (checkTypes.function(serviceFunctionality.onDestroyService)) {
         runnableService.onDestroyService = serviceFunctionality.onDestroyService;
     }
 
     for (var operation in serviceContext.operations) {
-        if (checkTypes.not.assigned(serviceFunctionality[operation]) || checkTypes.not.function(serviceFunctionality[operation])) {
+        if (checkTypes.not.function(serviceFunctionality[operation])) {
             logger.warn('The operation %s of the service %s will be not loaded because its implementation has not been found', operation, serviceContext.info.name);
         } else {
             runnableService[operation] = serviceFunctionality[operation];
@@ -105,7 +97,7 @@ function _instantiateService(serviceContext, serviceFunctionality) {
 }
 
 /**
- * Initializes the dependencies and the state of the RunnableService
+ * Initializes the CallableServices dependencies and invoke onCreateService() of the RunnableService
  *
  * @private
  * @function
@@ -113,7 +105,6 @@ function _instantiateService(serviceContext, serviceFunctionality) {
  */
 function _initializeService(runnableService) {
     _registerCallableServices(runnableService);
-    Object.getPrototypeOf(runnableService).getLogger.call(runnableService);
     runnableService.onCreateService();
 }
 
@@ -128,12 +119,12 @@ function _registerCallableServices(runnableService) {
     var serviceContext = runnableService.getContext();
     var dependencies = serviceContext.config.dependencies;
 
-    if (checkTypes.not.assigned(dependencies) || checkTypes.not.object(dependencies)) {
+    if (checkTypes.not.object(dependencies) || checkTypes.emptyObject(dependencies)) {
         return;
     }
 
     for (var dependency in dependencies) {
-        if (checkTypes.assigned(dependencies[dependency]) && checkTypes.object(dependencies[dependency])) {
+        if (checkTypes.object(dependencies[dependency])) {
             try {
                 var callableService = callableServiceFactory.getService(dependency, dependencies[dependency].api, dependencies[dependency].url);
                 Object.getPrototypeOf(runnableService).registerCallableService.call(runnableService, dependency, callableService);

@@ -51,7 +51,7 @@
         "api": {
             "$ref": "#/definitions/positiveInteger"
         },
-        "description1": {
+        "description": {
             "$ref": "#/definitions/nonEmptyString"
         },
         "keywords": {
@@ -90,7 +90,7 @@
             "uniqueItems": true
         },
         "homepage": {
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/httpUrl"
         },
         "repository": {
             "type": "object",
@@ -114,7 +114,7 @@
             ]
         },
         "termsOfService": {
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/httpUrl"
         },
         "license": {
             "$ref": "#/definitions/nonEmptyString"
@@ -129,7 +129,7 @@
             "$ref": "#/definitions/email"
         },
         "url": {
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/httpUrl"
         }
     },
 
@@ -138,13 +138,13 @@
             "$ref": "#/definitions/nonEmptyString"
         },
         "url": {
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/httpUrl"
         }
     },
 
     "bugsObject": {
         "url": {
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/httpUrl"
         },
         "email": {
             "$ref": "#/definitions/email"
@@ -301,9 +301,9 @@
             "type": "string",
             "minLength": 1
         },
-        "url": {
+        "httpUrl": {
             "type": "string",
-            "format": "url",
+            "format": "http-url",
             "minLength": 1
         },
         "email": {

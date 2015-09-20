@@ -23,12 +23,12 @@ var checkSchema = require('./utils/CheckSchema');
  * @function
  * @param {String} serviceDescriptionPath - Path where the service description file is.
  * @returns {Object} - The loaded service context.
- * @throws an Error if the serviceDescriptionPath parameter is not valid.
+ * @throws an Error if the serviceDescriptionPath parameter is not a valid string.
  * @throws an Error if the service description file cannot be found.
- * @throws an Error if the service description file is not valid because the Microrestjs Service Description Specification is not respected.
+ * @throws an Error if the service description file does not respect the Microrestjs Service Description Specification.
  */
 module.exports.loadServiceContext = function loadServiceContext(serviceDescriptionPath) {
-    if (checkTypes.not.assigned(serviceDescriptionPath) || checkTypes.not.string(serviceDescriptionPath) || checkTypes.not.unemptyString(serviceDescriptionPath)) {
+    if (checkTypes.not.string(serviceDescriptionPath) || checkTypes.not.unemptyString(serviceDescriptionPath)) {
         throw new Error('The parameter servicesDescriptionPath must be a non-empty string.');
     }
 

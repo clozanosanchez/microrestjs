@@ -13,11 +13,13 @@
 var NAME_PATTERN = '^[a-zA-Z0-9]+([_-]*[a-zA-Z0-9])*$';
 var VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
 var FULL_DATE_PATTERN = '^\\d\\d\\d\\d-\\d\\d-\\d\\d$';
-var URL_PATTERN = '^https?:\\/\\/([^/\\n\\r\\s]+\\.[^/\\n\\r\\s]+)(\\/([^\\?#\\n\\r\\s]+)?(\\?([^\\?#\\/\\n\\r\\s]+))?(#([^\\?#\\/\\n\\r\\s]+))?)*$';
-var URL_PATH_PATTERN = '^\\/$|^(\\/:?[a-zA-Z0-9_]+)+$';
+var GENERAL_URL_PATTERN_NO_PROTOCOL = '([^/\\n\\r\\s]+)(\\/([^\\?#\\n\\r\\s]+)?(\\?([^\\?#\\/\\n\\r\\s]+))?(#([^\\?#\\/\\n\\r\\s]+))?)*$';
+var HTTP_URL_PATTERN = '^https?:\\/\\/' + GENERAL_URL_PATTERN_NO_PROTOCOL;
+var ONLY_HTTPS_URL_PATTERN = '^https:\\/\\/' + GENERAL_URL_PATTERN_NO_PROTOCOL;
+var MICROREST_URL_PATH_PATTERN = '^(\\/:?[a-zA-Z0-9_]+)+$';
 var EMAIL_PATTERN = "^[a-zA-Z0-9]+(?:(\\.|_)[A-Za-z0-9!#$%&\\'*+\/=?^`{|}~-]+)*@(?!([a-zA-Z0-9]*\\.[a-zA-Z0-9]*\\.[a-zA-Z0-9]*\\.))(?:[A-Za-z0-9](?:[a-zA-Z0-9-]*[A-Za-z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$";
-var DIRECTORY_PROTOCOL_PATTERN = '^directory:\\/\\/([^/\\n\\r\\s]+\\.[^/\\n\\r\\s]+)(\\/([^\\?#\\n\\r\\s]+)?(\\?([^\\?#\\/\\n\\r\\s]+))?(#([^\\?#\\/\\n\\r\\s]+))?)*$';
-var DIRECTORY_PATTERN = '^directory$' + '|' + DIRECTORY_PROTOCOL_PATTERN + '|' + URL_PATTERN;
+var DIRECTORY_URL_PATTERN = '^directory:\\/\\/' + GENERAL_URL_PATTERN_NO_PROTOCOL;
+var DIRECTORY_PATTERN = '^directory$' + '|' + DIRECTORY_URL_PATTERN + '|' + ONLY_HTTPS_URL_PATTERN;
 var HTTP_METHOD_PATTERN = '^GET$|^HEAD$|^POST$|^PUT$|^DELETE$|^PATCH$';
 var IN_URL_PARAMETER = '^query$|^path$';
 var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
@@ -43,8 +45,8 @@ module.exports = {
     name: NAME_PATTERN,
     version: VERSION_PATTERN,
     fullDate: FULL_DATE_PATTERN,
-    url: URL_PATTERN,
-    urlPath: URL_PATH_PATTERN,
+    httpUrl: HTTP_URL_PATTERN,
+    urlPath: MICROREST_URL_PATH_PATTERN,
     email: EMAIL_PATTERN,
     directory: DIRECTORY_PATTERN,
     httpMethod: HTTP_METHOD_PATTERN,

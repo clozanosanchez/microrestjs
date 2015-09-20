@@ -25,6 +25,17 @@
             "required": ["port"]
         }, 
 
+        "directory": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": ["location"]
+        },
+
         "logger": {
             "type": "object",
             "properties": {
@@ -38,5 +49,5 @@
             "required": ["enable", "level"]
         }
     },
-    "required": ["services", "server", "logger"]
+    "required": ["services", "server", "directory", "logger"]
 }

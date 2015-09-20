@@ -21,10 +21,10 @@ var checkTypes = require('check-types');
  * @function
  * @param {String} path - Path to be checked.
  * @returns {Boolean} - true, if the path is a directory; false, otherwise.
- * @throws an Error if the path parameter is not valid.
+ * @throws an Error if the path parameter is an empty string.
  */
 module.exports.isDirectorySync = function isDirectorySync(path) {
-    if (checkTypes.not.assigned(path) || checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
+    if (checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
         throw new Error('The parameter path must be a non-empty string.');
     }
 
@@ -42,7 +42,7 @@ module.exports.isDirectorySync = function isDirectorySync(path) {
  * @param {isDirectoryCallback} callback - Callback to receive the error or the result of the operation.
  */
 module.exports.isDirectory = function isDirectory(path, callback) {
-    if (checkTypes.not.assigned(path) || checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
+    if (checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
         callback(new Error('The parameter path must be a non-empty string.'));
         return;
     }

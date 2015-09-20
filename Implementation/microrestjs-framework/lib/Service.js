@@ -13,7 +13,7 @@
 var checkTypes = require('check-types');
 
 /**
- * Service represents a microrestjs service.
+ * Service represents a Microrestjs service.
  *
  * @public
  * @class
@@ -21,7 +21,7 @@ var checkTypes = require('check-types');
  */
 function Service(context) {
     //Initializes the internal state
-    if (checkTypes.not.assigned(context)) {
+    if (checkTypes.not.object(context)) {
         this.context = {};
     } else {
         this.context = context;
@@ -33,25 +33,27 @@ function Service(context) {
  *
  * @public
  * @function
- * @returns {Object} - the context of the service.
+ * @returns {Object} - The context of the service.
  */
 Service.prototype.getContext = function getContext() {
     return this.context;
 };
 
 /**
- * Gets the name of the service as defined in the context.
+ * Gets the identification name of the service.
+ *
+ * identificationName = serviceName + '/v' + apiVersion
  *
  * @public
  * @function
- * @returns {String} - the name of the service as defined in the context.
+ * @returns {String} - The identification name of the service.
  */
-Service.prototype.getServiceName = function getServiceName() {
-    if (checkTypes.not.assigned(this.context) || checkTypes.not.assigned(this.context.info) || checkTypes.not.assigned(this.context.info.name)) {
+Service.prototype.getIdentificationName = function getIdentificationName() {
+    if (checkTypes.not.object(this.context) || checkTypes.not.object(this.context.info) || checkTypes.not.string(this.context.info.name) || checkTypes.not.integer(this.context.info.api)) {
         return '';
     }
 
-    return this.context.info.name;
+    return this.context.info.name + '/v' + this.context.info.api;
 };
 
 module.exports = Service;

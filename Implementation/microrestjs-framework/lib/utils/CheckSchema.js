@@ -1,13 +1,13 @@
 'use strict';
 
 /**
- * Checks whether JSON objects respect JSON schemas.
+ * Checks whether JSON objects respect JSON schemata.
  *
  * @author Carlos Lozano Sánchez
  * @license MIT
  * @copyright 2015 Carlos Lozano Sánchez
  *
- * @see {@link http://json-schema.org/} for further information about JSON schemas.
+ * @see {@link http://json-schema.org/} for further information about JSON schemata.
  *
  * @module
  */
@@ -27,17 +27,17 @@ var regExpr = require('./MicrorestRegExpr');
  * @param {Object} schema - Schema that must be respected.
  * @param {Object} object - Object that will be checked.
  * @returns {Boolean} - true if the object respects the schema.
- * @throws an Error if the schema parameter is not valid.
- * @throws an Error if the object parameter is not valid.
+ * @throws an Error if the schema parameter is not a valid Schema object.
+ * @throws an Error if the object parameter is not a valid object.
  * @throws an Error if the object does not respect the schema.
  */
 module.exports.check = function check(schema, object) {
-    if (checkTypes.not.assigned(schema) || checkTypes.not.object(schema)) {
+    if (checkTypes.not.object(schema)) {
         //TODO: Improve the condition.
         throw new Error('The parameter schema must be a non-null object');
     }
 
-    if (checkTypes.not.assigned(object) || checkTypes.not.object(object)) {
+    if (checkTypes.not.object(object)) {
         //TODO: Improve the condition.
         throw new Error('The parameter schema must be a non-null object');
     }
@@ -51,7 +51,7 @@ module.exports.check = function check(schema, object) {
     validator.addFormat('name', regExpr.name);
     validator.addFormat('version', regExpr.version);
     validator.addFormat('full-date', regExpr.fullDate);
-    validator.addFormat('url', regExpr.url);
+    validator.addFormat('http-url', regExpr.httpUrl);
     validator.addFormat('email', regExpr.email);
     validator.addFormat('directory', regExpr.directory);
     validator.addFormat('url-path', regExpr.urlPath);

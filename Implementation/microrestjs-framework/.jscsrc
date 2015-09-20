@@ -68,7 +68,7 @@
         "beforeOpeningCurlyBrace": true
     },
 
-    "maximumLineLength": 120,
+    "maximumLineLength": 150,
     "maximumNumberOfLines": 300,
     "safeContextKeyword": "_this",
     "validateIndentation": 4,

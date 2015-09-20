@@ -1,7 +1,7 @@
 {
   "name": "microrest-framework",
   "description": "Framework to develop RESTful web services",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Carlos Lozano Sánchez <carloslozano@freshhy.com>",
   "contributors": [
     "Markus Hillenbrand <hillenbr@rhrk.uni-kl.de>"  
@@ -19,16 +19,19 @@
     "api"
   ],
   "dependencies": {
-    "express": "4.13.2",
+    "express": "4.13.3",
+    "body-parser": "1.14.0",
+    "cookie-parser": "1.4.0", 
     "check-types": "3.3.1",
     "ajv": "0.6.11",
     "json-schema-deref-local": "0.2.1",
-    "winston": "1.0.1"
+    "winston": "1.0.1",
+    "pem": "1.7.2"
   },
   "devDependencies": {
-    "istanbul": "0.3.17",
-    "mocha": "2.2.5",
-    "should": "7.0.2",
+    "istanbul": "0.3.20",
+    "mocha": "2.3.2",
+    "should": "7.1.0",
     "mockery": "1.4.0",
     "jsdoc": "3.3.2",
     "gulp": "3.9.0"

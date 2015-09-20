@@ -18,25 +18,25 @@ var checkTypes = require('check-types');
  * @public
  * @static
  * @function
- * @param {String} name - Name of the callable service to be instanciated.
- * @param {Integer} api - API number of the callable service to be instanciated
- * @param {String} url - Location of the callable service to be instanciated
+ * @param {String} name - Name of the callable service to be instantiated.
+ * @param {Integer} api - API number of the callable service to be instantiated
+ * @param {String} location - Location of the callable service to be instantiated
  * @returns {Object} - The CallableService instance.
- * @throws an Error if the name parameter is not valid.
- * @throws an Error if the api parameter is not valid.
- * @throws an Error if the url parameter is not valid.
+ * @throws an Error if the name parameter is an empty string.
+ * @throws an Error if the api parameter is not a positive integer.
+ * @throws an Error if the location parameter is an empty string.
  */
-module.exports.getService = function getService(name, api, url) {
-    if (checkTypes.not.assigned(name) || checkTypes.not.string(name) || checkTypes.not.unemptyString(name)) {
+module.exports.getService = function getService(name, api, location) {
+    if (checkTypes.not.string(name) || checkTypes.not.unemptyString(name)) {
         throw new Error('The parameter name must be a non-empty string.');
     }
 
-    if (checkTypes.not.assigned(api) || checkTypes.not.integer(api) || checkTypes.not.positive(api)) {
+    if (checkTypes.not.integer(api) || checkTypes.not.positive(api)) {
         throw new Error('The parameter api must be a positive integer number.');
     }
 
-    if (checkTypes.not.assigned(url) || checkTypes.not.string(url) || checkTypes.not.unemptyString(url)) {
-        throw new Error('The parameter name must be a non-empty string.');
+    if (checkTypes.not.string(location) || checkTypes.not.unemptyString(location)) {
+        throw new Error('The parameter location must be a non-empty string.');
     }
 
     var serviceContext = {
@@ -45,7 +45,7 @@ module.exports.getService = function getService(name, api, url) {
             api: api
         },
         config: {
-            location: url
+            location: location
         }
     };
 

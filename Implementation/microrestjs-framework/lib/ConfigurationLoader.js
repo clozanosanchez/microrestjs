@@ -21,8 +21,7 @@ var checkSchema = require('./utils/CheckSchema');
  * @function
  * @returns {Object} - The configuration as an object.
  * @throws an Error if the configuration file cannot be found.
- * @throws an Error if the configuration is not valid because the Microrestjs Configuration Specification
- *         is not respected.
+ * @throws an Error if the configuration does not respect the Microrestjs Configuration Specification.
  */
 module.exports.loadConfiguration = function loadConfiguration() {
     var configuration = null;
@@ -30,15 +29,13 @@ module.exports.loadConfiguration = function loadConfiguration() {
     try {
         configuration = require('../configuration.json');
     } catch (exception) {
-        throw new Error('The configuration file of microrestjs does not exist' +
-                        'or not have the correct permissions');
+        throw new Error('The configuration file of Microrestjs does not exist or not have the correct permissions');
     }
 
     try {
         checkSchema.check(configurationSchema, configuration);
     } catch (exception) {
-        throw new Error('The configuration file of microrestjs does not respect the ' +
-                        'Microrestjs Configuration Specification bacause: ' + exception);
+        throw new Error('The configuration file of Microrestjs does not respect the Microrestjs Configuration Specification because: ' + exception);
     }
 
     return configuration;

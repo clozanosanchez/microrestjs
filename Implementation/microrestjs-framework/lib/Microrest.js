@@ -11,6 +11,47 @@
  */
 
 var winston = require('winston');
+var checkTypes = require('check-types');
+
+/**
+ * Port where the server is listening.
+ *
+ * @private
+ * @constant
+ */
+var port = 0;
+
+/**
+ * Gets the port where the server is listening.
+ *
+ * @public
+ * @static
+ * @function
+ * @returns {Integer} - Port where the server is listening.
+ */
+module.exports.getServerPort = function getServerPort() {
+    return port;
+};
+
+/**
+ * Location of the default service directory
+ *
+ * @private
+ * @constant
+ */
+var defaultDirectoryLocation = '';
+
+/**
+ * Gets the location of the default service directory.
+ *
+ * @public
+ * @static
+ * @function
+ * @returns {String} - Location of the default service directory.
+ */
+module.exports.getDefaultDirectoryLocation = function getDefaultDirectoryLocation() {
+    return defaultDirectoryLocation;
+};
 
 /**
  * Gets a new instance of Microrest class.
@@ -18,7 +59,7 @@ var winston = require('winston');
  * @public
  * @static
  * @function
- * @returns {Microrest} - Micorest instance.
+ * @returns {Microrest} - Microrest instance.
  */
 module.exports.getInstance = function getInstance() {
     return new Microrest();
@@ -34,12 +75,16 @@ function Microrest() {
     this.configuration = require('./ConfigurationLoader').loadConfiguration();
     _configureLogger(this.configuration.logger);
 
+    port = this.configuration.server.port;
+    defaultDirectoryLocation = this.configuration.directory.location;
+
     this.server = require('./Server').getInstance();
     this.serviceManager = require('./ServiceManager').getInstance();
 
-    //Initializes and deploy all the services
+    //Initializes, deploys and registers all the services
     this.serviceManager.loadServices(this.configuration.services.path);
-    this.serviceManager.registerServices(this.server);
+    this.serviceManager.deployServices(this.server);
+    this.serviceManager.registerServices();
 }
 
 /**
@@ -49,7 +94,35 @@ function Microrest() {
  * @function
  */
 Microrest.prototype.run = function run() {
+    if (!this.serviceManager.areAllServicesReady()) {
+        setTimeout(run.bind(this), 1000);
+        return;
+    }
+
     this.server.listen(this.configuration.server.port);
+};
+
+/**
+ * Stops and shuts down the whole platform gracefully.
+ *
+ * @public
+ * @function
+ */
+Microrest.prototype.shutdown = function shutdown() {
+    if (checkTypes.assigned(this.server)) {
+        this.server.shutdown();
+    }
+
+    if (checkTypes.assigned(this.serviceManager)) {
+        this.serviceManager.shutdown();
+    }
+
+    this.configuration = null;
+    this.server = null;
+    this.serviceManager = null;
+
+    port = 0;
+    defaultDirectoryLocation = '';
 };
 
 /**
