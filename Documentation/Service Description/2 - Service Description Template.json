@@ -45,8 +45,16 @@
 		}
 	},
 
+	"security": {
+		"scheme": <string: "none" or "basic">
+	},
+
 	"operations": {
 		"<operationName>": {
+			"security": {
+				"scheme": <string: "none" or "basic">
+			},
+
 			"request": {
 				"path": <string: URL Path>,
 				"method": <string: HTTP Method>,

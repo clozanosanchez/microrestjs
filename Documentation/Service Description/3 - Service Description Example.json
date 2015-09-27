@@ -31,6 +31,10 @@
 		"location": "directory"
 	},
 
+	"security": {
+		"scheme": "none"
+	},
+
 	"operations": {
 		"greet": {
 			"request": { 
