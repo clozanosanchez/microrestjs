@@ -13,6 +13,8 @@
 var winston = require('winston');
 var checkTypes = require('check-types');
 
+var credentialsGenerator = require('./utils/CredentialsGenerator');
+
 /**
  * Port where the server is listening.
  *
@@ -78,6 +80,10 @@ function Microrest() {
     port = this.configuration.server.port;
     defaultDirectoryLocation = this.configuration.directory.location;
 
+    //Generates and publishes the platform credentials asynchronously.
+    this.arePublishedCredentials = false;
+    credentialsGenerator.generateCredentials(this._getPublishCredentialsFunction());
+
     this.server = require('./Server').getInstance();
     this.serviceManager = require('./ServiceManager').getInstance();
 
@@ -88,13 +94,43 @@ function Microrest() {
 }
 
 /**
+ * Gets the function to publish the generated credentials in:
+ *    - the Server to listen SSL requests.
+ *    - the Client to make SSL requests.
+ *    - the RunnableServices to know their certificate.
+ *
+ * @private
+ * @function
+ */
+Microrest.prototype._getPublishCredentialsFunction = function _getPublishCredentialsFunction() {
+    var _this = this;
+    return function _publishCredentials(error, credentials) {
+            if (checkTypes.assigned(error)) {
+                throw new Error('The platform credentials could not be generated, because ' + error.message);
+            }
+
+            if (checkTypes.not.object(credentials) || checkTypes.emptyObject(credentials) ||
+                checkTypes.not.string(credentials.key) || checkTypes.not.unemptyString(credentials.key) ||
+                checkTypes.not.string(credentials.certificate) || checkTypes.not.unemptyString(credentials.certificate)) {
+                throw new Error('The generated platform credentials are not correct, because either the key or the certificate is not present.');
+            }
+
+            _this.server.addCredentials(credentials);
+            _this.serviceManager.addCertificateToServices(credentials.certificate);
+            require('./Client').addCredentials(credentials);
+
+            _this.arePublishedCredentials = true;
+        };
+};
+
+/**
  * Runs the registered services.
  *
  * @public
  * @function
  */
 Microrest.prototype.run = function run() {
-    if (!this.serviceManager.areAllServicesReady()) {
+    if (this.arePublishedCredentials !== true) {
         setTimeout(run.bind(this), 1000);
         return;
     }

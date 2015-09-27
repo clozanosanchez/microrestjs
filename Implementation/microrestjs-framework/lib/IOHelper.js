@@ -35,7 +35,7 @@ var CallableServiceResponse = require('./CallableServiceResponse');
  * @static
  * @function
  * @param {Object} expressRequest - ExpressRequest to be converted.
- * @returns {Object} - Equivalent RunnableServiceRequest.
+ * @returns {RunnableServiceRequest} - Equivalent RunnableServiceRequest.
  * @throws an Error if the expressRequest parameter is not a valid ExpressResquest object.
  */
 module.exports.convertExpressRequestToRunnableServiceRequest = function convertExpressRequestToRunnableServiceRequest(expressRequest) {
@@ -51,6 +51,8 @@ module.exports.convertExpressRequestToRunnableServiceRequest = function convertE
     request.queryParameters = expressRequest.query;
     request.body = expressRequest.body;
     request.ip = expressRequest.ip;
+    request.credentials = expressRequest.credentials;
+    request.authorizedUser = expressRequest.authorizedUser;
 
     return request;
 };
@@ -61,7 +63,7 @@ module.exports.convertExpressRequestToRunnableServiceRequest = function convertE
  * @public
  * @static
  * @function
- * @returns {Object} - a RunnableServiceResponse to respond to a client.
+ * @returns {RunnableServiceResponse} - a RunnableServiceResponse to respond to a client.
  */
 module.exports.createRunnableServiceResponse = function createRunnableServiceResponse() {
     return new RunnableServiceResponse();
@@ -73,7 +75,7 @@ module.exports.createRunnableServiceResponse = function createRunnableServiceRes
  * @public
  * @static
  * @function
- * @param {Object} runnableServiceResponse - RunnableServiceResponse to be sent
+ * @param {RunnableServiceResponse} runnableServiceResponse - RunnableServiceResponse to be sent
  * @param {Object} expressResponse - ExpressResponse to encapsulate the RunnableServiceResponse that has to be sent.
  * @returns {Boolean | Error} - true, if the response is sent successfully; an Error, otherwise.
  * @throws an Error if the runnableServiceResponse is not a valid RunnableServiceResponse object.
@@ -145,7 +147,8 @@ module.exports.sendRunnableServiceResponseAsExpressResponse = function sendRunna
  * @static
  * @function
  * @param {Object} httpResponse - HTTPResponse to be converted.
- * @returns {Object} - Equivalent CallableServiceResponse.
+ * @param {Object} body - Body of the httpResponse
+ * @returns {CallableServiceResponse} - Equivalent CallableServiceResponse.
  * @throws an Error if the httpResponse parameter is not a valid HTTPResponse object.
  */
 module.exports.convertHttpResponseToCallableServiceResponse = function convertHttpResponseToCallableServiceResponse(httpResponse, body) {

@@ -16,23 +16,17 @@ var checkTypes = require('check-types');
 /**
  * Generates secure credentials asynchronously:
  *   - Private key (credentials.key)
- *   - Certificate (credentials.certificate / credentials.ca)
+ *   - Certificate (credentials.certificate)
  *
  * @public
  * @static
  * @function
- * @param {String} name - Name for the credential.
- * @param {Object} credentials - Object where the credentials will be stored.
- * @throws an Error if the name parameter is an empty string.
- * @throws an Error if the credentials parameter is not an empty object.
+ * @param {generateCredentialsCallback} callback - Callback for delegating the generated credentials.
+ * @throws an Error if the callback parameter is not a valid callback function.
  */
-module.exports.generateCredentials = function generateCredentials(name, credentials) {
-    if (checkTypes.not.string(name) || checkTypes.not.unemptyString(name)) {
-        throw new Error('The parameter name must be a non-empty string.');
-    }
-
-    if (checkTypes.not.object(credentials) || checkTypes.not.emptyObject(credentials)) {
-        throw new Error('The parameter credentials must be an empty object.');
+module.exports.generateCredentials = function generateCredentials(callback) {
+    if (checkTypes.not.function(callback)) {
+        throw new Error('The parameter callback must be a defined function.');
     }
 
     var pemOptions = {
@@ -43,19 +37,29 @@ module.exports.generateCredentials = function generateCredentials(name, credenti
         locality: 'Madrid',
         organization: 'Microrestjs',
         organizationUnit: 'security',
-        commonName: name,
         selfSigned: true,
         days: 1
     };
 
-    pem.createCertificate(pemOptions, function _storeCredentials(err, privateCredentials) {
-        if (checkTypes.assigned(err)) {
-            //TODO: Decide how to control this error
+    pem.createCertificate(pemOptions, function _getCredentials(error, privateCredentials) {
+        if (checkTypes.assigned(error)) {
+            callback(error);
             return;
         }
 
-        credentials.key = privateCredentials.clientKey;
-        credentials.certificate = privateCredentials.certificate;
-        credentials.ca = privateCredentials.certificate;
+        var credentials = {
+            key: privateCredentials.clientKey,
+            certificate: privateCredentials.certificate
+        };
+
+        callback(null, credentials);
     });
 };
+
+/**
+ * Callback declaration for delegating the generated credentials.
+ *
+ * @callback generateCredentialsCallback
+ * @param {Error} error - Specifies the error that occurred, if it is defined.
+ * @param {Object} credentials - Represents the generated credentials.
+ */

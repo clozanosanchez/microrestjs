@@ -40,8 +40,13 @@ module.exports.isDirectorySync = function isDirectorySync(path) {
  * @function
  * @param {String} path - Path to be checked.
  * @param {isDirectoryCallback} callback - Callback to receive the error or the result of the operation.
+ * @throws an Error if the callback parameter is not a valid callback function.
  */
 module.exports.isDirectory = function isDirectory(path, callback) {
+    if (checkTypes.not.function(callback)) {
+        throw new Error('The parameter callback must be a defined function.');
+    }
+
     if (checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
         callback(new Error('The parameter path must be a non-empty string.'));
         return;

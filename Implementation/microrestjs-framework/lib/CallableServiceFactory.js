@@ -12,6 +12,8 @@
 
 var checkTypes = require('check-types');
 
+var ServiceContext = require('./ServiceContext');
+
 /**
  * Creates a CallableService instance.
  *
@@ -21,7 +23,7 @@ var checkTypes = require('check-types');
  * @param {String} name - Name of the callable service to be instantiated.
  * @param {Integer} api - API number of the callable service to be instantiated
  * @param {String} location - Location of the callable service to be instantiated
- * @returns {Object} - The CallableService instance.
+ * @returns {CallableService} - The CallableService instance.
  * @throws an Error if the name parameter is an empty string.
  * @throws an Error if the api parameter is not a positive integer.
  * @throws an Error if the location parameter is an empty string.
@@ -39,7 +41,7 @@ module.exports.getService = function getService(name, api, location) {
         throw new Error('The parameter location must be a non-empty string.');
     }
 
-    var serviceContext = {
+    var serviceContextData = {
         info: {
             name: name,
             api: api
@@ -48,6 +50,8 @@ module.exports.getService = function getService(name, api, location) {
             location: location
         }
     };
+
+    var serviceContext = new ServiceContext(serviceContextData);
 
     var callableService = _instantiateCallableService(serviceContext);
 
@@ -59,8 +63,8 @@ module.exports.getService = function getService(name, api, location) {
  *
  * @private
  * @function
- * @param {Object} serviceContext - Context of the service to be instantiated
- * @returns {Object} - The CallableService instance
+ * @param {ServiceContext} serviceContext - Context of the service to be instantiated
+ * @returns {CallableService} - The CallableService instance
  */
 function _instantiateCallableService(serviceContext) {
     var callableService = require('./CallableService').getInstance(serviceContext);

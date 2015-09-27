@@ -20,7 +20,7 @@ var ioHelper = require('./IOHelper');
  * @public
  * @static
  * @function
- * @param {Object} service - Service to be invoked.
+ * @param {RunnableService} service - Service to be invoked.
  * @param {String} operation - Operation to be invoked.
  * @returns {Function} - Function to invoke such service operation.
  */

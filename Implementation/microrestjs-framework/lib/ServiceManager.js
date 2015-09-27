@@ -51,7 +51,7 @@ function ServiceManager() {
  * @throws an Error if the servicesRootPath parameter is not a valid string.
  * @throws an Error if the servicesRootPath does not exist.
  * @throws an Error if the servicesRootPath is not a directory.
- * @throws an Error if the servicesRootPath cannot be read. 
+ * @throws an Error if the servicesRootPath cannot be read.
  */
 ServiceManager.prototype.loadServices = function loadServices(servicesRootPath) {
     if (checkTypes.not.string(servicesRootPath) || checkTypes.not.unemptyString(servicesRootPath)) {
@@ -98,10 +98,6 @@ ServiceManager.prototype.deployServices = function deployServices(server) {
 
     var services = this.services;
     for (var service in services) {
-        //Delegates, in the service, the addition of its certificates to the server
-        services[service].addServiceCredentialsToServer(server.addServiceCredentialsToServer.bind(server));
-
-        //Delegates, in the server, the routing of the service
         server.route(services[service]);
     }
 };
@@ -116,6 +112,25 @@ ServiceManager.prototype.registerServices = function registerServices() {
     var services = this.services;
     for (var service in services) {
         serviceDirectoryProxy.register(services[service]);
+    }
+};
+
+/**
+ * Add the certificate to all the services.
+ *
+ * @public
+ * @function
+ * @param {String} certificate - Certificate to be added.
+ * @throws an Error if the certificate parameter is not a valid SSL certificate.
+ */
+ServiceManager.prototype.addCertificateToServices = function addCertificateToServices(certificate) {
+    if (checkTypes.not.string(certificate) || checkTypes.not.unemptyString(certificate)) {
+        throw new Error('The parameter certificate must be a valid SSL certificate');
+    }
+
+    var services = this.services;
+    for (var service in services) {
+        services[service].certificate = certificate;
     }
 };
 
@@ -139,24 +154,6 @@ ServiceManager.prototype.shutdown = function shutdown() {
 };
 
 /**
- * Checks whether all the services are ready for being registered and used.
- *
- * @public
- * @function
- * @returns {Boolean} - true, if all the services are ready; false, otherwise.
- */
-ServiceManager.prototype.areAllServicesReady = function areAllServicesReady() {
-    var services = this.services;
-    for (var service in services) {
-        if (services[service].isServiceReady() === false) {
-            return false;
-        }
-    }
-
-    return true;
-};
-
-/**
  * Loads all the services that are specified in the arguments.
  *
  * If any service has a problem to be loaded, such service will be skipped.
@@ -166,18 +163,8 @@ ServiceManager.prototype.areAllServicesReady = function areAllServicesReady() {
  * @param {String} servicesRootPath - Path that contains the services to be loaded.
  * @param {String[]} servicesNames - Names of the services to be loaded.
  * @returns {Object} - All the loaded services; {}, if there are not services.
- * @throws an Error if the servicesRootPath parameter is not a valid string.
- * @throws an Error if the servicesNames parameter is not a valid array of strings.
  */
 function _loadAllServices(servicesRootPath, servicesNames) {
-    if (checkTypes.not.string(servicesRootPath) || checkTypes.not.unemptyString(servicesRootPath)) {
-        throw new Error('The parameter servicesRootPath must be a non-empty string');
-    }
-
-    if (checkTypes.not.array.of.string(servicesNames)) {
-        throw new Error('The parameter servicesNames must be an array of strings');
-    }
-
     var allServices = {};
 
     for (var i = 0; i < servicesNames.length; i++) {

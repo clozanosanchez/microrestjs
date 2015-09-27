@@ -21,6 +21,13 @@
             },
             "required": ["location"]
         },
+        "security": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/securityObject"
+            },
+            "required": ["scheme"]
+        },
         "operations": {
             "type": "object",
             "patternProperties": {
@@ -35,7 +42,7 @@
             "additionalProperties": false
         }
     },
-    "required": ["microrestSpecification", "info", "config", "operations"],
+    "required": ["microrestSpecification", "info", "config", "security", "operations"],
 
     "informationObject": {
         "name": {
@@ -179,7 +186,22 @@
         }
     },
 
+    "securityObject": {
+        "scheme": {
+            "type": "string",
+            "format": "security-scheme",
+            "minLength": 1
+        }
+    },
+
     "operationsProperties": {
+        "security": {
+            "type": "object",
+            "properties": {
+                "$ref": "#/securityObject" 
+            },
+            "required": ["scheme"]
+        },
         "request": {
             "type": "object",
             "properties": {

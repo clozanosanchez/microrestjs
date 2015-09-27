@@ -15,6 +15,7 @@ var checkTypes = require('check-types');
 var Service = require('./Service');
 var serviceDirectoryProxy = require('./ServiceDirectoryProxy');
 var serviceInformationRetriever = require('./ServiceInformationRetriever');
+var ServiceContext = require('./ServiceContext');
 var client = require('./Client');
 
 var EXECUTE_ERROR = 'EXECUTE_ERROR';
@@ -26,7 +27,7 @@ var SERVICE_INFORMATION_ERROR = 'SERVICE_INFORMATION_ERROR';
  * @public
  * @static
  * @function
- * @param {Object} context - Context of the CallableService.
+ * @param {ServiceContext} context - Context of the CallableService.
  * @returns {CallableService} - CallableService instance.
  */
 module.exports.getInstance = function getInstance(context) {
@@ -37,7 +38,7 @@ module.exports.getInstance = function getInstance(context) {
  * CallableService allows executing operations of a remote service.
  *
  * @class
- * @param {Object} context - Context of the CallableService.
+ * @param {ServiceContext} context - Context of the CallableService.
  */
 function CallableService(context) {
     //Initializes the internal state
@@ -128,7 +129,7 @@ CallableService.prototype.getRealServiceInformation = function getRealServiceInf
                 return;
             }
 
-            _this.realService.serviceContext = serviceInformation.serviceContext;
+            _this.realService.serviceContext = new ServiceContext(serviceInformation.serviceContext);
             _this.realService.certificate = serviceInformation.certificate;
 
             _this.getRealServiceInformation(responseCallback);
@@ -158,7 +159,17 @@ function _executeOperation(service, request, responseCallback) {
         return;
     }
 
-    var realOperation = realServiceContext.operations[request.operation];
+    var realAuthorization = undefined;
+    if (checkTypes.object(request.credentials) && checkTypes.not.emptyObject(request.credentials)) {
+        var realOperationSecurity = realServiceContext.getSecurity(request.operation);
+        if (checkTypes.object(realOperationSecurity) && checkTypes.not.emptyObject(realOperationSecurity)) {
+            if (realOperationSecurity.scheme === 'basic') {
+                realAuthorization = request.credentials.username + ':' + request.credentials.password;
+            }
+        }
+    }
+
+    var realOperation = realServiceContext.getOperation(request.operation);
     if (checkTypes.not.object(realOperation) || checkTypes.emptyObject(realOperation)) {
         var executeError3 = new Error('The operation ' + request.operation + ' cannot be executed because it does not defined in the retrieved service information.');
         executeError3.code = EXECUTE_ERROR;
@@ -182,15 +193,23 @@ function _executeOperation(service, request, responseCallback) {
         return;
     }
 
-    var realInfo = realServiceContext.info;
-    if (checkTypes.not.object(realInfo) || checkTypes.emptyObject(realInfo)) {
-        var serviceInformationError4 = new Error('The info data is not defined in the retrieved service information.');
+    var realName = realServiceContext.getName();
+    if (checkTypes.not.string(realName) || checkTypes.not.unemptyString(realName)) {
+        var serviceInformationError4 = new Error('The name data is not defined in the retrieved service information.');
         serviceInformationError4.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError4);
         return;
     }
 
-    var realServicePath = realInfo.name + '/v' + realInfo.api;
+    var realApi = realServiceContext.getApi();
+    if (checkTypes.not.integer(realApi) || checkTypes.not.positive(realApi)) {
+        var serviceInformationError5 = new Error('The API data is not defined in the retrieved service information.');
+        serviceInformationError5.code = SERVICE_INFORMATION_ERROR;
+        responseCallback(serviceInformationError5);
+        return;
+    }
+
+    var realServicePath = realName + '/v' + realApi;
     var realOperationPath = realOperationRequest.path;
 
     var realParameters = realOperationRequest.parameters;
@@ -213,25 +232,25 @@ function _executeOperation(service, request, responseCallback) {
 
     var realLocation = service.realService.location;
     if (checkTypes.not.string(realLocation) || checkTypes.not.unemptyString(realLocation)) {
-        var serviceInformationError5 = new Error('The location is not defined in the retrieved service information.');
-        serviceInformationError5.code = SERVICE_INFORMATION_ERROR;
-        responseCallback(serviceInformationError5);
-        return;
-    }
-
-    var realPort = service.realService.port;
-    if (checkTypes.not.integer(realPort) || checkTypes.not.positive(realPort)) {
-        var serviceInformationError6 = new Error('The port is not defined in the retrieved service information.');
+        var serviceInformationError6 = new Error('The location is not defined in the retrieved service information.');
         serviceInformationError6.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError6);
         return;
     }
 
-    var realServiceCertificate = service.realService.certificate;
-    if (checkTypes.not.string(realServiceCertificate) || checkTypes.not.unemptyString(realServiceCertificate)) {
-        var serviceInformationError7 = new Error('The certificate is not defined in the retrieved service information.');
+    var realPort = service.realService.port;
+    if (checkTypes.not.integer(realPort) || checkTypes.not.positive(realPort)) {
+        var serviceInformationError7 = new Error('The port is not defined in the retrieved service information.');
         serviceInformationError7.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError7);
+        return;
+    }
+
+    var realServiceCertificate = service.realService.certificate;
+    if (checkTypes.not.string(realServiceCertificate) || checkTypes.not.unemptyString(realServiceCertificate)) {
+        var serviceInformationError8 = new Error('The certificate is not defined in the retrieved service information.');
+        serviceInformationError8.code = SERVICE_INFORMATION_ERROR;
+        responseCallback(serviceInformationError8);
         return;
     }
 
@@ -240,12 +259,9 @@ function _executeOperation(service, request, responseCallback) {
         port: realPort,
         path: realCompletePath,
         method: realOperationMethod,
+        auth: realAuthorization,
         body: request.body,
-        credentials: {
-            key: service.credentials.key,
-            certificate: service.credentials.certificate,
-            ca: realServiceCertificate
-        },
+        serviceCertificate: realServiceCertificate,
         rejectUnauthorized: true,
         checkServerIdentity: function _checkServerIdentity(host, cert) {
             //The host of the server is not checked.

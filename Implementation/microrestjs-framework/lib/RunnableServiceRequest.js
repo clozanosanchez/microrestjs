@@ -31,6 +31,8 @@ function RunnableServiceRequest() {
     this.queryParameters = {};
     this.body = {};
     this.ip = undefined;
+    this.credentials = undefined;
+    this.authorizedUser = undefined;
 }
 
 /**
@@ -122,7 +124,7 @@ RunnableServiceRequest.prototype.getQueryParameter = function getQueryParameter(
  *
  * @public
  * @function
- * @returns {Object} - The body of the request.
+ * @returns {Object|String} - The body of the request.
  */
 RunnableServiceRequest.prototype.getBody = function getBody() {
     return this.body;
@@ -137,6 +139,28 @@ RunnableServiceRequest.prototype.getBody = function getBody() {
  */
 RunnableServiceRequest.prototype.getIp = function getIp() {
     return this.ip;
+};
+
+/**
+ * Gets the credentials of the user.
+ *
+ * @public
+ * @function
+ * @returns {Object} - The user credentials.
+ */
+RunnableServiceRequest.prototype.getCredentials = function getCredentials() {
+    return this.credentials;
+};
+
+/**
+ * Gets the authorized user.
+ *
+ * @public
+ * @function
+ * @returns {String} - The authorized user.
+ */
+RunnableServiceRequest.prototype.getAuthorizedUser = function getAuthorizedUser() {
+    return this.authorizedUser;
 };
 
 module.exports = RunnableServiceRequest;

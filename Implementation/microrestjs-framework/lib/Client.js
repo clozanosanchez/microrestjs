@@ -16,6 +16,49 @@ var https = require('https');
 var ioHelper = require('./IOHelper');
 
 /**
+ * Credentials of the platform for SSL communications.
+ *
+ * @private
+ * @constant
+ */
+var platformCredentials = {
+    key: '',
+    certificate: ''
+};
+
+/**
+ * Adds the credentials of the platform for SSL communications.
+ *
+ * @public
+ * @static
+ * @function
+ * @param {Object} credentials - Credentials of the platform.
+ */
+module.exports.addCredentials = function addCredentials(credentials) {
+    if (checkTypes.not.object(credentials) || checkTypes.emptyObject(credentials) ||
+        checkTypes.not.string(credentials.key) || checkTypes.not.unemptyString(credentials.key) ||
+        checkTypes.not.string(credentials.certificate) || checkTypes.not.unemptyString(credentials.certificate)) {
+        throw new Error('The parameter credentials must be a valid credentials object.');
+    }
+
+    platformCredentials.key = credentials.key;
+    platformCredentials.certificate = credentials.certificate;
+};
+
+/**
+ * Checks whether the credentials of the platform are ready for SSL communications.
+ *
+ * @private
+ * @function
+ * @return {Boolean} - true, if the credentials are ready; false, otherwise.
+ */
+function _areCredentialsReady() {
+    return checkTypes.object(platformCredentials) && checkTypes.not.emptyObject(platformCredentials) &&
+           checkTypes.string(platformCredentials.key) && checkTypes.unemptyString(platformCredentials.key) &&
+           checkTypes.string(platformCredentials.certificate) && checkTypes.unemptyString(platformCredentials.certificate);
+}
+
+/**
  * Sends a HTTPS request
  *
  * @public
@@ -26,6 +69,11 @@ var ioHelper = require('./IOHelper');
  * @throws an Error if the responseCallback parameter is not a function.
  */
 module.exports.send = function send(request, responseCallback) {
+    if (!_areCredentialsReady()) {
+        setTimeout(send, 1000, request, responseCallback);
+        return;
+    }
+
     if (checkTypes.not.function(responseCallback)) {
         throw new Error('The parameter responseCallback must be a defined function');
     }
@@ -46,9 +94,10 @@ module.exports.send = function send(request, responseCallback) {
         headers: {
             'Content-Type': 'application/json'
         },
-        key: request.credentials.key,
-        cert: request.credentials.certificate,
-        ca: request.credentials.ca,
+        auth: request.auth,
+        key: platformCredentials.key,
+        cert: platformCredentials.certificate,
+        ca: request.serviceCertificate,
         rejectUnauthorized: request.rejectUnauthorized,
         checkServerIdentity: request.checkServerIdentity
     };

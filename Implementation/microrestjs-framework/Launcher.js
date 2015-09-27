@@ -22,6 +22,4 @@ process.on('SIGTERM', function _gracefulShutdown() {
     process.exit(0);
 });
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 microrest.run();

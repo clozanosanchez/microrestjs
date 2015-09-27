@@ -58,6 +58,7 @@ module.exports.check = function check(schema, object) {
     validator.addFormat('http-method', regExpr.httpMethod);
     validator.addFormat('url-parameter', regExpr.urlParameter);
     validator.addFormat('type-url-parameter', regExpr.typeUrlParameter);
+    validator.addFormat('security-scheme', regExpr.securityScheme);
     var valid = validator.validate(fullSchema, object);
 
     if (!valid) {

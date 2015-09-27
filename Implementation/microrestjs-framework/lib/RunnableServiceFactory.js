@@ -25,7 +25,7 @@ var callableServiceFactory = require('./CallableServiceFactory');
  * @function
  * @param {String} serviceName - Name of the service to be created.
  * @param {String} servicePath - Path that contains the service to be created.
- * @returns {Object|null} - The RunnableService instance, if it could be created; null, otherwise.
+ * @returns {RunnableService|null} - The RunnableService instance, if it could be created; null, otherwise.
  * @throws an Error if the serviceName parameter is an empty string.
  * @throws an Error if the servicePath parameter is an empty string.
  */
@@ -62,9 +62,9 @@ module.exports.createService = function createService(serviceName, servicePath) 
  *
  * @private
  * @function
- * @param {String} serviceContext - Context of the service to be instantiated
- * @param {String} serviceFunctionality - Functionality of the service to be instantiated.
- * @returns {Object} - The RunnableService instance
+ * @param {ServiceContext} serviceContext - Context of the service to be instantiated
+ * @param {Object} serviceFunctionality - Functionality of the service to be instantiated.
+ * @returns {RunnableService} - The RunnableService instance
  */
 function _instantiateService(serviceContext, serviceFunctionality) {
     var runnableService = require('./RunnableService').getInstance(serviceContext);
@@ -85,11 +85,14 @@ function _instantiateService(serviceContext, serviceFunctionality) {
         runnableService.onDestroyService = serviceFunctionality.onDestroyService;
     }
 
-    for (var operation in serviceContext.operations) {
-        if (checkTypes.not.function(serviceFunctionality[operation])) {
-            logger.warn('The operation %s of the service %s will be not loaded because its implementation has not been found', operation, serviceContext.info.name);
-        } else {
-            runnableService[operation] = serviceFunctionality[operation];
+    var operations = serviceContext.getOperations();
+    if (checkTypes.object(operations) && checkTypes.not.emptyObject(operations)) {
+        for (var operation in operations) {
+            if (checkTypes.not.function(serviceFunctionality[operation])) {
+                logger.warn('The operation %s of the service %s will be not loaded because its implementation has not been found', operation, serviceContext.getName());
+            } else {
+                runnableService[operation] = serviceFunctionality[operation];
+            }
         }
     }
 
@@ -101,7 +104,7 @@ function _instantiateService(serviceContext, serviceFunctionality) {
  *
  * @private
  * @function
- * @param {Object} runnableService - Service to be initialized
+ * @param {RunnableService} runnableService - Service to be initialized
  */
 function _initializeService(runnableService) {
     _registerCallableServices(runnableService);
@@ -113,12 +116,10 @@ function _initializeService(runnableService) {
  *
  * @private
  * @function
- * @param {Object} runnableService - RunnableService whose dependencies have to be registered.
+ * @param {RunnableService} runnableService - RunnableService whose dependencies have to be registered.
  */
 function _registerCallableServices(runnableService) {
-    var serviceContext = runnableService.getContext();
-    var dependencies = serviceContext.config.dependencies;
-
+    var dependencies = runnableService.getContext().getDependencies();
     if (checkTypes.not.object(dependencies) || checkTypes.emptyObject(dependencies)) {
         return;
     }

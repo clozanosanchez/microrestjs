@@ -1,3 +1,12 @@
+v0.2.0-beta
+===========
+  * Fixes several SSL bugs.
+  * Enables basic authentication and authorization.
+  * Includes the security aspects in the Microrestjs Service Description Specification.
+  * Improves the management of ServiceContext.
+  * Improves documentation.
+  * Fixes other minor bugs.
+
 v0.1.0-beta
 ===========
   * Better support for RunnableServices and CallableServices.

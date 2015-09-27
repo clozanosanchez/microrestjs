@@ -15,6 +15,7 @@ var express = require('express');
 var checkTypes = require('check-types');
 var logger = require('winston').loggers.get('Server');
 
+var authorizationManager = require('./helpers/authorization/AuthorizationManager');
 var runnableServiceCaller = require('./RunnableServiceCaller');
 
 /**
@@ -36,10 +37,9 @@ module.exports.getInstance = function getInstance() {
  */
 function Server() {
     //Initializes the internal state
-    this.servicesCredentials = {
-        keys: '',
-        certificates: '',
-        cas: []
+    this.credentials = {
+        key: '',
+        certificate: ''
     };
 
     this.app = express();
@@ -53,11 +53,32 @@ function Server() {
 }
 
 /**
+ * Adds the credentials to the server for SSL communication.
+ *
+ * NOTE: This function must be called before the server starts listening
+ *       if SSL capabilities are desired.
+ *
+ * @public
+ * @function
+ * @param {Object} credentials - Service credentials to be added.
+ */
+Server.prototype.addCredentials = function addCredentials(credentials) {
+    if (checkTypes.not.object(credentials) || checkTypes.emptyObject(credentials) ||
+        checkTypes.not.string(credentials.key) || checkTypes.not.unemptyString(credentials.key) ||
+        checkTypes.not.string(credentials.certificate) || checkTypes.not.unemptyString(credentials.certificate)) {
+        throw new Error('The parameter credentials must be a valid credentials object.');
+    }
+
+    this.credentials.key = credentials.key;
+    this.credentials.certificate = credentials.certificate;
+};
+
+/**
  * Listens HTTP requests from the specified port.
  *
  * @public
  * @function
- * @param {integer} port - Port to listen the received requests.
+ * @param {Integer} port - Port to listen the received requests.
  * @throws an Error if the port parameter is not a valid integer between 0 and 65535.
  */
 Server.prototype.listen = function listen(port) {
@@ -66,9 +87,8 @@ Server.prototype.listen = function listen(port) {
     }
 
     var serverOptions = {
-        key: this.servicesCredentials.keys,
-        cert: this.servicesCredentials.certificates,
-        ca: this.servicesCredentials.cas,
+        key: this.credentials.key,
+        cert: this.credentials.certificate,
         rejectUnauthorized: false,
         requestCert: true
     };
@@ -78,26 +98,11 @@ Server.prototype.listen = function listen(port) {
 };
 
 /**
- * Adds the service credentials to the server.
- *
- * NOTE: This function must be called before the server starts listening.
- *
- * @public
- * @function
- * @param {Object} credentials - Service credentials to be added.
- */
-Server.prototype.addServiceCredentialsToServer = function addServiceCredentialsToServer(credentials) {
-    this.servicesCredentials.keys = this.servicesCredentials.keys + '\n' + credentials.key;
-    this.servicesCredentials.certificates = this.servicesCredentials.certificates + '\n' + credentials.certificate;
-    this.servicesCredentials.cas.push(credentials.ca);
-};
-
-/**
  * Routes all the HTTP requests of the service.
  *
  * @public
  * @function
- * @param {Service} runnableService - Service to be routed.
+ * @param {RunnableService} runnableService - Service to be routed.
  * @throws an Error if the runnableService parameter is not a RunnableService object.
  */
 Server.prototype.route = function route(runnableService) {
@@ -124,7 +129,7 @@ Server.prototype.shutdown = function shutdown() {
         this.httpsServer.close();
     }
 
-    this.servicesCredentials = null;
+    this.credentials = null;
     this.app = null;
     this.httpsServer = null;
 };
@@ -134,18 +139,23 @@ Server.prototype.shutdown = function shutdown() {
  *
  * @private
  * @function
- * @param {Object} runnableService - RunnableService to be routed.
+ * @param {RunnableService} runnableService - RunnableService to be routed.
  * @returns {Object} - ExpressRouter with all the operations routed.
  */
 function _routeOperations(runnableService) {
     var router = express.Router();
 
-    var operations = runnableService.getContext().operations;
-    for (var operation in operations) {
-        var operationRequest = operations[operation].request;
-        var operationPath = operationRequest.path;
-        var operationMethod = operationRequest.method.toLowerCase();
-        router[operationMethod](operationPath, runnableServiceCaller.getOperationCall(runnableService, operation));
+    var operations = runnableService.getContext().getOperations();
+    if (checkTypes.object(operations) && checkTypes.not.emptyObject(operations)) {
+        for (var operation in operations) {
+            var operationRequest = operations[operation].request;
+            var operationPath = operationRequest.path;
+            var operationMethod = operationRequest.method.toLowerCase();
+
+            var authorizationCall = authorizationManager.getAuthorizationCall(runnableService, operation);
+
+            router[operationMethod](operationPath, authorizationCall, runnableServiceCaller.getOperationCall(runnableService, operation));
+        }
     }
 
     router.get('/', runnableServiceCaller.getOperationCall(runnableService, 'getServiceInformation'));

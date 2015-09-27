@@ -22,18 +22,20 @@ var RETRIEVE_ERROR = 'RETRIEVE_ERROR';
  * @public
  * @static
  * @function
- * @param {Object} callableService - CallableService from which its Service Information is desired.
+ * @param {CallableService} callableService - CallableService from which its Service Information is desired.
  * @param {retrieveCallback} retrieveServiceInformationCallback - Callback for delegating the response from retrieveServiceInformation operation.
- * @throws an Error if the callableService parameter is not a valid CallableService object.
- * @throws an Error if the retrieveServiceInformationCallback is not a valid callback function.
+ * @throws an Error if the retrieveServiceInformationCallback parameter is not a valid callback function.
  */
 module.exports.retrieveServiceInformation = function retrieveServiceInformation(callableService, retrieveServiceInformationCallback) {
-    if (checkTypes.not.object(callableService) || checkTypes.emptyObject(callableService)) {
-        throw new Error('The parameter callableService must be a CallableService object');
-    }
-
     if (checkTypes.not.function(retrieveServiceInformationCallback)) {
         throw new Error('The parameter retrieveServiceInformationCallback must be a defined function');
+    }
+
+    if (checkTypes.not.object(callableService) || checkTypes.emptyObject(callableService)) {
+        var retrieveError = new Error('The parameter callableService must be a CallableService object');
+        retrieveError.code = RETRIEVE_ERROR;
+        retrieveServiceInformationCallback(retrieveError);
+        return;
     }
 
     if (checkTypes.not.object(callableService.realService) || checkTypes.emptyObject(callableService.realService) ||
@@ -53,7 +55,7 @@ module.exports.retrieveServiceInformation = function retrieveServiceInformation(
  *
  * @private
  * @function
- * @param {Object} callableService - CallableService from which its Service Information is desired.
+ * @param {CallableService} callableService - CallableService from which its Service Information is desired.
  * @param {retrieveCallback} retrieveServiceInformationCallback - Callback for delegating the response from the retriveServiceInformation operation.
  */
 function _retrieveServiceInformation(callableService, retrieveServiceInformationCallback) {
@@ -64,11 +66,6 @@ function _retrieveServiceInformation(callableService, retrieveServiceInformation
         port: callableService.realService.port,
         path: completePath,
         method: 'GET',
-        credentials: {
-            key: callableService.credentials.key,
-            certificate: callableService.credentials.certificate,
-            ca: callableService.credentials.ca
-        },
         rejectUnauthorized: false,
         checkServerIdentity: function _checkServerIdentity(host, cert) {
             //The host of the server is not checked.

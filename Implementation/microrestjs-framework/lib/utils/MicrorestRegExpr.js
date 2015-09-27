@@ -23,6 +23,7 @@ var DIRECTORY_PATTERN = '^directory$' + '|' + DIRECTORY_URL_PATTERN + '|' + ONLY
 var HTTP_METHOD_PATTERN = '^GET$|^HEAD$|^POST$|^PUT$|^DELETE$|^PATCH$';
 var IN_URL_PARAMETER = '^query$|^path$';
 var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
+var SECURITY_SCHEME_PATTERN = '^none$|^basic$';
 
 /**
  * Regular Expressions to check:
@@ -35,6 +36,7 @@ var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
  *   - Directories expressions
  *   - HTTP Methods
  *   - URL Parameters
+ *   - Security Scheme
  *
  * @public
  * @static
@@ -51,5 +53,6 @@ module.exports = {
     directory: DIRECTORY_PATTERN,
     httpMethod: HTTP_METHOD_PATTERN,
     inUrlParameter: IN_URL_PARAMETER,
-    typeUrlParameter: TYPE_URL_PARAMETER
+    typeUrlParameter: TYPE_URL_PARAMETER,
+    securityScheme: SECURITY_SCHEME_PATTERN
 };
