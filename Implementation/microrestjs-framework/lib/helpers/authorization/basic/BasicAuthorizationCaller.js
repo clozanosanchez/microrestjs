@@ -12,6 +12,7 @@
 
 var checkTypes = require('check-types');
 var basicAuthParser = require('basic-auth-parser');
+var logger = require('winston').loggers.get('BasicAuthorizationCaller');
 
 var basicAuthenticationServiceProxy = require('./BasicAuthenticationServiceProxy');
 var basicAuthorizationServiceProxy = require('./BasicAuthorizationServiceProxy');
@@ -47,8 +48,11 @@ module.exports.getAuthorizationCall = function gatAuthorizationCall(service, ope
 
         basicAuthenticationServiceProxy.authenticate(authorizationObject.username, authorizationObject.password, service, function _authenticationCallback(authenticationError, authenticationResponse) {
             if (checkTypes.assigned(authenticationError)) {
-                expressResponse.set('WWW-Authenticate', 'Basic realm="' + service.getIdentificationName() + '/' + operation + '"');
-                expressResponse.sendStatus(401);
+                var authenticationErrorMessage = 'The authentication failed because -> ' + authenticationError.message;
+                logger.warn(authenticationErrorMessage);
+
+                expressResponse.status(500);
+                expressResponse.send('SERVER ERROR: ' + authenticationErrorMessage);
                 return;
             }
 
@@ -67,8 +71,11 @@ module.exports.getAuthorizationCall = function gatAuthorizationCall(service, ope
 
             basicAuthorizationServiceProxy.authorize(userId, service, operation, function _authorizationCallback(authorizationError, authorizationResponse) {
                 if (checkTypes.assigned(authorizationError)) {
-                    expressResponse.set('WWW-Authenticate', 'Basic realm="' + service.getIdentificationName() + '/' + operation + '"');
-                    expressResponse.sendStatus(401);
+                    var authorizationErrorMessage = 'The authorization failed because ->' + authorizationError.message;
+                    logger.warn(authorizationErrorMessage);
+
+                    expressResponse.status(500);
+                    expressResponse.send('SERVER ERROR: ' + authorizationErrorMessage);
                     return;
                 }
 
