@@ -58,15 +58,14 @@
 			"request": {
 				"path": <string: URL Path>,
 				"method": <string: HTTP Method>,
-				"parameters": [
-					{
-						"name": <string>,
+				"parameters": {
+					"<parameterName>": {
 						"in": <string: "query" or "path">,
 						"description": <string>, 
 						"required": <boolean>,
 						"type": <string>,
 					}
-				],
+				},
 
 				"body": {
 					"<objectName>": {

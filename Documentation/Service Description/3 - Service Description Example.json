@@ -40,15 +40,14 @@
 			"request": { 
 				"path": "/greet/:username",
 				"method": "GET",
-				"parameters": [
-					{
-						"name": "username",
+				"parameters": {
+					"username": {
 						"in": "path",
 						"description": "Name of the user that whishes a greet",
 						"required": true,
 						"type": "string"
 					}
-				]
+				}
 			},
 
 			"responses": {

@@ -1,3 +1,16 @@
+v0.3.0-beta
+===========
+  * Updates parameters aspects in the Microrestjs Service Description Specification.
+  * Enables the query parameters.
+  * Enables automatic checks for parameters according to the service description.
+  * Removes the partial Files support.
+  * Removes the partial Cookies support.
+  * Improves the RunnableServiceRequests with new properties.
+  * Improves the CallableServiceResponses with new properties.
+  * Improves the processing and sending of CallableServices requests.
+  * Enables error 405 Method Not Allowed.
+  * Fixes other minor bugs and programming problems.
+
 v0.2.0-beta
 ===========
   * Fixes several SSL bugs.

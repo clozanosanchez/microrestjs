@@ -159,99 +159,190 @@ function _executeOperation(service, request, responseCallback) {
         return;
     }
 
-    var realAuthorization = undefined;
-    if (checkTypes.object(request.credentials) && checkTypes.not.emptyObject(request.credentials)) {
-        var realOperationSecurity = realServiceContext.getSecurity(request.operation);
-        if (checkTypes.object(realOperationSecurity) && checkTypes.not.emptyObject(realOperationSecurity)) {
-            if (realOperationSecurity.scheme === 'basic') {
-                realAuthorization = request.credentials.username + ':' + request.credentials.password;
-            }
-        }
-    }
-
-    var realOperation = realServiceContext.getOperation(request.operation);
-    if (checkTypes.not.object(realOperation) || checkTypes.emptyObject(realOperation)) {
-        var executeError3 = new Error('The operation ' + request.operation + ' cannot be executed because it does not defined in the retrieved service information.');
-        executeError3.code = EXECUTE_ERROR;
-        responseCallback(executeError3);
-        return;
-    }
-
-    var realOperationRequest = realOperation.request;
-    if (checkTypes.not.object(realOperationRequest) || checkTypes.emptyObject(realOperationRequest)) {
-        var serviceInformationError2 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: request field is missing.');
+    var realName = realServiceContext.getName();
+    if (checkTypes.not.string(realName) || checkTypes.not.unemptyString(realName)) {
+        var serviceInformationError2 = new Error('The name data is not defined in the retrieved service information.');
         serviceInformationError2.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError2);
         return;
     }
 
-    var realOperationMethod = realOperationRequest.method;
-    if (checkTypes.not.string(realOperationMethod) || checkTypes.not.unemptyString(realOperationMethod)) {
-        var serviceInformationError3 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: method field is missing.');
+    var realApi = realServiceContext.getApi();
+    if (checkTypes.not.integer(realApi) || checkTypes.not.positive(realApi)) {
+        var serviceInformationError3 = new Error('The API data is not defined in the retrieved service information.');
         serviceInformationError3.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError3);
         return;
     }
 
-    var realName = realServiceContext.getName();
-    if (checkTypes.not.string(realName) || checkTypes.not.unemptyString(realName)) {
-        var serviceInformationError4 = new Error('The name data is not defined in the retrieved service information.');
+    var realOperation = realServiceContext.getOperation(request.operation);
+    if (checkTypes.not.object(realOperation) || checkTypes.emptyObject(realOperation)) {
+        var executeError1 = new Error('The operation ' + request.operation + ' cannot be executed because it does not defined in the retrieved service information.');
+        executeError1.code = EXECUTE_ERROR;
+        responseCallback(executeError1);
+        return;
+    }
+
+    var realOperationSecurity = realServiceContext.getSecurity(request.operation);
+    if (checkTypes.not.object(realOperationSecurity) || checkTypes.emptyObject(realOperationSecurity)) {
+        var serviceInformationError4 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: security field is missing.');
         serviceInformationError4.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError4);
         return;
     }
 
-    var realApi = realServiceContext.getApi();
-    if (checkTypes.not.integer(realApi) || checkTypes.not.positive(realApi)) {
-        var serviceInformationError5 = new Error('The API data is not defined in the retrieved service information.');
+    var authorization = undefined;
+    if (realOperationSecurity.scheme !== 'none') {
+        if (checkTypes.not.object(request.credentials) || checkTypes.emptyObject(request.credentials)) {
+            var executeError2 = new Error('The operation ' + request.operation + ' cannot be executed because the credentials have not been defined for authorization.');
+            executeError2.code = EXECUTE_ERROR;
+            responseCallback(executeError2);
+            return;
+        }
+
+        if (realOperationSecurity.scheme === 'basic') {
+            authorization = request.credentials.username + ':' + request.credentials.password;
+        } else {
+            var executeError3 = new Error('The operation ' + request.operation + ' cannot be executed because ' + realOperationSecurity.scheme + ' authorization scheme is not supported by the current Microrestjs version.');
+            executeError3.code = EXECUTE_ERROR;
+            responseCallback(executeError3);
+            return;
+        }
+    }
+
+    var realOperationRequest = realOperation.request;
+    if (checkTypes.not.object(realOperationRequest) || checkTypes.emptyObject(realOperationRequest)) {
+        var serviceInformationError5 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: request field is missing.');
         serviceInformationError5.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError5);
         return;
     }
 
-    var realServicePath = realName + '/v' + realApi;
-    var realOperationPath = realOperationRequest.path;
-
-    var realParameters = realOperationRequest.parameters;
-    if (checkTypes.array(realParameters) && checkTypes.not.emptyArray(realParameters)) {
-        for (var i = 0; i < realParameters.length; i++) {
-            var paramName = realParameters[i].name;
-            var paramIn = realParameters[i].in;
-
-            var realParamValue = request.parameters[paramName];
-
-            if (paramIn === 'path' && checkTypes.assigned(realParamValue)) {
-                realOperationPath = realOperationPath.replace(':' + paramName, realParamValue);
-            }
-
-            //TODO: Complete the query parameters.
-        }
-    }
-
-    var realCompletePath = '/' + realServicePath + realOperationPath;
-
-    var realLocation = service.realService.location;
-    if (checkTypes.not.string(realLocation) || checkTypes.not.unemptyString(realLocation)) {
-        var serviceInformationError6 = new Error('The location is not defined in the retrieved service information.');
+    var realOperationMethod = realOperationRequest.method;
+    if (checkTypes.not.string(realOperationMethod) || checkTypes.not.unemptyString(realOperationMethod)) {
+        var serviceInformationError6 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: method field is missing.');
         serviceInformationError6.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError6);
         return;
     }
 
-    var realPort = service.realService.port;
-    if (checkTypes.not.integer(realPort) || checkTypes.not.positive(realPort)) {
-        var serviceInformationError7 = new Error('The port is not defined in the retrieved service information.');
+    var realOperationPath = realOperationRequest.path;
+    if (checkTypes.not.string(realOperationPath) || checkTypes.not.unemptyString(realOperationPath)) {
+        var serviceInformationError7 = new Error('The operation ' + request.operation + ' is not well defined in the retrieved service information: path field is missing.');
         serviceInformationError7.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError7);
         return;
     }
 
-    var realServiceCertificate = service.realService.certificate;
-    if (checkTypes.not.string(realServiceCertificate) || checkTypes.not.unemptyString(realServiceCertificate)) {
-        var serviceInformationError8 = new Error('The certificate is not defined in the retrieved service information.');
+    var realQueryString = '';
+    var realParameters = realOperationRequest.parameters;
+    if (checkTypes.object(realParameters) && checkTypes.not.emptyObject(realParameters)) {
+        var parametersNames = Object.keys(realParameters);
+        for (var i = 0; i < parametersNames.length; i++) {
+            var paramName = parametersNames[i];
+            var paramIn = realParameters[paramName].in;
+            var paramType = realParameters[paramName].type;
+            var paramRequired = realParameters[paramName].required;
+
+            var realParamValue = request.parameters[paramName];
+            if (paramRequired === true && checkTypes.not.assigned(realParamValue)) {
+                var executeError4 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' is required.');
+                executeError4.code = EXECUTE_ERROR;
+                responseCallback(executeError4);
+                return;
+            }
+
+            if (paramType !== 'string' && paramType !== 'integer' && paramType !== 'number' && paramType !== 'boolean') {
+                var executeError5 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' has not a type supported by the current Microrestjs version.');
+                executeError5.code = EXECUTE_ERROR;
+                responseCallback(executeError5);
+                return;
+            }
+
+            if (paramType === 'string' && checkTypes.not.string(realParamValue)) {
+                var executeError6 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' has to be a string.');
+                executeError6.code = EXECUTE_ERROR;
+                responseCallback(executeError6);
+                return;
+            } else if (paramType === 'integer' && checkTypes.not.integer(realParamValue)) {
+                var executeError7 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' has to be an integer.');
+                executeError7.code = EXECUTE_ERROR;
+                responseCallback(executeError7);
+                return;
+            } else if (paramType === 'number' && checkTypes.not.number(realParamValue)) {
+                var executeError8 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' has to be a number.');
+                executeError8.code = EXECUTE_ERROR;
+                responseCallback(executeError8);
+                return;
+            } else if (paramType === 'boolean' && checkTypes.not.boolean(realParamValue)) {
+                var executeError9 = new Error('The operation ' + request.operation + ' cannot be executed because the parameter ' + paramName + ' has to be a boolean.');
+                executeError9.code = EXECUTE_ERROR;
+                responseCallback(executeError9);
+                return;
+            }
+
+            if (paramIn === 'path') {
+                realOperationPath = realOperationPath.replace(':' + paramName, realParamValue);
+            } else if (paramIn === 'query') {
+                if (checkTypes.not.unemptyString(realQueryString)) {
+                    realQueryString = '?' + paramName + '=' + realParamValue;
+                } else {
+                    realQueryString = realQueryString + '&' + paramName + '=' + realParamValue;
+                }
+            } else {
+                var executeError10 = new Error('The operation ' + request.operation + ' cannot be executed because ' + paramIn + ' parameters are not supported by the current Microrestjs version.');
+                executeError10.code = EXECUTE_ERROR;
+                responseCallback(executeError10);
+                return;
+            }
+        }
+    }
+
+    var realServicePath = realName + '/v' + realApi;
+    var realCompletePath = '/' + realServicePath + realOperationPath + realQueryString;
+
+    var realLocation = service.realService.location;
+    if (checkTypes.not.string(realLocation) || checkTypes.not.unemptyString(realLocation)) {
+        var serviceInformationError8 = new Error('The location is not defined in the retrieved service information.');
         serviceInformationError8.code = SERVICE_INFORMATION_ERROR;
         responseCallback(serviceInformationError8);
         return;
+    }
+
+    var realPort = service.realService.port;
+    if (checkTypes.not.integer(realPort) || checkTypes.not.positive(realPort) || realPort > 65535) {
+        var serviceInformationError9 = new Error('The port is not well defined in the retrieved service information.');
+        serviceInformationError9.code = SERVICE_INFORMATION_ERROR;
+        responseCallback(serviceInformationError9);
+        return;
+    }
+
+    var realServiceCertificate = service.realService.certificate;
+    if (checkTypes.not.string(realServiceCertificate) || checkTypes.not.unemptyString(realServiceCertificate)) {
+        var serviceInformationError10 = new Error('The certificate is not defined in the retrieved service information.');
+        serviceInformationError10.code = SERVICE_INFORMATION_ERROR;
+        responseCallback(serviceInformationError10);
+        return;
+    }
+
+    var headers = undefined;
+    var body = undefined;
+    if (checkTypes.assigned(request.body)) {
+        if (checkTypes.not.object(request.body)) {
+            var executeError11 = new Error('The operation ' + request.operation + ' cannot be executed because the request body is not an object.');
+            executeError11.code = EXECUTE_ERROR;
+            responseCallback(executeError11);
+            return;
+        }
+
+        var jsonBody = JSON.stringify(request.body);
+
+        headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Content-Length': Buffer.byteLength(jsonBody, 'utf8')
+        };
+
+        body = new Buffer(jsonBody, 'utf8');
     }
 
     var completeRequest = {
@@ -259,8 +350,9 @@ function _executeOperation(service, request, responseCallback) {
         port: realPort,
         path: realCompletePath,
         method: realOperationMethod,
-        auth: realAuthorization,
-        body: request.body,
+        auth: authorization,
+        headers: headers,
+        body: body,
         serviceCertificate: realServiceCertificate,
         rejectUnauthorized: true,
         checkServerIdentity: function _checkServerIdentity(host, cert) {

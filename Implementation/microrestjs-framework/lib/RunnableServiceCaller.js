@@ -40,3 +40,113 @@ module.exports.getOperationCall = function getOperationCall(service, operation) 
         });
     };
 };
+
+/**
+ * Gets the function to check if the request satisfies the operation requirements.
+ *
+ * @public
+ * @static
+ * @function
+ * @param {RunnableService} service - Service to be checked.
+ * @param {String} operation - Operation to be checked.
+ * @returns {Function} - Function to check the request.
+ */
+module.exports.getCheckOperationRequestCall = function getCheckOperationRequestCall(service, operation) {
+    return function _checkOperationRequestCall(expressRequest, expressResponse, next) {
+        var operationRequestInfo = service.getContext().getOperation(operation);
+        if (checkTypes.emptyObject(operationRequestInfo)) {
+            expressResponse.status(500);
+            expressResponse.send('SERVER ERROR: The invoked service operation could not be checked automatically.');
+            return;
+        }
+
+        var parametersOperation = operationRequestInfo.request.parameters;
+        if (checkTypes.object(parametersOperation) && checkTypes.not.emptyObject(parametersOperation)) {
+            var parametersNames = Object.keys(parametersOperation);
+            for (var i = 0; i < parametersNames.length; i++) {
+                var paramName = parametersNames[i];
+                var paramRequired = parametersOperation[paramName].required;
+
+                if (paramRequired === true) {
+                    var paramType = parametersOperation[paramName].type;
+                    var paramIn = parametersOperation[paramName].in;
+
+                    var pathParamValue = expressRequest.params[paramName];
+                    var queryParamValue = expressRequest.query[paramName];
+
+                    if (paramIn === 'path' && checkTypes.assigned(queryParamValue)) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has been used inappropriately as query string.');
+                        return;
+                    } else if (paramIn === 'query' && checkTypes.assigned(pathParamValue)) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has been used inappropriately as path parameter.');
+                        return;
+                    }
+
+                    var paramValue = pathParamValue || queryParamValue;
+
+                    if (checkTypes.not.assigned(paramValue) || checkTypes.not.unemptyString(paramValue)) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' is required.');
+                        return;
+                    }
+
+                    if (paramType === 'string' && checkTypes.not.string(paramValue)) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has to be a string.');
+                        return;
+                    } else if (paramType === 'integer' && checkTypes.not.integer(Number(paramValue))) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has to be a integer.');
+                        return;
+                    } else if (paramType === 'number' && checkTypes.not.number(Number(paramValue))) {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has to be a number.');
+                        return;
+                    } else if (paramType === 'boolean' && paramValue !== 'true' && paramValue !== 'false') {
+                        expressResponse.status(400);
+                        expressResponse.send('The parameter ' + paramName + ' has to be a boolean.');
+                        return;
+                    }
+
+                    if (paramType === 'integer' || paramType === 'number') {
+                        if (paramIn === 'path') {
+                            expressRequest.params[paramName] = Number(paramValue);
+                        } else if (paramIn === 'query') {
+                            expressRequest.query[paramName] = Number(paramValue);
+                        }
+                    } else if (paramType === 'boolean') {
+                        if (paramIn === 'path' && paramValue === 'true') {
+                            expressRequest.params[paramName] = true;
+                        } else if (paramIn === 'path' && paramValue === 'false') {
+                            expressRequest.params[paramName] = false;
+                        } else if (paramIn === 'query' && paramValue === 'true') {
+                            expressRequest.query[paramName] = true;
+                        } else if (paramIn === 'query' && paramValue === 'false') {
+                            expressRequest.query[paramName] = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        next();
+    };
+};
+
+/**
+ * Gets the function to send 405 Method Not Allowed.
+ *
+ * @public
+ * @static
+ * @function
+ * @param {String[]} methodsAllowed - Methods that are allowed.
+ * @returns {Function} - Function to send 405 Method Not Allowed.
+ */
+module.exports.getMethodNotAllowedCall = function getMethodNotAllowedCall(methodsAllowed) {
+    return function _methodNotAllowedCall(expressRequest, expressResponse) {
+        expressResponse.set('Allow', methodsAllowed.join(', '));
+        expressResponse.sendStatus(405);
+    };
+};

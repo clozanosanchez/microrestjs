@@ -11,56 +11,104 @@
  * @module
  */
 
-var checkTypes = require('check-types');
-
 /**
  * RunnableServiceRequest allows storing the data that has been
  * received from a client to execute a service operation.
  * In particular:
- *   - Cookies
+ *   - Headers
  *   - Path parameters
  *   - Query parameters
+ *   - The hostname of the request
+ *   - The subdomains of the request
+ *   - The original url of the request
+ *   - Remote IP Address of the request
+ *   - Remote IP Addresses specified in X-Forwarded-For header
+ *   - XHR = XMLHttpRequest request
  *   - Body
- *   - Remote IP Address
+ *   - Credentials
+ *   - Authorized user
  *
  * @class
  */
 function RunnableServiceRequest() {
-    this.cookies = {};
+    this.headers = {};
     this.pathParameters = {};
     this.queryParameters = {};
+    this.hostname = '';
+    this.subdomains = [];
+    this.originalUrl = '';
+    this.ip = '';
+    this.ips = [];
+    this.xhr = undefined;
     this.body = {};
-    this.ip = undefined;
-    this.credentials = undefined;
-    this.authorizedUser = undefined;
+    this.credentials = {};
+    this.authorizedUser = '';
 }
 
 /**
- * Gets all the cookies of the request.
+ * Gets all the headers of the request.
  *
  * @public
  * @function
- * @returns {Object} - All the cookies of the request.
+ * @returns {Object} - All the headers of the request.
  */
-RunnableServiceRequest.prototype.getCookies = function getCookies() {
-    return this.cookies;
+RunnableServiceRequest.prototype.getHeaders = function getHeaders() {
+    return this.headers;
 };
 
 /**
- * Gets the value of a specific cookie if was included in the request.
+ * Gets the value of a specific header of the request.
  *
  * @public
  * @function
- * @param {String} cookieName - The name of the cookie to be retrieved.
- * @returns {String|Null} - The value of the cookie, if exists; null, otherwise.
+ * @param {String} headerName - The name of the header to be retrieved.
+ * @returns {String|Undefined} - The value of the header, if exists; undefined, otherwise.
  */
-RunnableServiceRequest.prototype.getCookie = function getCookie(cookieName) {
-    var cookieValue = this.cookies[cookieName];
-    if (checkTypes.not.assigned(cookieValue)) {
-        return null;
+RunnableServiceRequest.prototype.getHeader = function getHeader(headerName) {
+    switch (headerName.toLowerCase()) {
+        case 'referer':
+        case 'referrer':
+            return this.headers.referrer || this.headers.referer;
+        default:
+            return this.headers[headerName.toLowerCase()];
+    }
+};
+
+/**
+ * Gets all the parameters of the request.
+ *
+ * @public
+ * @function
+ * @returns {Object} - All the parameters of the request.
+ */
+RunnableServiceRequest.prototype.getParameters = function getParameters() {
+    var parameters = {};
+
+    var pathParametersNames = Object.keys(this.pathParameters);
+    for (var i = 0; i < pathParametersNames.length; i++) {
+        var pathParameter = pathParametersNames[i];
+        parameters[pathParameter] = this.pathParameters[pathParameter];
     }
 
-    return cookieValue;
+    var queryParametersNames = Object.keys(this.queryParameters);
+    for (var j = 0; j < queryParametersNames.length; j++) {
+        var queryParameter = queryParametersNames[j];
+        parameters[queryParameter] = this.queryParameters[queryParameter];
+    }
+
+    return parameters;
+};
+
+/**
+ * Gets the value of a specific parameter if was included in the request.
+ *
+ * @public
+ * @function
+ * @param {String} parameterName - The name of the parameter to be retrieved.
+ * @returns {String|Undefined} - The value of the parameter, if exists; undefined, otherwise.
+ */
+RunnableServiceRequest.prototype.getParameter = function getParameter(parameterName) {
+    return this.pathParameters[parameterName] || this.queryParameters[parameterName];
 };
 
 /**
@@ -80,15 +128,10 @@ RunnableServiceRequest.prototype.getPathParameters = function getPathParameters(
  * @public
  * @function
  * @param {String} parameterName - The name of the path parameter to be retrieved.
- * @returns {String|Null} - The value of the path parameter, if exists; null, otherwise.
+ * @returns {String|Undefined} - The value of the path parameter, if exists; undefined, otherwise.
  */
 RunnableServiceRequest.prototype.getPathParameter = function getPathParameter(parameterName) {
-    var parameterValue = this.pathParameters[parameterName];
-    if (checkTypes.not.assigned(parameterValue)) {
-        return null;
-    }
-
-    return parameterValue;
+    return this.pathParameters[parameterName];
 };
 
 /**
@@ -108,26 +151,43 @@ RunnableServiceRequest.prototype.getQueryParameters = function getQueryParameter
  * @public
  * @function
  * @param {String} parameterName - The name of the query parameter to be retrieved.
- * @returns {String|Null} - The value of the query parameter, if exists; null, otherwise.
+ * @returns {String|Undefined} - The value of the query parameter, if exists; undefined, otherwise.
  */
 RunnableServiceRequest.prototype.getQueryParameter = function getQueryParameter(parameterName) {
-    var parameterValue = this.queryParameters[parameterName];
-    if (checkTypes.not.assigned(parameterValue)) {
-        return null;
-    }
-
-    return parameterValue;
+    return this.queryParameters[parameterName];
 };
 
 /**
- * Gets the body of the request.
+ * Gets the hostname of the request.
  *
  * @public
  * @function
- * @returns {Object|String} - The body of the request.
+ * @returns {String} - The hostname of the request.
  */
-RunnableServiceRequest.prototype.getBody = function getBody() {
-    return this.body;
+RunnableServiceRequest.prototype.getHostname = function getHostname() {
+    return this.hostname;
+};
+
+/**
+ * Gets the subdomains of the request.
+ *
+ * @public
+ * @function
+ * @returns {String[]} - The subdomains of the request.
+ */
+RunnableServiceRequest.prototype.getSubdomains = function getSubdomains() {
+    return this.subdomains;
+};
+
+/**
+ * Gets the original URL of the request.
+ *
+ * @public
+ * @function
+ * @returns {String} - The original URL of the request.
+ */
+RunnableServiceRequest.prototype.getOriginalUrl = function getOriginalUrl() {
+    return this.originalUrl;
 };
 
 /**
@@ -139,6 +199,39 @@ RunnableServiceRequest.prototype.getBody = function getBody() {
  */
 RunnableServiceRequest.prototype.getIp = function getIp() {
     return this.ip;
+};
+
+/**
+ * Gets the remote IP addresses of the request specified in X-Forwarded-For header.
+ *
+ * @public
+ * @function
+ * @returns {String[]} - The remote IP addresses of the request.
+ */
+RunnableServiceRequest.prototype.getIps = function getIps() {
+    return this.ips;
+};
+
+/**
+ * Gets whether the request has been sent using XMLHttpRequest.
+ *
+ * @public
+ * @function
+ * @returns {Boolean} - true, if the request’s “X-Requested-With” header field is “XMLHttpRequest”; false, otherwise.
+ */
+RunnableServiceRequest.prototype.getXhr = function getXhr() {
+    return this.xhr;
+};
+
+/**
+ * Gets the body of the request.
+ *
+ * @public
+ * @function
+ * @returns {Object|String} - The body of the request.
+ */
+RunnableServiceRequest.prototype.getBody = function getBody() {
+    return this.body;
 };
 
 /**

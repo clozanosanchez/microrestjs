@@ -17,7 +17,6 @@ var AbstractResponse = require('./AbstractResponse');
  * CallableServiceResponse allows storing data of a HTTPS response that
  * was received from a callable service. In particular:
  *   - Status code (AbstractResponse)
- *   - Cookies (AbstractResponse)
  *   - Body (AbstractResponse)
  *   - Status message
  *
@@ -25,11 +24,41 @@ var AbstractResponse = require('./AbstractResponse');
  */
 function CallableServiceResponse() {
     AbstractResponse.call(this);
+    this.headers = {};
     this.statusMessage = undefined;
 }
 
 CallableServiceResponse.prototype = Object.create(AbstractResponse.prototype);
 CallableServiceResponse.prototype.constructor = CallableServiceResponse;
+
+/**
+ * Gets all the headers of the response.
+ *
+ * @public
+ * @function
+ * @returns {Object} - All the headers of the response.
+ */
+CallableServiceResponse.prototype.getHeaders = function getHeaders() {
+    return this.headers;
+};
+
+/**
+ * Gets the value of a specific header of the response.
+ *
+ * @public
+ * @function
+ * @param {String} headerName - The name of the header to be retrieved.
+ * @returns {String|Undefined} - The value of the header, if exists; undefined, otherwise.
+ */
+CallableServiceResponse.prototype.getHeader = function getHeader(headerName) {
+    switch (headerName.toLowerCase()) {
+        case 'referer':
+        case 'referrer':
+            return this.headers.referrer || this.headers.referer;
+        default:
+            return this.headers[headerName.toLowerCase()];
+    }
+};
 
 /**
  * Gets the status message of the response.

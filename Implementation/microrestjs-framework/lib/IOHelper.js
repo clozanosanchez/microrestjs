@@ -21,7 +21,6 @@
  */
 
 var checkTypes = require('check-types');
-var cookieParser = require('cookie-parser');
 
 var RunnableServiceRequest = require('./RunnableServiceRequest');
 var RunnableServiceResponse = require('./RunnableServiceResponse');
@@ -46,13 +45,18 @@ module.exports.convertExpressRequestToRunnableServiceRequest = function convertE
 
     var request = new RunnableServiceRequest();
 
-    request.cookies = expressRequest.cookies;
+    request.headers = expressRequest.headers;
     request.pathParameters = expressRequest.params;
     request.queryParameters = expressRequest.query;
-    request.body = expressRequest.body;
-    request.ip = expressRequest.ip;
-    request.credentials = expressRequest.credentials;
-    request.authorizedUser = expressRequest.authorizedUser;
+    request.hostname = expressRequest.hostname || '';
+    request.subdomains = expressRequest.subdomains || [];
+    request.originalUrl = expressRequest.originalUrl || '';
+    request.ip = expressRequest.ip || '';
+    request.ips = expressRequest.ips || [];
+    request.xhr = expressRequest.xhr || false;
+    request.body = expressRequest.body || {};
+    request.credentials = expressRequest.credentials || {};
+    request.authorizedUser = expressRequest.authorizedUser || '';
 
     return request;
 };
@@ -101,37 +105,12 @@ module.exports.sendRunnableServiceResponseAsExpressResponse = function sendRunna
         var sendingError = new Error(errorMessage);
         sendingError.code = 'RESPONSE_ERROR';
         return sendingError;
-    } else {
-        expressResponse.status(status);
     }
-
-    var cookies = runnableServiceResponse.getCookies();
-    for (var cookieName in cookies) {
-        var cookie = cookies[cookieName];
-        if (checkTypes.object(cookie) && checkTypes.not.emptyObject(cookie) && checkTypes.assigned(cookie.value)) {
-            if (checkTypes.object(cookie.options) && checkTypes.not.emptyObject(cookie.options)) {
-                var options = cookie.options;
-                options.domain = undefined;
-                options.path = undefined;
-                options.secure = true;
-                expressResponse.cookie(cookieName, cookie.value, options);
-            } else {
-                expressResponse.cookie(cookieName, cookie.value);
-            }
-        }
-    }
-
-    var files = runnableServiceResponse.getFiles();
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        if (checkTypes.string(file) && checkTypes.unemptyString(file)) {
-            expressResponse.attachment(file);
-        }
-    }
+    expressResponse.status(status);
 
     var body = runnableServiceResponse.getBody();
     if (checkTypes.assigned(body)) {
-        expressResponse.send(body);
+        expressResponse.json(body);
     } else {
         expressResponse.end();
     }
@@ -147,9 +126,11 @@ module.exports.sendRunnableServiceResponseAsExpressResponse = function sendRunna
  * @static
  * @function
  * @param {Object} httpResponse - HTTPResponse to be converted.
- * @param {Object} body - Body of the httpResponse
+ * @param {String} body - Body of the httpResponse
  * @returns {CallableServiceResponse} - Equivalent CallableServiceResponse.
  * @throws an Error if the httpResponse parameter is not a valid HTTPResponse object.
+ * @throws an Error if the body parameter is not a string.
+ * @throws an Error if the body is not a JSON and, therefore, it cannot be parsed to an object.
  */
 module.exports.convertHttpResponseToCallableServiceResponse = function convertHttpResponseToCallableServiceResponse(httpResponse, body) {
     if (checkTypes.not.object(httpResponse) || checkTypes.emptyObject(httpResponse)) {
@@ -157,19 +138,20 @@ module.exports.convertHttpResponseToCallableServiceResponse = function convertHt
         throw new Error('The parameter httpResponse must be a non-empty object.');
     }
 
+    if (checkTypes.not.string(body)) {
+       throw new Error('The parameter body must be a string.');
+    }
+
     var response = new CallableServiceResponse();
 
     response.status = httpResponse.statusCode;
     response.statusMessage = httpResponse.statusMessage;
-    var cookies = httpResponse.headers.cookie;
-    if (checkTypes.string(cookies) && checkTypes.unemptyString(cookies)) {
-        response.cookies = cookieParser.JSONCookies(cookies);
-    }
+    response.headers = httpResponse.headers || {};
 
-    try {
+    if (checkTypes.not.unemptyString(body)) {
+        response.body = {};
+    } else {
         response.body = JSON.parse(body);
-    } catch (err) {
-        response.body = body;
     }
 
     return response;

@@ -147,18 +147,38 @@ function _routeOperations(runnableService) {
 
     var operations = runnableService.getContext().getOperations();
     if (checkTypes.object(operations) && checkTypes.not.emptyObject(operations)) {
-        for (var operation in operations) {
+        var routedPaths = {};
+        var operationsNames = Object.keys(operations);
+        for (var i = 0; i < operationsNames.length; i++) {
+            var operation = operationsNames[i];
             var operationRequest = operations[operation].request;
             var operationPath = operationRequest.path;
             var operationMethod = operationRequest.method.toLowerCase();
 
-            var authorizationCall = authorizationManager.getAuthorizationCall(runnableService, operation);
+            var routedMethods = routedPaths[operationPath] || [];
+            if (routedMethods.indexOf(operationRequest.method) > -1) {
+                logger.warn('The operation %s could not be routed because the method %s has been already used for the path %s in other operation.', operation, operationRequest.method, operationPath);
+            } else {
+                var checkOperationRequestCall = runnableServiceCaller.getCheckOperationRequestCall(runnableService, operation);
+                var authorizationCall = authorizationManager.getAuthorizationCall(runnableService, operation);
+                var operationCall = runnableServiceCaller.getOperationCall(runnableService, operation);
 
-            router[operationMethod](operationPath, authorizationCall, runnableServiceCaller.getOperationCall(runnableService, operation));
+                router[operationMethod](operationPath, checkOperationRequestCall, authorizationCall, operationCall);
+
+                routedMethods.push(operationRequest.method);
+                routedPaths[operationPath] = routedMethods;
+            }
+        }
+
+        var routedPathsNames = Object.keys(routedPaths);
+        for (var j = 0; j < routedPathsNames.length; j++) {
+            var routedPath = routedPathsNames[j];
+            router.all(routedPath, runnableServiceCaller.getMethodNotAllowedCall(routedPaths[routedPath]));
         }
     }
 
     router.get('/', runnableServiceCaller.getOperationCall(runnableService, 'getServiceInformation'));
+    router.all('/', runnableServiceCaller.getMethodNotAllowedCall(['GET']));
 
     return router;
 }

@@ -96,9 +96,10 @@ ServiceManager.prototype.deployServices = function deployServices(server) {
         throw new Error('The parameter server must be a Server object');
     }
 
-    var services = this.services;
-    for (var service in services) {
-        server.route(services[service]);
+    var servicesNames = Object.keys(this.services);
+    for (var i = 0; i < servicesNames.length; i++) {
+        var service = servicesNames[i];
+        server.route(this.services[service]);
     }
 };
 
@@ -109,9 +110,10 @@ ServiceManager.prototype.deployServices = function deployServices(server) {
  * @function
  */
 ServiceManager.prototype.registerServices = function registerServices() {
-    var services = this.services;
-    for (var service in services) {
-        serviceDirectoryProxy.register(services[service]);
+    var servicesNames = Object.keys(this.services);
+    for (var i = 0; i < servicesNames.length; i++) {
+        var service = servicesNames[i];
+        serviceDirectoryProxy.register(this.services[service]);
     }
 };
 
@@ -128,9 +130,10 @@ ServiceManager.prototype.addCertificateToServices = function addCertificateToSer
         throw new Error('The parameter certificate must be a valid SSL certificate');
     }
 
-    var services = this.services;
-    for (var service in services) {
-        services[service].certificate = certificate;
+    var servicesNames = Object.keys(this.services);
+    for (var i = 0; i < servicesNames.length; i++) {
+        var service = servicesNames[i];
+        this.services[service].certificate = certificate;
     }
 };
 
@@ -141,13 +144,14 @@ ServiceManager.prototype.addCertificateToServices = function addCertificateToSer
  * @function
  */
 ServiceManager.prototype.shutdown = function shutdown() {
-    var services = this.services;
-    for (var service in services) {
-        if (checkTypes.object(services[service]) && checkTypes.function(services[service].onDestroyService)) {
-            services[service].onDestroyService();
+    var servicesNames = Object.keys(this.services);
+    for (var i = 0; i < servicesNames.length; i++) {
+        var service = servicesNames[i];
+        if (checkTypes.object(this.services[service]) && checkTypes.function(this.services[service].onDestroyService)) {
+            this.services[service].onDestroyService();
         }
 
-        services[service] = null;
+        this.services[service] = null;
     }
 
     this.services = null;

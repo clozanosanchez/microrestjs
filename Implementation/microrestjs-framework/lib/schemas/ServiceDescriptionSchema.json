@@ -249,15 +249,17 @@
             "minLength": 3
         },
         "parameters": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "$ref": "#/parameterObject"
-                },
-                "required": ["name", "in", "required", "type"]
+            "type": "object",
+            "patternProperties": {
+                "^[a-z]+[a-zA-Z0-9]*$": {
+                    "type": "object",
+                    "properties": {
+                        "$ref": "#/parameterObject"
+                    },
+                    "required": ["in", "required", "type"]
+                }
             },
-            "uniqueItems": true
+            "additionalProperties": false
         },
         "body": {
 
@@ -289,9 +291,6 @@
     },
 
     "parameterObject": {
-        "name": {
-            "$ref": "#/definitions/nonEmptyString"
-        },
         "in": {
             "type": "string",
             "format": "url-parameter",

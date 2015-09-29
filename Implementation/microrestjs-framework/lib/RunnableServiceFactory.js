@@ -87,7 +87,9 @@ function _instantiateService(serviceContext, serviceFunctionality) {
 
     var operations = serviceContext.getOperations();
     if (checkTypes.object(operations) && checkTypes.not.emptyObject(operations)) {
-        for (var operation in operations) {
+        var operationsNames = Object.keys(operations);
+        for (var i = 0; i < operationsNames.length; i++) {
+            var operation = operationsNames[i];
             if (checkTypes.not.function(serviceFunctionality[operation])) {
                 logger.warn('The operation %s of the service %s will be not loaded because its implementation has not been found', operation, serviceContext.getName());
             } else {
@@ -124,7 +126,9 @@ function _registerCallableServices(runnableService) {
         return;
     }
 
-    for (var dependency in dependencies) {
+    var dependenciesNames = Object.keys(dependencies);
+    for (var i = 0; i < dependenciesNames.length; i++) {
+        var dependency = dependenciesNames[i];
         if (checkTypes.object(dependencies[dependency])) {
             try {
                 var callableService = callableServiceFactory.getService(dependency, dependencies[dependency].api, dependencies[dependency].url);

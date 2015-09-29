@@ -79,7 +79,6 @@ module.exports.send = function send(request, responseCallback) {
     }
 
     if (checkTypes.not.object(request) || checkTypes.emptyObject(request)) {
-        //TODO: Improve the condition to check if it is a good request
         var clientError = new Error('The parameter request must be a non-empty object');
         clientError.code = 'CLIENT_ERROR';
         responseCallback(clientError);
@@ -91,9 +90,7 @@ module.exports.send = function send(request, responseCallback) {
         port: request.port,
         path: request.path,
         method: request.method,
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: request.headers,
         auth: request.auth,
         key: platformCredentials.key,
         cert: platformCredentials.certificate,
@@ -114,8 +111,14 @@ module.exports.send = function send(request, responseCallback) {
         });
 
         httpResponse.on('end', function _endCallback() {
-            var response = ioHelper.convertHttpResponseToCallableServiceResponse(httpResponse, bufferBody);
-            responseCallback(null, response);
+            try {
+                var response = ioHelper.convertHttpResponseToCallableServiceResponse(httpResponse, bufferBody);
+                responseCallback(null, response);
+            } catch (err) {
+                var clientError1 = new Error('The response body cannot be parsed to an object because -> ' + err);
+                clientError1.code = 'CLIENT_ERROR';
+                responseCallback(clientError1);
+            }
         });
     });
 
@@ -124,11 +127,7 @@ module.exports.send = function send(request, responseCallback) {
     });
 
     if (checkTypes.assigned(request.body)) {
-        if (checkTypes.string(request.body)) {
-            httpRequest.write(request.body);
-        } else {
-            httpRequest.write(JSON.stringify(request.body));
-        }
+        httpRequest.write(request.body);
     }
 
     httpRequest.end();

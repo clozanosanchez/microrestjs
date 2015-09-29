@@ -110,15 +110,26 @@ function _registerServiceInDirectory(runnableService, serverPort, directoryLocat
 
     var completePath = directoryUrl.path + '/register';
 
+    var registerBody = {
+        info: runnableService.getContext().getInfo(),
+        port: serverPort
+    };
+
+    var jsonBody = JSON.stringify(registerBody);
+
+    var headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Length': Buffer.byteLength(jsonBody, 'utf8')
+    };
+    var body = new Buffer(jsonBody, 'utf8');
+
     var request = {
         hostname: directoryUrl.hostname,
         port: directoryUrl.port,
         path: completePath,
         method: 'POST',
-        body: {
-            info: runnableService.getContext().getInfo(),
-            port: serverPort
-        },
+        headers: headers,
+        body: body,
         rejectUnauthorized: false,
         checkServerIdentity: function _checkServerIdentity(host, cert) {
             //The host of the server is not checked.

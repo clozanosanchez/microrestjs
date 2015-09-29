@@ -15,14 +15,12 @@
  * AbstractResponse allows storing data of a HTTPS response.
  * In particular:
  *   - Status code
- *   - Cookies
  *   - Body
  *
  * @class
  */
 function AbstractResponse() {
     this.status = undefined;
-    this.cookies = {};
     this.body = {};
 }
 
@@ -35,17 +33,6 @@ function AbstractResponse() {
  */
 AbstractResponse.prototype.getStatus = function getStatus() {
     return this.status;
-};
-
-/**
- * Gets the cookies of the response.
- *
- * @public
- * @function
- * @returns {Object} - Cookies of the response.
- */
-AbstractResponse.prototype.getCookies = function getCookies() {
-    return this.cookies;
 };
 
 /**

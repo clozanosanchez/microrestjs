@@ -22,7 +22,7 @@ var DIRECTORY_URL_PATTERN = '^directory:\\/\\/' + GENERAL_URL_PATTERN_NO_PROTOCO
 var DIRECTORY_PATTERN = '^directory$' + '|' + DIRECTORY_URL_PATTERN + '|' + ONLY_HTTPS_URL_PATTERN;
 var HTTP_METHOD_PATTERN = '^GET$|^HEAD$|^POST$|^PUT$|^DELETE$|^PATCH$';
 var IN_URL_PARAMETER = '^query$|^path$';
-var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean^$';
+var TYPE_URL_PARAMETER = '^string$|^integer$|^number$|^boolean$';
 var SECURITY_SCHEME_PATTERN = '^none$|^basic$';
 
 /**
