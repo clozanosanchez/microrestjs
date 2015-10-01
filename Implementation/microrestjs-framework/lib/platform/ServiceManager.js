@@ -12,11 +12,11 @@
 
 var fs = require('fs');
 var checkTypes = require('check-types');
-var logger = require('winston').loggers.get('ServiceManager');
 
-var checkDirectory = require('./utils/CheckDirectory');
-var runnableServiceFactory = require('./RunnableServiceFactory');
-var serviceDirectoryProxy = require('./ServiceDirectoryProxy');
+var logger = require('../helpers/logging/LoggerManager').getLogger('ServiceManager');
+var checkDirectory = require('../helpers/fs/CheckDirectory');
+var runnableServiceFactory = require('../helpers/factories/RunnableServiceFactory');
+var serviceDirectoryProxy = require('../helpers/proxies/ServiceDirectoryProxy');
 
 /**
  * Get a new instance of ServiceManager class.
@@ -151,6 +151,7 @@ ServiceManager.prototype.shutdown = function shutdown() {
             this.services[service].onDestroyService();
         }
 
+        this.services[service].certificate = null;
         this.services[service] = null;
     }
 

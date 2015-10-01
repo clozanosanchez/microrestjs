@@ -12,8 +12,8 @@
 
 var checkTypes = require('check-types');
 var basicAuthParser = require('basic-auth-parser');
-var logger = require('winston').loggers.get('BasicAuthorizationCaller');
 
+var logger = require('../../../logging/LoggerManager').getLogger('BasicAuthorizationCaller');
 var basicAuthenticationServiceProxy = require('./BasicAuthenticationServiceProxy');
 var basicAuthorizationServiceProxy = require('./BasicAuthorizationServiceProxy');
 

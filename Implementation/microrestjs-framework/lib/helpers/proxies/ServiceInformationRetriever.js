@@ -12,7 +12,7 @@
 
 var checkTypes = require('check-types');
 
-var client = require('./Client');
+var client = require('../../platform/Client');
 
 var RETRIEVE_ERROR = 'RETRIEVE_ERROR';
 

@@ -12,9 +12,9 @@
 
 var checkTypes = require('check-types');
 
-var serviceDescriptionSchema = require('./schemas/ServiceDescriptionSchema.json');
-var checkSchema = require('./utils/CheckSchema');
-var ServiceContext = require('./ServiceContext');
+var serviceDescriptionSchema = require('../schemas/ServiceDescriptionSchema.json');
+var checkSchema = require('../schemas/CheckSchema');
+var ServiceContext = require('../../services/ServiceContext');
 
 /**
  * Loads the service context from the service description file.

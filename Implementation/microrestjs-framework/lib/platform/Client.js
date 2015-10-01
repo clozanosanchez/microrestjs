@@ -13,7 +13,7 @@
 var checkTypes = require('check-types');
 var https = require('https');
 
-var ioHelper = require('./IOHelper');
+var ioHelper = require('../helpers/io/IOHelper');
 
 /**
  * Credentials of the platform for SSL communications.
@@ -34,7 +34,7 @@ var platformCredentials = {
  * @function
  * @param {Object} credentials - Credentials of the platform.
  */
-module.exports.addCredentials = function addCredentials(credentials) {
+module.exports.addPlatformCredentials = function addPlatformCredentials(credentials) {
     if (checkTypes.not.object(credentials) || checkTypes.emptyObject(credentials) ||
         checkTypes.not.string(credentials.key) || checkTypes.not.unemptyString(credentials.key) ||
         checkTypes.not.string(credentials.certificate) || checkTypes.not.unemptyString(credentials.certificate)) {
@@ -43,6 +43,17 @@ module.exports.addCredentials = function addCredentials(credentials) {
 
     platformCredentials.key = credentials.key;
     platformCredentials.certificate = credentials.certificate;
+};
+
+/**
+ * Cleans the credentials of the platform.
+ *
+ * @public
+ * @static
+ * @function
+ */
+module.exports.cleanPlatformCredentials = function cleanPlatformCredentials() {
+    platformCredentials = null;
 };
 
 /**

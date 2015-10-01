@@ -12,10 +12,10 @@
 
 var url = require('url');
 var checkTypes = require('check-types');
-var logger = require('winston').loggers.get('ServiceDirectoryProxy');
 
-var microrest = require('./Microrest');
-var client = require('./Client');
+var logger = require('../logging/LoggerManager').getLogger('ServiceDirectoryProxy');
+var microrest = require('../../platform/Microrest');
+var client = require('../../platform/Client');
 
 var LOOKUP_ERROR = 'LOOKUP_ERROR';
 

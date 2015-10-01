@@ -11,8 +11,8 @@
  */
 
 var checkTypes = require('check-types');
-var Logger = require('winston').Logger;
 
+var loggerManager = require('../helpers/logging/LoggerManager');
 var Service = require('./Service');
 
 /**
@@ -38,7 +38,7 @@ function RunnableService(context) {
     //Initializes the internal state
     Service.call(this, context);
     this.callableServices = {};
-    this.logger = new Logger();
+    this.logger = null;
 }
 
 RunnableService.prototype = Object.create(Service.prototype);
@@ -88,35 +88,40 @@ RunnableService.prototype.getCallableService = function getCallableService(calla
 };
 
 /**
- * Gets either the custom logger if it was set previously, or a Winston logger by default.
+ * Gets the logger of the service.
  *
  * @public
  * @function
- * @returns {Object} - The custom logger, if it was set previously; a new Winston logger, otherwise.
+ * @returns {Object} - The logger, if it was set previously; the default logger, otherwise.
  */
 RunnableService.prototype.getLogger = function getLogger() {
     if (checkTypes.not.object(this.logger) || checkTypes.emptyObject(this.logger)) {
-        this.logger = new Logger();
+        this.logger = loggerManager.getLogger(this.getIdentificationName());
     }
 
     return this.logger;
 };
 
 /**
- * Sets a custom logger
+ * Sets the default logger to the service.
  *
  * @public
  * @function
- * @param {Object} logger - Custom logger to be set by default.
- * @returns {Boolean} - true, if the custom logger could be set; false, otherwise.
+ * @param {Object} loggerOptions - Options of the logger.
  */
-RunnableService.prototype.setLogger = function setLogger(logger) {
-    if (checkTypes.not.object(logger) || checkTypes.emptyObject(logger)) {
-        return false;
-    }
+RunnableService.prototype.setDefaultLogger = function setDefaultLogger(loggerOptions) {
+    this.logger = loggerManager.createLogger(this.getIdentificationName(), loggerOptions);
+};
 
+/**
+ * Sets a custom logger to the service.
+ *
+ * @public
+ * @function
+ * @param {Object} logger - Custom logger to be set.
+ */
+RunnableService.prototype.setCustomLogger = function setCustomLogger(logger) {
     this.logger = logger;
-    return true;
 };
 
 /**

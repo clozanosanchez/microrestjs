@@ -10,8 +10,8 @@
  * @module
  */
 
-var configurationSchema = require('./schemas/ConfigurationSchema.json');
-var checkSchema = require('./utils/CheckSchema');
+var configurationSchema = require('../schemas/ConfigurationSchema.json');
+var checkSchema = require('../schemas/CheckSchema');
 
 /**
  * Loads the configuration file of Microrestjs Framework.
@@ -27,7 +27,7 @@ module.exports.loadConfiguration = function loadConfiguration() {
     var configuration = null;
 
     try {
-        configuration = require('../configuration.json');
+        configuration = require('../../../configuration.json');
     } catch (exception) {
         throw new Error('The configuration file of Microrestjs does not exist or not have the correct permissions');
     }

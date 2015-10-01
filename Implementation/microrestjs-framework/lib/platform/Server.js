@@ -12,11 +12,12 @@
 
 var https = require('https');
 var express = require('express');
+var bodyParser = require('body-parser');
 var checkTypes = require('check-types');
-var logger = require('winston').loggers.get('Server');
 
-var authorizationManager = require('./helpers/authorization/AuthorizationManager');
-var runnableServiceCaller = require('./RunnableServiceCaller');
+var logger = require('../helpers/logging/LoggerManager').getLogger('Server');
+var authorizationManager = require('../helpers/security/authorization/AuthorizationManager');
+var runnableServiceCaller = require('../helpers/proxies/RunnableServiceCaller');
 
 /**
  * Get a new instance of Server class.
@@ -37,7 +38,7 @@ module.exports.getInstance = function getInstance() {
  */
 function Server() {
     //Initializes the internal state
-    this.credentials = {
+    this.platformCredentials = {
         key: '',
         certificate: ''
     };
@@ -45,15 +46,13 @@ function Server() {
     this.app = express();
     this.app.set('x-powered-by', false);
     this.app.enable('trust proxy');
-
-    var bodyParser = require('body-parser');
     this.app.use(bodyParser.json());
 
     this.httpsServer = null;
 }
 
 /**
- * Adds the credentials to the server for SSL communication.
+ * Adds the credentials of the platform to the server for SSL communication.
  *
  * NOTE: This function must be called before the server starts listening
  *       if SSL capabilities are desired.
@@ -62,15 +61,15 @@ function Server() {
  * @function
  * @param {Object} credentials - Service credentials to be added.
  */
-Server.prototype.addCredentials = function addCredentials(credentials) {
+Server.prototype.addPlatformCredentials = function addPlatformCredentials(credentials) {
     if (checkTypes.not.object(credentials) || checkTypes.emptyObject(credentials) ||
         checkTypes.not.string(credentials.key) || checkTypes.not.unemptyString(credentials.key) ||
         checkTypes.not.string(credentials.certificate) || checkTypes.not.unemptyString(credentials.certificate)) {
         throw new Error('The parameter credentials must be a valid credentials object.');
     }
 
-    this.credentials.key = credentials.key;
-    this.credentials.certificate = credentials.certificate;
+    this.platformCredentials.key = credentials.key;
+    this.platformCredentials.certificate = credentials.certificate;
 };
 
 /**
@@ -87,8 +86,8 @@ Server.prototype.listen = function listen(port) {
     }
 
     var serverOptions = {
-        key: this.credentials.key,
-        cert: this.credentials.certificate,
+        key: this.platformCredentials.key,
+        cert: this.platformCredentials.certificate,
         rejectUnauthorized: false,
         requestCert: true
     };
@@ -129,7 +128,7 @@ Server.prototype.shutdown = function shutdown() {
         this.httpsServer.close();
     }
 
-    this.credentials = null;
+    this.platformCredentials = null;
     this.app = null;
     this.httpsServer = null;
 };

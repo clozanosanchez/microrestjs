@@ -12,7 +12,7 @@
 
 var checkTypes = require('check-types');
 
-var ioHelper = require('./IOHelper');
+var ioHelper = require('../io/IOHelper');
 
 /**
  * Gets the function to invoke a service operation.

@@ -11,10 +11,11 @@
  */
 
 var checkTypes = require('check-types');
-var logger = require('winston').loggers.get('RunnableServiceFactory');
 
-var checkDirectory = require('./utils/CheckDirectory');
-var serviceContextLoader = require('./serviceContextLoader');
+var logger = require('../logging/LoggerManager').getLogger('RunnableServiceFactory');
+var checkDirectory = require('../fs/CheckDirectory');
+var serviceContextLoader = require('../loaders/ServiceContextLoader');
+var serviceFunctionalityLoader = require('../loaders/ServiceFunctionalityLoader');
 var callableServiceFactory = require('./CallableServiceFactory');
 
 /**
@@ -47,12 +48,12 @@ module.exports.createService = function createService(serviceName, servicePath) 
 
     try {
         var serviceContext = serviceContextLoader.loadServiceContext(servicePath + '/' + serviceName + '.json');
-        var serviceFunctionality = require(servicePath + '/' + serviceName + '.js');
+        var serviceFunctionality = serviceFunctionalityLoader.loadServiceFunctionality(servicePath + '/' + serviceName + '.js');
         var runnableService = _instantiateService(serviceContext, serviceFunctionality);
         _initializeService(runnableService);
         return runnableService;
     } catch (exception) {
-        logger.warn('The service %s could not be loaded because: %s', serviceName, exception);
+        logger.warn('The service %s could not be loaded because: %s', serviceName, exception.message);
         return null;
     }
 };
@@ -67,7 +68,7 @@ module.exports.createService = function createService(serviceName, servicePath) 
  * @returns {RunnableService} - The RunnableService instance
  */
 function _instantiateService(serviceContext, serviceFunctionality) {
-    var runnableService = require('./RunnableService').getInstance(serviceContext);
+    var runnableService = require('../../services/RunnableService').getInstance(serviceContext);
 
     if (checkTypes.function(serviceFunctionality.onCreateService)) {
         runnableService.onCreateService = serviceFunctionality.onCreateService;

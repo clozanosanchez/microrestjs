@@ -12,7 +12,7 @@
 
 var checkTypes = require('check-types');
 
-var callableServiceFactory = require('../../../CallableServiceFactory');
+var callableServiceFactory = require('../../../factories/CallableServiceFactory');
 
 var AUTHORIZATION_ERROR = 'AUTHORIZATION_ERROR';
 

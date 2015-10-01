@@ -1,3 +1,12 @@
+v0.4.0-beta
+===========
+  * Reorganizes the code.
+  * Enables a LoggerManager for all the platform and services.
+  * Implements the ServiceFunctionalityLoader.
+  * Fixes important bugs:
+    * Platform credentials had the possibility to be published before the creation of services.
+    * Platform credentials was not cleaned properly (during shutdown).
+
 v0.3.0-beta
 ===========
   * Updates parameters aspects in the Microrestjs Service Description Specification.

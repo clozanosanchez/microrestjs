@@ -12,7 +12,7 @@
 
 var checkTypes = require('check-types');
 
-var ServiceContext = require('./ServiceContext');
+var ServiceContext = require('../../services/ServiceContext');
 
 /**
  * Creates a CallableService instance.
@@ -67,7 +67,7 @@ module.exports.getService = function getService(name, api, location) {
  * @returns {CallableService} - The CallableService instance
  */
 function _instantiateCallableService(serviceContext) {
-    var callableService = require('./CallableService').getInstance(serviceContext);
+    var callableService = require('../../services/CallableService').getInstance(serviceContext);
 
     return callableService;
 }

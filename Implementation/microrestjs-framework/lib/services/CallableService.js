@@ -13,10 +13,10 @@
 var checkTypes = require('check-types');
 
 var Service = require('./Service');
-var serviceDirectoryProxy = require('./ServiceDirectoryProxy');
-var serviceInformationRetriever = require('./ServiceInformationRetriever');
+var serviceDirectoryProxy = require('../helpers/proxies/ServiceDirectoryProxy');
+var serviceInformationRetriever = require('../helpers/proxies/ServiceInformationRetriever');
 var ServiceContext = require('./ServiceContext');
-var client = require('./Client');
+var client = require('../platform/Client');
 
 var EXECUTE_ERROR = 'EXECUTE_ERROR';
 var SERVICE_INFORMATION_ERROR = 'SERVICE_INFORMATION_ERROR';
