@@ -361,7 +361,19 @@ function _executeOperation(service, request, responseCallback) {
         }
     };
 
-    client.send(completeRequest, responseCallback);
+    client.send(completeRequest, function _responseCallback(error, callableServiceResponse) {
+        if (checkTypes.assigned(error)) {
+            service.realService = {};
+            responseCallback(error);
+            return;
+        }
+
+        if (callableServiceResponse.getStatus() === 503) {
+            service.realService = {};
+        }
+
+        responseCallback(null, callableServiceResponse);
+    });
 }
 
 /**

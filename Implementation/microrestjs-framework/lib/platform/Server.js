@@ -48,6 +48,9 @@ function Server() {
     this.app.enable('trust proxy');
     this.app.use(bodyParser.json());
 
+    this.routedServices = [];
+    this.app.all('*', _getCheckRoutedServicesFunction(this.routedServices));
+
     this.httpsServer = null;
 }
 
@@ -114,6 +117,8 @@ Server.prototype.route = function route(runnableService) {
 
     var serviceURI = '/' + runnableService.getIdentificationName();
     this.app.use(serviceURI, router);
+    this.routedServices.push(serviceURI);
+
     logger.info('The service %s has been deployed successfully.', runnableService.getIdentificationName());
 };
 
@@ -180,4 +185,25 @@ function _routeOperations(runnableService) {
     router.all('/', runnableServiceCaller.getMethodNotAllowedCall(['GET']));
 
     return router;
+}
+
+/**
+ * Gets a function to check if the request path corresponds with a routed service.
+ *
+ * @private
+ * @function
+ */
+function _getCheckRoutedServicesFunction(routedServices) {
+    return function _checkRoutedServicesFunction(expressRequest, expressResponse, next) {
+        var result = routedServices.some(function _checkRoutedServicesArray(value) {
+            return expressRequest.originalUrl.substring(0, value.length) === value;
+        });
+
+        if (result === false) {
+            expressResponse.sendStatus(503);
+            return;
+        }
+
+        next();
+    };
 }
