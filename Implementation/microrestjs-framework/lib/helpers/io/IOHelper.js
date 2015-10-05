@@ -22,9 +22,9 @@
 
 var checkTypes = require('check-types');
 
-var RunnableServiceRequest = require('./RunnableServiceRequest');
-var RunnableServiceResponse = require('./RunnableServiceResponse');
-var CallableServiceResponse = require('./CallableServiceResponse');
+var RunnableServiceRequest = require('../../messages/RunnableServiceRequest');
+var RunnableServiceResponse = require('../../messages/RunnableServiceResponse');
+var CallableServiceResponse = require('../../messages/CallableServiceResponse');
 
 /**
  * Converts ExpressRequests, sent by clients to execute one operation,
