@@ -98,6 +98,7 @@ function Microrest() {
  *
  * @private
  * @function
+ * @returns {Function} - Function that stores the generated credentials of the platform.
  */
 Microrest.prototype._getStoreCredentialsFunction = function _getStoreCredentialsFunction() {
     var _this = this;

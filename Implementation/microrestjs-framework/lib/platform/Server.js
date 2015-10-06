@@ -192,6 +192,7 @@ function _routeOperations(runnableService) {
  *
  * @private
  * @function
+ * @returns {Function} - Function that checks whether the path corresponds with a routed service.
  */
 function _getCheckRoutedServicesFunction(routedServices) {
     return function _checkRoutedServicesFunction(expressRequest, expressResponse, next) {
