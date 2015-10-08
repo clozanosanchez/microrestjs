@@ -23,8 +23,8 @@ var ServiceContext = require('./ServiceContext');
  */
 function Service(context) {
     //Initializes the internal state
-    if (checkTypes.not.object(context)) {
-        this.context = new ServiceContext({});
+    if (checkTypes.not.object(context) || checkTypes.not.instance(context, ServiceContext)) {
+        this.context = new ServiceContext(context);
     } else {
         this.context = context;
     }

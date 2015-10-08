@@ -107,7 +107,7 @@ RunnableService.prototype.getLogger = function getLogger() {
  *
  * @public
  * @function
- * @param {Object} loggerOptions - Options of the logger.
+ * @param {Object} [loggerOptions] - Options of the logger.
  */
 RunnableService.prototype.setDefaultLogger = function setDefaultLogger(loggerOptions) {
     this.logger = loggerManager.createLogger(this.getIdentificationName(), loggerOptions);

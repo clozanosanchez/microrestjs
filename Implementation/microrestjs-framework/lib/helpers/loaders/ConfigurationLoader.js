@@ -27,7 +27,7 @@ module.exports.loadConfiguration = function loadConfiguration() {
     var configuration = null;
 
     try {
-        configuration = require('../../../configuration.json');
+        configuration = require(process.cwd() + '/configuration.json');
     } catch (exception) {
         throw new Error('The configuration file of Microrestjs does not exist or not have the correct permissions');
     }
