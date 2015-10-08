@@ -18,7 +18,7 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
     it('Case 1: The factory returns the correct CallableService', function case1() {
         var callableService = require(microrestModules.callableServiceFactory).getService('serviceName', 1, 'directory');
 
-        var expectedContext = {
+        var expectedContext = new (require(microrestModules.serviceContext))({
             info: {
                 name: 'serviceName',
                 api: 1
@@ -26,7 +26,7 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
             config: {
                 location: 'directory'
             }
-        };
+        });
 
         should.exist(callableService);
         callableService.should.be.instanceof(Object);

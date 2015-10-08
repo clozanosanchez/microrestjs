@@ -61,16 +61,17 @@ describe('Functionality: ServiceContextLoader.loadServiceContext()', function lo
 
     it('Case 5: The serviceDescriptionPath parameter is a path that does not exist', function case5() {
         var serviceContextLoader = require(microrestModules.serviceContextLoader);
+        var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionNotExist.json';
 
         (function() {
-            serviceContextLoader.loadServiceContext('../test/env/serviceDescriptions/descriptionNotExist.json');
+            serviceContextLoader.loadServiceContext(serviceContextPath);
         }).should.throw();
     });
 
     it('Case 6: The service description file is completely correct', function case6() {
         var serviceContextLoader = require(microrestModules.serviceContextLoader);
-
-        var serviceContext = serviceContextLoader.loadServiceContext('../test/env/serviceDescriptions/descriptionCase6.json');
+        var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionCase6.json';
+        var serviceContext = serviceContextLoader.loadServiceContext(serviceContextPath);
         should.exist(serviceContext);
         serviceContext.should.be.instanceof(Object);
     });

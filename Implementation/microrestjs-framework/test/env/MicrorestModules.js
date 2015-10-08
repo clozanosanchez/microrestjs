@@ -10,19 +10,20 @@
  * @module
  */
 
-var CALLABLE_SERVICE_MODULE = '../lib/CallableService';
-var CALLABLE_SERVICE_FACTORY_MODULE = '../lib/CallableServiceFactory';
-var CONFIGURATION_LOADER_MODULE = '../lib/ConfigurationLoader';
-var CONFIGURATION_REAL_FILE = '../configuration.json';
-var CONFIGURATION_TEST_FILE = '../test/env/configuration.json';
-var CONFIGURATION_LOGGER_TEST_FILE = '../test/env/configurationLogger.json';
-var MICROREST_MODULE = '../lib/Microrest';
-var RUNNABLE_SERVICE_MODULE = '../lib/RunnableService';
-var RUNNABLE_SERVICE_FACTORY_MODULE = '../lib/RunnableServiceFactory';
-var SERVER_MODULE = '../lib/Server';
-var SERVICE_MODULE = '../lib/Service';
-var SERVICE_CONTEXT_LOADER_MODULE = '../lib/ServiceContextLoader';
-var SERVICE_MANAGER_MODULE = '../lib/ServiceManager';
+var CALLABLE_SERVICE_MODULE = process.cwd() + '/lib/services/CallableService';
+var CALLABLE_SERVICE_FACTORY_MODULE = process.cwd() + '/lib/helpers/factories/CallableServiceFactory';
+var CONFIGURATION_LOADER_MODULE = process.cwd() + '/lib/helpers/loaders/ConfigurationLoader';
+var CONFIGURATION_REAL_FILE = process.cwd() + '/configuration.json';
+var CONFIGURATION_TEST_FILE = process.cwd() + '/test/env/configuration.json';
+var CONFIGURATION_LOGGER_TEST_FILE = process.cwd() + '/test/env/configurationLogger.json';
+var MICROREST_MODULE = process.cwd() + '/lib/platform/Microrest';
+var RUNNABLE_SERVICE_MODULE = process.cwd() + '/lib/services/RunnableService';
+var RUNNABLE_SERVICE_FACTORY_MODULE = process.cwd() + '/lib/helpers/factories/RunnableServiceFactory';
+var SERVER_MODULE = process.cwd() + '/lib/platform/Server';
+var SERVICE_MODULE = process.cwd() + '/lib/services/Service';
+var SERVICE_CONTEXT = process.cwd() + '/lib/services/ServiceContext';
+var SERVICE_CONTEXT_LOADER_MODULE = process.cwd() + '/lib/helpers/loaders/ServiceContextLoader';
+var SERVICE_MANAGER_MODULE = process.cwd() + '/lib/platform/ServiceManager';
 
 
 
@@ -46,6 +47,7 @@ module.exports = {
     runnableServiceFactory: RUNNABLE_SERVICE_FACTORY_MODULE,
     server: SERVER_MODULE,
     service: SERVICE_MODULE,
+    serviceContext: SERVICE_CONTEXT,
     serviceContextLoader: SERVICE_CONTEXT_LOADER_MODULE,
     serviceManager: SERVICE_MANAGER_MODULE
 };

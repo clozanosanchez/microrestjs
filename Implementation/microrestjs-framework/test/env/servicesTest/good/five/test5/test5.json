@@ -1,7 +1,7 @@
 {
 	"microrestSpecification": 1,
 	"info": {
-		"name": "hello-world",
+		"name": "hello-world5",
 		"version": "0.0.1",
 		"api": 1,
 		"description": "Greets everybody with Hello World",
@@ -14,12 +14,6 @@
 			 	"url": "https://www.linkedin.com/in/clozanosanchez"
 			}
 		],
-		"contributors": [
-			{
-				"name": "Markus Hillenbrand",
-			 	"email": "hillenbr@rhrk.uni-kl.de"
-			}
-		],
 		"homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs",
 		"repository": {
 			"type": "git",
@@ -28,7 +22,17 @@
 	},
 
 	"config": {
-		"location": "directory"
+		"location": "directory",
+		"dependencies": {
+			"hello-world": {
+				"api": 1,
+				"url": "directory"
+			}
+		}
+	},
+
+	"security": {
+		"scheme":"basic"
 	},
 
 	"operations": {
@@ -36,15 +40,14 @@
 			"request": { 
 				"path": "/greet/:username",
 				"method": "GET",
-				"parameters": [
-					{
-						"name": "username",
+				"parameters": {
+					"username": {
 						"in": "path",
-						"description": "Name of the user that whishes a greet",
+						"description": "Name of the user that wishes a greet",
 						"required": true,
 						"type": "string"
 					}
-				]
+				}
 			},
 
 			"responses": {

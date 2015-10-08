@@ -23,28 +23,37 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
         callableService.constructor.name.should.be.equal('CallableService');
     });
 
-    it('Case 2: The returned instance has the appropiate properties', function case2() {
+    it('Case 2: The returned instance has the appropriate properties', function case2() {
         var callableService = require(microrestModules.callableService).getInstance({});
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
-        callableService.context.should.be.empty();
+        callableService.context.constructor.name.should.be.equal('ServiceContext');
     });
 
-    it('Case 3: The returned instance has the appropiate properties if context is null', function case3() {
+    it('Case 3: The returned instance has the appropriate properties if context is null', function case3() {
         var callableService = require(microrestModules.callableService).getInstance(null);
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
-        callableService.context.should.be.empty();
+        callableService.context.constructor.name.should.be.equal('ServiceContext');
     });
 
-    it('Case 4: The returned instance has the appropiate properties if context is undefined', function case4() {
+    it('Case 4: The returned instance has the appropriate properties if context is undefined', function case4() {
         var callableService = require(microrestModules.callableService).getInstance();
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
-        callableService.context.should.be.empty();
+        callableService.context.constructor.name.should.be.equal('ServiceContext');
+    });
+
+    it('Case 5: The returned instance has the appropriate properties if context is a ServiceContext object', function case5() {
+        var serviceContext = new (require(microrestModules.serviceContext))({});
+        var callableService = require(microrestModules.callableService).getInstance(serviceContext);
+
+        callableService.should.have.property('context');
+        callableService.context.should.be.instanceof(Object);
+        callableService.context.constructor.name.should.be.equal('ServiceContext');
     });
 });
 

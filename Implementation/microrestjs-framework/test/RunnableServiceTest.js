@@ -23,52 +23,65 @@ describe('Functionality: RunnableService.getInstance()', function getInstanceFun
         runnableService.constructor.name.should.be.equal('RunnableService');
     });
 
-    it('Case 2: The returned instance has the appropiate properties', function case2() {
+    it('Case 2: The returned instance has the appropriate properties', function case2() {
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
         runnableService.should.have.property('context');
         runnableService.context.should.be.instanceof(Object);
-        runnableService.context.should.be.empty();
+        runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
         runnableService.callableServices.should.be.instanceof(Object);
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Object);
-        runnableService.logger.should.be.not.empty();
+        should.not.exist(runnableService.logger);
     });
 
-    it('Case 3: The returned instance has the appropiate properties if context is null', function case3() {
+    it('Case 3: The returned instance has the appropriate properties if context is null', function case3() {
         var runnableService = require(microrestModules.runnableService).getInstance(null);
 
         runnableService.should.have.property('context');
         runnableService.context.should.be.instanceof(Object);
-        runnableService.context.should.be.empty();
+        runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
         runnableService.callableServices.should.be.instanceof(Object);
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Object);
-        runnableService.logger.should.be.not.empty();
+        should.not.exist(runnableService.logger);
     });
 
-    it('Case 4: The returned instance has the appropiate properties if context is undefined', function case4() {
+    it('Case 4: The returned instance has the appropriate properties if context is undefined', function case4() {
         var runnableService = require(microrestModules.runnableService).getInstance();
 
         runnableService.should.have.property('context');
         runnableService.context.should.be.instanceof(Object);
-        runnableService.context.should.be.empty();
+        runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
         runnableService.callableServices.should.be.instanceof(Object);
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Object);
-        runnableService.logger.should.be.not.empty();
+        should.not.exist(runnableService.logger);
+    });
+
+    it('Case 5: The returned instance has the appropriate properties if context is a ServiceContext object', function case5() {
+        var serviceContext = new (require(microrestModules.serviceContext))({});
+        var runnableService = require(microrestModules.runnableService).getInstance(serviceContext);
+
+        runnableService.should.have.property('context');
+        runnableService.context.should.be.instanceof(Object);
+        runnableService.context.constructor.name.should.be.equal('ServiceContext');
+
+        runnableService.should.have.property('callableServices');
+        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.empty();
+
+        runnableService.should.have.property('logger');
+        should.not.exist(runnableService.logger);
     });
 });
 
@@ -82,16 +95,19 @@ describe('Functionality: RunnableService.getServiceName()', function getServiceN
 
 describe('Functionality: RunnableService.registerCallableService()', function registerCallableServiceFunctionalityTest() {
     it('Case 1: The CallableService is registered correctly', function case1() {
+        var callableService = require(microrestModules.callableService).getInstance({});
+
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
-        var registered = runnableService.registerCallableService('serviceName', {});
+        var registered = runnableService.registerCallableService('serviceName', callableService);
         registered.should.be.true();
         runnableService.should.have.property('callableServices');
         runnableService.callableServices.should.be.instanceof(Object);
         runnableService.callableServices.should.be.not.empty();
         runnableService.callableServices.should.have.property('serviceName');
         runnableService.callableServices.serviceName.should.be.instanceof(Object);
-        runnableService.callableServices.serviceName.should.be.empty();
+        runnableService.callableServices.serviceName.constructor.name.should.be.equal('CallableService');
+        should.deepEqual(runnableService.callableServices.serviceName, callableService);
     });
 
     it('Case 2: The CallableService is not registered if the serviceName is null', function case2() {
@@ -170,16 +186,17 @@ describe('Functionality: RunnableService.registerCallableService()', function re
 
 describe('Functionality: RunnableService.getCallableService()', function getCallableServiceFunctionalityTest() {
     it('Case 1: There is a CallableService registered that is retrieved correctly', function case1() {
+        var callableService = require(microrestModules.callableService).getInstance({});
+
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
-        runnableService.callableServices = {
-            serviceName: {}
-        };
+        runnableService.registerCallableService('serviceName', callableService);
 
-        var callableService = runnableService.getCallableService('serviceName');
-        should.exist(callableService);
-        callableService.should.be.instanceof(Object);
-        callableService.should.be.empty();
+        var callableServiceRetrieved = runnableService.getCallableService('serviceName');
+        should.exist(callableServiceRetrieved);
+        callableServiceRetrieved.should.be.instanceof(Object);
+        callableServiceRetrieved.constructor.name.should.be.equal('CallableService');
+        should.deepEqual(callableServiceRetrieved, callableService);
     });
 
     it('Case 2: Null is retrieved when the serviceName is null', function case2() {
@@ -261,7 +278,7 @@ describe('Functionality: RunnableService.getCallableService()', function getCall
 
 describe('Functionality: RunnableService.getLogger()', function getLoggerFunctionalityTest() {
     it('Case 1: The default logger is retrieved correctly', function case1() {
-        var runnableService = require(microrestModules.runnableService).getInstance({});
+        var runnableService = require(microrestModules.runnableService).getInstance({info: {name:'hello-world', api:1}});
 
         var Logger = require('winston').Logger;
 
@@ -282,7 +299,7 @@ describe('Functionality: RunnableService.getLogger()', function getLoggerFunctio
     });
 
     it('Case 3: A default logger is retrieved correctly if it was manually changed by null', function case3() {
-        var runnableService = require(microrestModules.runnableService).getInstance({});
+        var runnableService = require(microrestModules.runnableService).getInstance({info: {name:'hello-world', api:1}});
 
         var Logger = require('winston').Logger;
         runnableService.logger = null;
@@ -293,7 +310,7 @@ describe('Functionality: RunnableService.getLogger()', function getLoggerFunctio
     });
 
     it('Case 4: A default logger is retrieved correctly if it was manually changed by undefined', function case4() {
-        var runnableService = require(microrestModules.runnableService).getInstance({});
+        var runnableService = require(microrestModules.runnableService).getInstance({info: {name:'hello-world', api:1}});
 
         var Logger = require('winston').Logger;
         runnableService.logger = undefined;
@@ -304,7 +321,7 @@ describe('Functionality: RunnableService.getLogger()', function getLoggerFunctio
     });
 
     it('Case 5: A default logger is retrieved correctly if it was manually changed by a non-object', function case5() {
-        var runnableService = require(microrestModules.runnableService).getInstance({});
+        var runnableService = require(microrestModules.runnableService).getInstance({info: {name:'hello-world', api:1}});
 
         var Logger = require('winston').Logger;
         runnableService.logger = 1;
@@ -315,64 +332,44 @@ describe('Functionality: RunnableService.getLogger()', function getLoggerFunctio
     });
 });
 
-describe('Functionality: RunnableService.setLogger()', function setLoggerFunctionalityTest() {
+describe('Functionality: RunnableService.setCustomLogger()', function setCustomLoggerFunctionalityTest() {
     it('Case 1: A custom logger is set correctly', function case1() {
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
         var Logger = require('winston').Logger;
-        var defaultLogger = runnableService.logger;
         var customLogger = new Logger();
 
-        var setLogger = runnableService.setLogger(customLogger);
-        setLogger.should.be.true();
+        runnableService.setCustomLogger(customLogger);
         runnableService.should.have.property('logger');
         runnableService.logger.should.be.instanceof(Logger);
-        runnableService.logger.should.be.not.equal(defaultLogger);
         runnableService.logger.should.be.equal(customLogger);
     });
 
     it('Case 2: A custom logger is not set if it is null', function case2() {
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
-        var Logger = require('winston').Logger;
-        var defaultLogger = runnableService.logger;
-
-        var setLogger = runnableService.setLogger(null);
-        setLogger.should.be.false();
+        runnableService.setCustomLogger(null);
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Logger);
-        runnableService.logger.should.be.equal(defaultLogger);
+        should.not.exist(runnableService.logger);
     });
 
     it('Case 3: A custom logger is not set if it is undefined', function case3() {
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
-        var Logger = require('winston').Logger;
-        var defaultLogger = runnableService.logger;
-
-        var setLogger = runnableService.setLogger(undefined);
-        setLogger.should.be.false();
+        runnableService.setCustomLogger(undefined);
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Logger);
-        runnableService.logger.should.be.equal(defaultLogger);
+        should.not.exist(runnableService.logger);
 
-        setLogger = runnableService.setLogger();
-        setLogger.should.be.false();
+        runnableService.setCustomLogger();
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Logger);
-        runnableService.logger.should.be.equal(defaultLogger);
+        should.not.exist(runnableService.logger);
     });
 
     it('Case 4: A custom logger is not set if it is not an object', function case4() {
         var runnableService = require(microrestModules.runnableService).getInstance({});
 
-        var Logger = require('winston').Logger;
-        var defaultLogger = runnableService.logger;
-
-        var setLogger = runnableService.setLogger(1);
-        setLogger.should.be.false();
+        runnableService.setCustomLogger(1);
         runnableService.should.have.property('logger');
-        runnableService.logger.should.be.instanceof(Logger);
-        runnableService.logger.should.be.equal(defaultLogger);
+        runnableService.logger.should.be.equal(1);
     });
 });

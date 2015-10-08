@@ -7,6 +7,10 @@
         "port": 0
     },
 
+    "directory": {
+        "location": "url"
+    },
+
     "logger": {
         "enable": false,
         "level": "warn"

@@ -115,7 +115,7 @@ describe('Functionality: ServiceManager.loadServices()', function loadServicesFu
         should.exist(serviceManager.services);
         serviceManager.services.should.be.instanceof(Object);
         Object.keys(serviceManager.services).should.have.length(1);
-        serviceManager.services.should.have.properties('test1');
+        serviceManager.services.should.have.properties('hello-world/v1');
     });
 
     it('Case 10: Loads all the correct services that are in the path (5 out 5)', function case10() {
@@ -127,7 +127,7 @@ describe('Functionality: ServiceManager.loadServices()', function loadServicesFu
         should.exist(serviceManager.services);
         serviceManager.services.should.be.instanceof(Object);
         Object.keys(serviceManager.services).should.have.length(5);
-        serviceManager.services.should.have.properties('test1', 'test2', 'test3', 'test4', 'test5');
+        serviceManager.services.should.have.properties('hello-world1/v1', 'hello-world2/v1', 'hello-world3/v1', 'hello-world4/v1', 'hello-world5/v1');
     });
 
     it('Case 11: Loads all the correct services that are in the path (2 out 5)', function case11() {
@@ -139,7 +139,7 @@ describe('Functionality: ServiceManager.loadServices()', function loadServicesFu
         should.exist(serviceManager.services);
         serviceManager.services.should.be.instanceof(Object);
         Object.keys(serviceManager.services).should.have.length(2);
-        serviceManager.services.should.have.properties('test1', 'test3');
+        serviceManager.services.should.have.properties('hello-world1/v1', 'hello-world3/v1');
     });
 });
 
