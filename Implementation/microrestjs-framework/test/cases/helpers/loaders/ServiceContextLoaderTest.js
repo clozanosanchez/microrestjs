@@ -12,7 +12,7 @@
 
 var should = require('should');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: ServiceContextLoader.loadServiceContext()', function loadServiceContextFunctionalityTest() {
     it('Case 1: The serviceDescriptionPath parameter is null', function case1() {

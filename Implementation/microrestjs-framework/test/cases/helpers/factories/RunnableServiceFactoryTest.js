@@ -13,7 +13,7 @@
 var fs = require('fs');
 var should = require('should');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: RunnableServiceFactory.createService()', function createServiceFunctionalityTest() {
     it('Case 1: The factory returns the correct RunnableService', function case1() {

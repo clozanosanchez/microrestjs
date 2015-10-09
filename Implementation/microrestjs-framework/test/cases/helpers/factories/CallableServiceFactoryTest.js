@@ -12,7 +12,7 @@
 
 var should = require('should');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: CallableServiceFactory.getService()', function getServiceFunctionalityTest() {
     it('Case 1: The factory returns the correct CallableService', function case1() {

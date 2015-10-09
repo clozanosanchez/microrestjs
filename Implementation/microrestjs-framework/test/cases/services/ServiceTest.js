@@ -12,7 +12,7 @@
 
 var should = require('should');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../env/MicrorestModules');
 
 describe('Functionality: Service.getContext()', function getContextFunctionalityTest() {
     it('Case 1: The context is correct if an empty object is assigned', function case1() {

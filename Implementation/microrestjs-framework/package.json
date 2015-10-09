@@ -50,10 +50,10 @@
     "lib/"
   ],
   "scripts": {
-    "test": "mocha --reporter spec --bail --check-leaks --timeout 5000 test/",
-    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha  --report lcovonly -- --reporter spec --check-leaks --timeout 5000 test/",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks --timeout 5000 test/",
-    "test-tap": "mocha --reporter tap --check-leaks --timeout 5000 test/",
+    "test": "mocha --reporter spec --bail --check-leaks --timeout 5000 --recursive test/cases/",
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha  --report lcovonly -- --reporter spec --check-leaks --timeout --recursive 5000 test/cases/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks --timeout 5000 --recursive test/cases/",
+    "test-tap": "mocha --reporter tap --check-leaks --timeout 5000 --recursive test/cases/",
     "doc": "jsdoc --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js",
     "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js"
   }

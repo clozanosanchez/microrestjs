@@ -13,7 +13,7 @@
 var should = require('should');
 var mockery = require('mockery');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../env/MicrorestModules');
 
 describe('Functionality: Microrest.getInstance() with logger enabled', function getInstanceFunctionalityTest(){
     beforeEach(function beforeEach() {

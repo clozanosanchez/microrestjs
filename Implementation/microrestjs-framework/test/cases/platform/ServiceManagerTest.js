@@ -12,7 +12,7 @@
 
 var should = require('should');
 
-var microrestModules = require('./env/MicrorestModules');
+var microrestModules = require('../../env/MicrorestModules');
 
 describe('Functionality: ServiceManager.getInstance()', function getInstanceFunctionalityTest() {
     it('Case 1: The returned instance is instance of ServiceManager', function case1() {
