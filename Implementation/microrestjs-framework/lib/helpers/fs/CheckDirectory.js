@@ -22,6 +22,7 @@ var checkTypes = require('check-types');
  * @param {String} path - Path to be checked.
  * @returns {Boolean} - true, if the path is a directory; false, otherwise.
  * @throws an Error if the path parameter is an empty string.
+ * @throws an Error if the path cannot be find or open.
  */
 module.exports.isDirectorySync = function isDirectorySync(path) {
     if (checkTypes.not.string(path) || checkTypes.not.unemptyString(path)) {
@@ -29,6 +30,7 @@ module.exports.isDirectorySync = function isDirectorySync(path) {
     }
 
     var stats = fs.statSync(path);
+
     return stats.isDirectory();
 };
 
@@ -58,7 +60,7 @@ module.exports.isDirectory = function isDirectory(path, callback) {
             return;
         }
 
-        callback(null, stats.isDirectory);
+        callback(null, stats.isDirectory());
     });
 };
 

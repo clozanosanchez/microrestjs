@@ -82,13 +82,13 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
         }).should.throw();
     });
 
-    it('Case 10: The factory does not instantiate when the url is null', function case10() {
+    it('Case 10: The factory does not instantiate when the location is null', function case10() {
         (function() {
             require(microrestModules.callableServiceFactory).getService('serviceName', 1, null);
         }).should.throw();
     });
 
-    it('Case 11: The factory does not instantiate when the url is undefined', function case11() {
+    it('Case 11: The factory does not instantiate when the location is undefined', function case11() {
         (function() {
             require(microrestModules.callableServiceFactory).getService('serviceName', 1, undefined);
         }).should.throw();
@@ -98,13 +98,13 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
         }).should.throw();
     });
 
-    it('Case 12: The factory does not instantiate when the url is not a string', function case12() {
+    it('Case 12: The factory does not instantiate when the location is not a string', function case12() {
         (function() {
             require(microrestModules.callableServiceFactory).getService('serviceName', 1, 1);
         }).should.throw();
     });
 
-    it('Case 13: The factory does not instantiate when the url is an empty string', function case13() {
+    it('Case 13: The factory does not instantiate when the location is an empty string', function case13() {
         (function() {
             require(microrestModules.callableServiceFactory).getService('serviceName', 1, '');
         }).should.throw();

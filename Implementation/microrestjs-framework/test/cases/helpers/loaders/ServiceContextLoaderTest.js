@@ -74,6 +74,7 @@ describe('Functionality: ServiceContextLoader.loadServiceContext()', function lo
         var serviceContext = serviceContextLoader.loadServiceContext(serviceContextPath);
         should.exist(serviceContext);
         serviceContext.should.be.instanceof(Object);
+        serviceContext.constructor.name.should.be.equal('ServiceContext');
     });
 
     it('Case 7: The service description file is not valid: A LOT OF CASES');

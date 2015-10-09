@@ -27,6 +27,7 @@ var loggers = {};
  * @static
  * @function
  * @param {Object} loggerConfiguration - Configuration to be set as default.
+ * @throws an Error if the loggerConfiguration parameter is not a valid object.
  */
 module.exports.configure = function configure(loggerConfiguration) {
     if (checkTypes.not.object(loggerConfiguration) || checkTypes.emptyObject(loggerConfiguration) ||
@@ -54,6 +55,7 @@ module.exports.configure = function configure(loggerConfiguration) {
  * @param {String} loggerName - Name of the logger to be retrieved.
  * @param {Object} [loggerOptions] - Options of the logger to be created.
  * @returns {Object} - The specific logger.
+ * @throws an Error if loggerName parameter is not a non-empty string.
  */
 module.exports.getLogger = function getLogger(loggerName, loggerOptions) {
     if (checkTypes.not.string(loggerName) || checkTypes.not.unemptyString(loggerName)) {
@@ -78,6 +80,7 @@ module.exports.getLogger = function getLogger(loggerName, loggerOptions) {
  * @param {String} loggerName - Name of the logger to be created.
  * @param {Object} [loggerOptions] - Options of the logger to be created.
  * @returns {Object} - The created logger.
+ * @throws an Error if the parameter loggerName is not a non-empty string.
  */
 module.exports.createLogger = function createLogger(loggerName, loggerOptions) {
     if (checkTypes.not.string(loggerName) || checkTypes.not.unemptyString(loggerName)) {
@@ -99,6 +102,7 @@ module.exports.createLogger = function createLogger(loggerName, loggerOptions) {
     }
 
     var winstonOptions = {
+        level: level,
         transports: []
     };
 

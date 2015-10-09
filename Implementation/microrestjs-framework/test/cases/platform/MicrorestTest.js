@@ -88,38 +88,3 @@ describe('Functionality: Microrest.getInstance() with logger disabled', function
         microrest.serviceManager.constructor.name.should.be.equal('ServiceManager');
     });
 });
-
-describe('Real: Microrest.getInstance()', function getInstanceRealTest() {
-    it('Case 1: The returned instance is instance of Microrest', function case1() {
-        var microrest = require(microrestModules.microrest).getInstance();
-
-        should.exist(microrest);
-        microrest.should.be.instanceof(Object);
-        microrest.constructor.name.should.be.equal('Microrest');
-    });
-
-    it('Case 2: The returned instance has the appropiate properties', function case2() {
-        var microrest = require(microrestModules.microrest).getInstance();
-
-        microrest.should.have.property('configuration');
-        microrest.configuration.should.be.instanceof(Object);
-
-        microrest.should.have.property('server');
-        microrest.server.should.be.instanceof(Object);
-        microrest.server.constructor.name.should.be.equal('Server');
-
-        microrest.should.have.property('serviceManager');
-        microrest.serviceManager.should.be.instanceof(Object);
-        microrest.serviceManager.constructor.name.should.be.equal('ServiceManager');
-    });
-});
-
-describe('Real: Microrest.run()', function runRealTest() {
-    it('Case 1: Microrest listens connections successfully', function case1() {
-        var microrest = require(microrestModules.microrest).getInstance();
-
-        microrest.run();
-    });
-
-    it('NOT IMPLEMENTED');
-});

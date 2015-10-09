@@ -114,7 +114,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
         configurationModule.loadConfiguration.should.throw();
     });
 
-    it('Case 6: The configuration has not the property services', function case6() {
+    it('Case 6: The configuration does not have the property services', function case6() {
         var configurationModule = require(microrestModules.configurationLoader);
 
         var testConfiguration = {
@@ -133,7 +133,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
         configurationModule.loadConfiguration.should.throw();
     });
 
-    it('Case 7: The configuration has not the property server', function case7() {
+    it('Case 7: The configuration does not have the property server', function case7() {
         var configurationModule = require(microrestModules.configurationLoader);
 
         var testConfiguration = {
@@ -152,7 +152,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
         configurationModule.loadConfiguration.should.throw();
     });
 
-    it('Case 8: The configuration has not the property directory', function case8() {
+    it('Case 8: The configuration does not have the property directory', function case8() {
         var configurationModule = require(microrestModules.configurationLoader);
 
         var testConfiguration = {
@@ -171,7 +171,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
         configurationModule.loadConfiguration.should.throw();
     });
 
-    it('Case 9: The configuration has not the property logger', function case9() {
+    it('Case 9: The configuration does not have the property logger', function case9() {
         var configurationModule = require(microrestModules.configurationLoader);
 
         var testConfiguration = {
@@ -437,15 +437,5 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
         mockery.registerMock(microrestModules.configurationRealFile, testConfiguration);
 
         configurationModule.loadConfiguration.should.throw();
-    });
-});
-
-describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigurationRealTest() {
-    it('Case 1: The real configuration file is loaded successfully without errors', function case1() {
-        var configurationModule = require(microrestModules.configurationLoader);
-
-        var configuration = configurationModule.loadConfiguration();
-        should.exist(configuration);
-        configuration.should.be.instanceof(Object);
     });
 });

@@ -1,7 +1,7 @@
 {
 	"microrestSpecification": 1,
 	"info": {
-		"name": "hello-world",
+		"name": "test1",
 		"version": "0.0.1",
 		"api": 1,
 		"description": "Greets everybody with Hello World",
@@ -22,13 +22,7 @@
 	},
 
 	"config": {
-		"location": "directory",
-		"dependencies": {
-			"hello-world": {
-				"api": 1,
-				"url": "directory"
-			}
-		}
+		"location": "directory"
 	},
 
 	"security": {
