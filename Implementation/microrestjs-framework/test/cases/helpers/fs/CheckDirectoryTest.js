@@ -10,16 +10,35 @@
  * @testsuite
  */
 
-var fs = require('fs');
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: CheckDirectory.isDirectorySync()', function isDirectorySyncTest() {
+    var fs;
+    var checkDirectoryModule;
+
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        fs = require('fs');
+        checkDirectoryModule = require(microrestModules.checkDirectory);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
     it('Case 1: True is returned if the path is a directory', function case1() {
         var path = fs.realpathSync('./test/env');
 
-        var isDirectory = require(microrestModules.checkDirectory).isDirectorySync(path);
+        var isDirectory = checkDirectoryModule.isDirectorySync(path);
 
         should.exist(isDirectory);
         isDirectory.should.be.true();
@@ -28,7 +47,7 @@ describe('Functionality: CheckDirectory.isDirectorySync()', function isDirectory
     it('Case 2: False is returned if the path is not a directory', function case2() {
         var path = fs.realpathSync('./test/env') + '/configuration.json';
 
-        var isDirectory = require(microrestModules.checkDirectory).isDirectorySync(path);
+        var isDirectory = checkDirectoryModule.isDirectorySync(path);
 
         should.exist(isDirectory);
         isDirectory.should.be.false();
@@ -38,40 +57,59 @@ describe('Functionality: CheckDirectory.isDirectorySync()', function isDirectory
         var path = fs.realpathSync('./test/env') + '/NotExistDirectory';
 
         (function() {
-            require(microrestModules.checkDirectory).isDirectorySync(path);
+            checkDirectoryModule.isDirectorySync(path);
         }).should.throw();
     });
 
     it('Case 4: The path parameter is null', function case4() {
         (function() {
-            require(microrestModules.checkDirectory).isDirectorySync(null);
+            checkDirectoryModule.isDirectorySync(null);
         }).should.throw();
     });
 
     it('Case 5: The path parameter is undefined', function case5() {
         (function() {
-            require(microrestModules.checkDirectory).isDirectorySync();
+            checkDirectoryModule.isDirectorySync();
         }).should.throw();
     });
 
     it('Case 6: The path parameter is not a string', function case6() {
         (function() {
-            require(microrestModules.checkDirectory).isDirectorySync(1);
+            checkDirectoryModule.isDirectorySync(1);
         }).should.throw();
     });
 
     it('Case 7: The path parameter is an empty string', function case7() {
         (function() {
-            require(microrestModules.checkDirectory).isDirectorySync('');
+            checkDirectoryModule.isDirectorySync('');
         }).should.throw();
     });
 });
 
 describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest() {
+    var fs;
+    var checkDirectoryModule;
+
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        fs = require('fs');
+        checkDirectoryModule = require(microrestModules.checkDirectory);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
     it('Case 1: True is returned if the path is a directory', function case1(done) {
         var path = fs.realpathSync('./test/env');
 
-        require(microrestModules.checkDirectory).isDirectory(path, function(error, isDirectory) {
+        checkDirectoryModule.isDirectory(path, function(error, isDirectory) {
             should.not.exist(error);
             should.exist(isDirectory);
             isDirectory.should.be.true();
@@ -82,7 +120,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     it('Case 2: False is returned if the path is not a directory', function case2(done) {
         var path = fs.realpathSync('./test/env') + '/configuration.json';
 
-        require(microrestModules.checkDirectory).isDirectory(path, function (error, isDirectory) {
+        checkDirectoryModule.isDirectory(path, function (error, isDirectory) {
             should.not.exist(error);
             should.exist(isDirectory);
             isDirectory.should.be.false();
@@ -93,7 +131,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     it('Case 3: An error is returned if the path does not exist', function case3(done) {
         var path = fs.realpathSync('./test/env') + '/NotExistDirectory';
 
-        require(microrestModules.checkDirectory).isDirectory(path, function (error, isDirectory) {
+        checkDirectoryModule.isDirectory(path, function (error, isDirectory) {
             should.exist(error);
             error.should.be.instanceof(Error);
             should.not.exist(isDirectory);
@@ -102,7 +140,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     });
 
     it('Case 4: The path parameter is null', function case4(done) {
-        require(microrestModules.checkDirectory).isDirectory(null, function (error, isDirectory) {
+        checkDirectoryModule.isDirectory(null, function (error, isDirectory) {
             should.exist(error);
             error.should.be.instanceof(Error);
             should.not.exist(isDirectory);
@@ -111,7 +149,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     });
 
     it('Case 5: The path parameter is undefined', function case5(done) {
-        require(microrestModules.checkDirectory).isDirectory(undefined, function (error, isDirectory) {
+        checkDirectoryModule.isDirectory(undefined, function (error, isDirectory) {
             should.exist(error);
             error.should.be.instanceof(Error);
             should.not.exist(isDirectory);
@@ -120,7 +158,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     });
 
     it('Case 6: The path parameter is not a string', function case6(done) {
-        require(microrestModules.checkDirectory).isDirectory(1, function (error, isDirectory) {
+        checkDirectoryModule.isDirectory(1, function (error, isDirectory) {
             should.exist(error);
             error.should.be.instanceof(Error);
             should.not.exist(isDirectory);
@@ -129,7 +167,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     });
 
     it('Case 7: The path parameter is an empty string', function case7(done) {
-        require(microrestModules.checkDirectory).isDirectory('', function (error, isDirectory) {
+        checkDirectoryModule.isDirectory('', function (error, isDirectory) {
             should.exist(error);
             error.should.be.instanceof(Error);
             should.not.exist(isDirectory);
@@ -141,7 +179,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
         var path = fs.realpathSync('./test/env');
 
         (function() {
-            require(microrestModules.checkDirectory).isDirectory(path, null);
+            checkDirectoryModule.isDirectory(path, null);
         }).should.throw();
     });
 
@@ -149,7 +187,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
         var path = fs.realpathSync('./test/env');
 
         (function() {
-            require(microrestModules.checkDirectory).isDirectory(path);
+            checkDirectoryModule.isDirectory(path);
         }).should.throw();
     });
 
@@ -157,7 +195,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
         var path = fs.realpathSync('./test/env');
 
         (function() {
-            require(microrestModules.checkDirectory).isDirectory(path, 1);
+            checkDirectoryModule.isDirectory(path, 1);
         }).should.throw();
     });
 });

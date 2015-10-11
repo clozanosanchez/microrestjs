@@ -11,16 +11,36 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Functionality: CallableServiceFactory.getService()', function getServiceFunctionalityTest() {
-    it('Case 1: The factory returns the correct CallableService', function case1() {
-        var callableService = require(microrestModules.callableServiceFactory).getService('serviceName', 1, 'directory');
+describe('Functionality: CallableServiceFactory.getService()', function getServiceTest() {
+    var callableServiceFactoryModule;
+    var ServiceContext;
 
-        var expectedContext = new (require(microrestModules.serviceContext))({
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        callableServiceFactoryModule = require(microrestModules.callableServiceFactory);
+        ServiceContext = require(microrestModules.serviceContext);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The factory returns the correct CallableService', function case1() {
+        var callableService = callableServiceFactoryModule.getService('serviceTest', 1, 'directory');
+
+        var expectedContext = new ServiceContext({
             info: {
-                name: 'serviceName',
+                name: 'serviceTest',
                 api: 1
             },
             config: {
@@ -36,77 +56,77 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
 
     it('Case 2: The factory does not instantiate when the name is null', function case2() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService(null, 1, 'directory');
+            callableServiceFactoryModule.getService(null, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 3: The factory does not instantiate when the name is undefined', function case3() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService(undefined, 1, 'directory');
+            callableServiceFactoryModule.getService(undefined, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 4: The factory does not instantiate when the name is not a string', function case4() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService(1, 1, 'directory');
+            callableServiceFactoryModule.getService(1, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 5: The factory does not instantiate when the name is an empty string', function case5() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('', 1, 'directory');
+            callableServiceFactoryModule.getService('', 1, 'directory');
         }).should.throw();
     });
 
     it('Case 6: The factory does not instantiate when the api is null', function case6() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', null, 'directory');
+            callableServiceFactoryModule.getService('serviceName', null, 'directory');
         }).should.throw();
     });
 
     it('Case 7: The factory does not instantiate when the api is undefined', function case7() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', undefined, 'directory');
+            callableServiceFactoryModule.getService('serviceName', undefined, 'directory');
         }).should.throw();
     });
 
     it('Case 8: The factory does not instantiate when the api is not an integer', function case8() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 'api', 'directory');
+            callableServiceFactoryModule.getService('serviceName', 'api', 'directory');
         }).should.throw();
     });
 
     it('Case 9: The factory does not instantiate when the api is not a positive integer', function case9() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 0, 'directory');
+            callableServiceFactoryModule.getService('serviceName', 0, 'directory');
         }).should.throw();
     });
 
     it('Case 10: The factory does not instantiate when the location is null', function case10() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 1, null);
+            callableServiceFactoryModule.getService('serviceName', 1, null);
         }).should.throw();
     });
 
     it('Case 11: The factory does not instantiate when the location is undefined', function case11() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 1, undefined);
+            callableServiceFactoryModule.getService('serviceName', 1, undefined);
         }).should.throw();
 
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 1);
+            callableServiceFactoryModule.getService('serviceName', 1);
         }).should.throw();
     });
 
     it('Case 12: The factory does not instantiate when the location is not a string', function case12() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 1, 1);
+            callableServiceFactoryModule.getService('serviceName', 1, 1);
         }).should.throw();
     });
 
     it('Case 13: The factory does not instantiate when the location is an empty string', function case13() {
         (function() {
-            require(microrestModules.callableServiceFactory).getService('serviceName', 1, '');
+            callableServiceFactoryModule.getService('serviceName', 1, '');
         }).should.throw();
     });
 });

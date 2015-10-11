@@ -4,11 +4,11 @@
     },
     
     "server": {
-        "port": 0
+        "port": 8444
     },
 
     "directory": {
-        "location": "url"
+        "location": "https://localhost:8443/microrestjs-directory/v1"
     },
 
     "logger": {

@@ -11,15 +11,29 @@
  */
 
 var should = require('should');
-
-var winston = require('winston');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Functionality: LoggerManager.configure()', function configureFunctionalityTest() {
-    it('Case 1: The loggerConfiguration parameter is completely correct with enable=true', function case1() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
+describe('Functionality: LoggerManager.configure()', function configureTest() {
+    var loggerManagerModule;
 
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        loggerManagerModule = require(microrestModules.loggerManager);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The loggerConfiguration parameter is completely correct with enable=true', function case1() {
         var loggerConfiguration = {
             enable: true,
             level: 'info'
@@ -29,8 +43,6 @@ describe('Functionality: LoggerManager.configure()', function configureFunctiona
     });
 
     it('Case 2: The loggerConfiguration parameter is completely correct with enable=false', function case2() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: false,
             level: 'info'
@@ -40,98 +52,80 @@ describe('Functionality: LoggerManager.configure()', function configureFunctiona
     });
 
     it('Case 3: The loggerConfiguration is null', function case3() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = null;
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 4: The loggerConfiguration is undefined', function case4() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = undefined;
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 5: The loggerConfiguration is not an object', function case5() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = 1;
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 6: The loggerConfiguration is a empty object', function case6() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {};
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 7: The loggerConfiguration does not have the property enable', function case7() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             level: 'info'
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 8: The loggerConfiguration does not have the property level', function case8() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: true
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 9: The property enable is null', function case9() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: null,
             level: 'info'
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 10: The property enable is undefined', function case10() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: undefined,
             level: 'info'
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 11: The property enable is not boolean', function case11() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: 1,
             level: 'info'
@@ -143,47 +137,39 @@ describe('Functionality: LoggerManager.configure()', function configureFunctiona
     });
 
     it('Case 12: The property info is null', function case12() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: true,
             level: null
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 13: The property info is undefined', function case13() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: true,
             level: undefined
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 14: The property info is not a string', function case14() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: true,
             level: 1
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });
 
     it('Case 15: The property info is an empty string', function case15() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerConfiguration = {
             enable: true,
             level: ''
@@ -193,18 +179,33 @@ describe('Functionality: LoggerManager.configure()', function configureFunctiona
     });
 });
 
-describe('Functionality: LoggerManager.getLogger()', function getLoggerFunctionalityTest() {
-    it('Case 1: A default logger is created correctly', function case1() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
+describe('Functionality: LoggerManager.getLogger()', function getLoggerTest() {
+    var winston;
+    var loggerManagerModule;
 
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        winston = require('winston');
+        loggerManagerModule = require(microrestModules.loggerManager);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: A default logger is created correctly', function case1() {
         var logger = loggerManagerModule.getLogger('getLoggerCase1');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
     });
 
     it('Case 2: A existing logger is retrieved correctly', function case2() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var logger = loggerManagerModule.getLogger('getLoggerCase2');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
@@ -216,8 +217,6 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerFunctiona
     });
 
     it('Case 3: A custom logger is created correctly', function case3() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerOptions = {
             level: 'warn',
             transports: ['console']
@@ -231,8 +230,6 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerFunctiona
     });
 
     it('Case 4: A custom logger is retrieved correctly', function case4() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerOptions = {
             level: 'warn',
             transports: ['console']
@@ -251,13 +248,11 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerFunctiona
     });
 
     it('Case 5: A existing logger is not replace', function case5() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var logger = loggerManagerModule.getLogger('getLoggerCase5');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
-        logger.level.should.be.equal('info');
-        logger.transports.should.have.property('console');
+        logger.level.should.be.equal('none');
+        logger.transports.should.be.empty();
 
         var loggerOptions = {
             level: 'warn',
@@ -267,56 +262,63 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerFunctiona
         var sameLogger = loggerManagerModule.getLogger('getLoggerCase5', loggerOptions);
         should.exist(sameLogger);
         sameLogger.should.be.instanceof(winston.Logger);
-        sameLogger.level.should.be.equal('info');
-        sameLogger.transports.should.have.property('console');
+        sameLogger.level.should.be.equal('none');
+        sameLogger.transports.should.be.empty();
         sameLogger.should.be.deepEqual(logger);
     });
 
     it('Case 6: The parameter loggerName is null', function case6() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.getLogger(null);
         }).should.throw();
     });
 
     it('Case 7: The parameter loggerName is undefined', function case7() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.getLogger(undefined);
         }).should.throw();
     });
 
     it('Case 8: The parameter loggerName is not a string', function case8() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.getLogger(1);
         }).should.throw();
     });
 
     it('Case 9: The parameter loggerName is an empty string', function case9() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.getLogger('');
         }).should.throw();
     });
 });
 
-describe('Functionality: LoggerManager.createLogger()', function createLoggerFunctionalityTest() {
-    it('Case 1: A default logger is created correctly', function case1() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
+describe('Functionality: LoggerManager.createLogger()', function createLoggerTest() {
+    var winston;
+    var loggerManagerModule;
 
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        winston = require('winston');
+        loggerManagerModule = require(microrestModules.loggerManager);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: A default logger is created correctly', function case1() {
         var logger = loggerManagerModule.createLogger('createLoggerCase1');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
     });
 
     it('Case 2: A default logger is created and can be retrieved correctly', function case2() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var logger = loggerManagerModule.createLogger('createLoggerCase2');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
@@ -328,8 +330,6 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerFun
     });
 
     it('Case 3: A custom logger is created correctly', function case3() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerOptions = {
             level: 'warn',
             transports: ['console']
@@ -343,8 +343,6 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerFun
     });
 
     it('Case 4: A custom logger is retrieved correctly', function case4() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var loggerOptions = {
             level: 'warn',
             transports: ['console']
@@ -363,13 +361,11 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerFun
     });
 
     it('Case 5: A existing logger is replace', function case5() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
         var logger = loggerManagerModule.createLogger('createLoggerCase5');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
-        logger.level.should.be.equal('info');
-        logger.transports.should.have.property('console');
+        logger.level.should.be.equal('none');
+        logger.transports.should.be.empty();
 
         var loggerOptions = {
             level: 'warn',
@@ -390,33 +386,25 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerFun
     });
 
     it('Case 6: The parameter loggerName is null', function case6() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.createLogger(null);
         }).should.throw();
     });
 
     it('Case 7: The parameter loggerName is undefined', function case7() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.createLogger(undefined);
         }).should.throw();
     });
 
     it('Case 8: The parameter loggerName is not a string', function case8() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.createLogger(1);
         }).should.throw();
     });
 
     it('Case 9: The parameter loggerName is an empty string', function case9() {
-        var loggerManagerModule = require(microrestModules.loggerManager);
-
-        (function() {
+        (function () {
             loggerManagerModule.createLogger('');
         }).should.throw();
     });

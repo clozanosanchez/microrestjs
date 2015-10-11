@@ -11,12 +11,32 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../env/MicrorestModules');
 
-describe('Functionality: CallableService.getInstance()', function getInstanceFunctionalityTest() {
+describe('Functionality: CallableService.getInstance()', function getInstanceTest() {
+    var callableServiceModule;
+    var ServiceContext;
+
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        callableServiceModule = require(microrestModules.callableService);
+        ServiceContext = require(microrestModules.serviceContext);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
     it('Case 1: The returned instance is instance of CallableService', function case1() {
-        var callableService = require(microrestModules.callableService).getInstance({});
+        var callableService = callableServiceModule.getInstance({});
 
         should.exist(callableService);
         callableService.should.be.instanceof(Object);
@@ -24,7 +44,7 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
     });
 
     it('Case 2: The returned instance has the appropriate properties', function case2() {
-        var callableService = require(microrestModules.callableService).getInstance({});
+        var callableService = callableServiceModule.getInstance({});
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -32,7 +52,7 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
     });
 
     it('Case 3: The returned instance has the appropriate properties if context is null', function case3() {
-        var callableService = require(microrestModules.callableService).getInstance(null);
+        var callableService = callableServiceModule.getInstance(null);
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -40,7 +60,7 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
     });
 
     it('Case 4: The returned instance has the appropriate properties if context is undefined', function case4() {
-        var callableService = require(microrestModules.callableService).getInstance();
+        var callableService = callableServiceModule.getInstance();
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -48,8 +68,8 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
     });
 
     it('Case 5: The returned instance has the appropriate properties if context is a ServiceContext object', function case5() {
-        var serviceContext = new (require(microrestModules.serviceContext))({});
-        var callableService = require(microrestModules.callableService).getInstance(serviceContext);
+        var serviceContext = new ServiceContext({});
+        var callableService = callableServiceModule.getInstance(serviceContext);
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -57,14 +77,14 @@ describe('Functionality: CallableService.getInstance()', function getInstanceFun
     });
 });
 
-describe('Functionality: CallableService.getContext()', function getContextFunctionalityTest() {
+describe('Functionality: CallableService.getContext()', function getContextTest() {
     it('Tested in ServiceTest: no overriding');
 });
 
-describe('Functionality: CallableService.getServiceName()', function getServiceNameFunctionalityTest() {
+describe('Functionality: CallableService.getIdentificationName()', function getIdentificationNameTest() {
     it('Tested in ServiceTest: no overriding');
 });
 
-describe('Functionality: CallableService.execute()', function executeFunctionalityTest() {
-    it('NOT IMPLEMENTED');
+describe('Functionality: CallableService.execute()', function executeTest() {
+    it('NOT TESTED');
 });

@@ -11,67 +11,75 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Functionality: ServiceContextLoader.loadServiceContext()', function loadServiceContextFunctionalityTest() {
-    it('Case 1: The serviceDescriptionPath parameter is null', function case1() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
+describe('Functionality: ServiceContextLoader.loadServiceContext()', function loadServiceContextTest() {
+    var serviceContextLoaderModule;
 
-        (function() {
-            serviceContextLoader.loadServiceContext(null);
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        serviceContextLoaderModule = require(microrestModules.serviceContextLoader);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The serviceDescriptionPath parameter is null', function case1() {
+        (function () {
+            serviceContextLoaderModule.loadServiceContext(null);
         }).should.throw();
     });
 
     it('Case 2: The serviceDescriptionPath parameter is undefined', function case2() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
-
-        (function() {
-            serviceContextLoader.loadServiceContext(undefined);
+        (function () {
+            serviceContextLoaderModule.loadServiceContext(undefined);
         }).should.throw();
     });
 
     it('Case 3: The serviceDescriptionPath parameter is not a string', function case3() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
-
-        (function() {
-            serviceContextLoader.loadServiceContext(1);
+        (function () {
+            serviceContextLoaderModule.loadServiceContext(1);
         }).should.throw();
 
-        (function() {
-            serviceContextLoader.loadServiceContext(true);
+        (function () {
+            serviceContextLoaderModule.loadServiceContext(true);
         }).should.throw();
 
-        (function() {
-            serviceContextLoader.loadServiceContext({});
+        (function () {
+            serviceContextLoaderModule.loadServiceContext({});
         }).should.throw();
 
-        (function() {
-            serviceContextLoader.loadServiceContext([]);
+        (function () {
+            serviceContextLoaderModule.loadServiceContext([]);
         }).should.throw();
     });
 
     it('Case 4: The serviceDescriptionPath parameter is an empty string', function case4() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
-
-        (function() {
-            serviceContextLoader.loadServiceContext('');
+        (function () {
+            serviceContextLoaderModule.loadServiceContext('');
         }).should.throw();
     });
 
     it('Case 5: The serviceDescriptionPath parameter is a path that does not exist', function case5() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
         var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionNotExist.json';
 
-        (function() {
-            serviceContextLoader.loadServiceContext(serviceContextPath);
+        (function () {
+            serviceContextLoaderModule.loadServiceContext(serviceContextPath);
         }).should.throw();
     });
 
     it('Case 6: The service description file is completely correct', function case6() {
-        var serviceContextLoader = require(microrestModules.serviceContextLoader);
         var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionCase6.json';
-        var serviceContext = serviceContextLoader.loadServiceContext(serviceContextPath);
+        var serviceContext = serviceContextLoaderModule.loadServiceContext(serviceContextPath);
         should.exist(serviceContext);
         serviceContext.should.be.instanceof(Object);
         serviceContext.constructor.name.should.be.equal('ServiceContext');

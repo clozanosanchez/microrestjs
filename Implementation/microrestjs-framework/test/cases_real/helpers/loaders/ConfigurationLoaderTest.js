@@ -11,14 +11,30 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigurationRealTest() {
-    it('Case 1: The real configuration file is loaded successfully without errors', function case1() {
-        var configurationModule = require(microrestModules.configurationLoader);
+describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigurationTest() {
+    var configurationLoaderModule;
 
-        var configuration = configurationModule.loadConfiguration();
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        configurationLoaderModule = require(microrestModules.configurationLoader);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The real configuration file is loaded successfully without errors', function case1() {
+        var configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
         configuration.should.be.instanceof(Object);
     });

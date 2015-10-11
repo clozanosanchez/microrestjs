@@ -21,10 +21,7 @@ var ioHelper = require('../helpers/io/IOHelper');
  * @private
  * @constant
  */
-var platformCredentials = {
-    key: '',
-    certificate: ''
-};
+var platformCredentials = null;
 
 /**
  * Adds the credentials of the platform for SSL communications.
@@ -41,8 +38,10 @@ module.exports.addPlatformCredentials = function addPlatformCredentials(credenti
         throw new Error('The parameter credentials must be a valid credentials object.');
     }
 
-    platformCredentials.key = credentials.key;
-    platformCredentials.certificate = credentials.certificate;
+    platformCredentials = {
+        key: credentials.key,
+        certificate: credentials.certificate
+    };
 };
 
 /**

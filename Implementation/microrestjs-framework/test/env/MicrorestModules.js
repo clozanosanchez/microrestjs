@@ -19,6 +19,7 @@ var SERVICE_FUNCTIONALITY_LOADER_MODULE = process.cwd() + '/lib/helpers/loaders/
 var LOGGER_MANAGER_MODULE = process.cwd() + '/lib/helpers/logging/LoggerManager';
 var CHECK_SCHEMA_MODULE = process.cwd() + '/lib/helpers/schemas/CheckSchema';
 var CREDENTIALS_GENERATOR_MODULE = process.cwd() + '/lib/helpers/security/CredentialsGenerator'
+var CLIENT_MODULE = process.cwd() + '/lib/platform/Client';
 var MICROREST_MODULE = process.cwd() + '/lib/platform/Microrest';
 var SERVER_MODULE = process.cwd() + '/lib/platform/Server';
 var SERVICE_MANAGER_MODULE = process.cwd() + '/lib/platform/ServiceManager';
@@ -50,6 +51,7 @@ module.exports = {
     loggerManager: LOGGER_MANAGER_MODULE,
     checkSchema: CHECK_SCHEMA_MODULE,
     credentialsGenerator: CREDENTIALS_GENERATOR_MODULE,
+    client: CLIENT_MODULE,
     microrest: MICROREST_MODULE,
     server: SERVER_MODULE,
     serviceManager: SERVICE_MANAGER_MODULE,

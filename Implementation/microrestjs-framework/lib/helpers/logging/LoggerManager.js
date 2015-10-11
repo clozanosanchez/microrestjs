@@ -15,7 +15,7 @@ var winston = require('winston');
 
 var defaultLoggerConfiguration = {
     transports: [],
-    level: ''
+    level: 'none'
 };
 
 var loggers = {};

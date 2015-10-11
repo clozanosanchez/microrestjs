@@ -12,15 +12,33 @@
 
 var fs = require('fs');
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Functionality: RunnableServiceFactory.createService()', function createServiceFunctionalityTest() {
+describe('Functionality: RunnableServiceFactory.createService()', function createServiceTest() {
+    var runnableServiceFactoryModule;
+
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        runnableServiceFactoryModule = require(microrestModules.runnableServiceFactory);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
     it('Case 1: The factory returns the correct RunnableService', function case1() {
         var serviceName = 'test1';
         var path = fs.realpathSync('./test/env/servicesTest/good/one') + '/' + serviceName;
 
-        var runnableService = require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         //Check that the returned object is a RunnableService
         should.exist(runnableService);
@@ -35,6 +53,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         //Check that it has the corresponding functions.
         should.exist(runnableService.greet);
         runnableService.greet.should.be.Function();
+        should.exist(runnableService.getServiceInformation);
+        runnableService.getServiceInformation.should.be.Function();
 
         //Check that the lifecycle functions have been overridden.
         runnableService.should.have.ownProperty('onCreateService');
@@ -52,7 +72,7 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        var runnableService = require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         //Check that the returned object is a RunnableService
         should.exist(runnableService);
@@ -68,6 +88,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         should.not.exist(runnableService.greetNull);
         should.not.exist(runnableService.greetUndefined);
         should.not.exist(runnableService.greetNotFunction);
+        should.exist(runnableService.getServiceInformation);
+        runnableService.getServiceInformation.should.be.Function();
 
         //Check that the lifecycle functions have not been overridden.
         runnableService.should.not.have.ownProperty('onCreateService');
@@ -87,7 +109,7 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test2';
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        var runnableService = require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         should.not.exist(runnableService);
         should.equal(runnableService, null);
@@ -97,8 +119,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = null;
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -106,8 +128,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = undefined;
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -115,8 +137,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 1;
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -124,8 +146,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = '';
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -133,8 +155,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = null;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -142,8 +164,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = undefined;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -151,8 +173,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = 1;
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -160,8 +182,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = '';
 
-        (function() {
-            require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        (function () {
+            runnableServiceFactoryModule.createService(serviceName, path);
         }).should.throw();
     });
 
@@ -169,7 +191,7 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
         var serviceName = 'test1';
         var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName + '/test1.js';
 
-        var runnableService = require(microrestModules.runnableServiceFactory).createService(serviceName, path);
+        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         should.not.exist(runnableService);
         should.equal(runnableService, null);

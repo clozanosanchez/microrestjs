@@ -11,17 +11,18 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../env/MicrorestModules');
 
-describe('Functionality: Server.getInstance()', function getInstanceFunctionalityTest() {
-    it('NOT IMPLEMENTED');
+describe('Functionality: Server.getInstance()', function getInstanceTest() {
+    it('NOT TESTED');
 });
 
-describe('Functionality: Server.listen()', function listenFunctionalityTest() {
-    it('NOT IMPLEMENTED');
+describe('Functionality: Server.listen()', function listenTest() {
+    it('NOT TESTED');
 });
 
-describe('Functionality: Server.route()', function routeFunctionalityTest() {
-    it('NOT IMPLEMENTED');
+describe('Functionality: Server.route()', function routeTest() {
+    it('NOT TESTED');
 });

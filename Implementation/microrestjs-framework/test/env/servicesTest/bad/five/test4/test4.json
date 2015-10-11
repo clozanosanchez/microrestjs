@@ -14,12 +14,6 @@
 			 	"url": "https://www.linkedin.com/in/clozanosanchez"
 			}
 		],
-		"contributors": [
-			{
-				"name": "Markus Hillenbrand",
-			 	"email": "hillenbr@rhrk.uni-kl.de"
-			}
-		],
 		"homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs",
 		"repository": {
 			"type": "git",

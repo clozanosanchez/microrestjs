@@ -119,8 +119,13 @@ RunnableService.prototype.setDefaultLogger = function setDefaultLogger(loggerOpt
  * @public
  * @function
  * @param {Object} logger - Custom logger to be set.
+ * @throws an Error if the parameter logger is not an object.
  */
 RunnableService.prototype.setCustomLogger = function setCustomLogger(logger) {
+    if (checkTypes.not.object(logger)) {
+        throw new Error('The parameter logger must be an object.');
+    }
+
     this.logger = logger;
 };
 

@@ -11,46 +11,63 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../../env/MicrorestModules');
 
-describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()', function loadServiceFunctionalityFunctionalityTest() {
+describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()', function loadServiceFunctionalityTest() {
+    var serviceFunctionalityLoaderModule;
+
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        serviceFunctionalityLoaderModule = require(microrestModules.serviceFunctionalityLoader)
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
     it('Case 1: The serviceFunctionalityPath parameter is null', function case1() {
-        (function() {
-            require(microrestModules.serviceFunctionalityLoader).loadServiceFunctionality(null);
+        (function () {
+            serviceFunctionalityLoaderModule.loadServiceFunctionality(null);
         }).should.throw();
     });
 
     it('Case 2: The serviceFunctionalityPath parameter is undefined', function case2() {
-        (function() {
-            require(microrestModules.serviceFunctionalityLoader).loadServiceFunctionality();
+        (function () {
+            serviceFunctionalityLoaderModule.loadServiceFunctionality();
         }).should.throw();
     });
 
     it('Case 3: The serviceFunctionalityPath parameter is not a string', function case3() {
-        (function() {
-            require(microrestModules.serviceFunctionalityLoader).loadServiceFunctionality(1);
+        (function () {
+            serviceFunctionalityLoaderModule.loadServiceFunctionality(1);
         }).should.throw();
     });
 
     it('Case 4: The serviceFunctionalityPath parameter is an empty string', function case4() {
-        (function() {
-            require(microrestModules.serviceFunctionalityLoader).loadServiceFunctionality('');
+        (function () {
+            serviceFunctionalityLoaderModule.loadServiceFunctionality('');
         }).should.throw();
     });
 
     it('Case 5: The serviceFunctionalityPath parameter is a path that does not exist', function case5() {
         var serviceFunctionalityPath = process.cwd() + '/test/env/serviceFunctionalities/functionalityNotExist.js';
 
-        (function() {
-            require(microrestModules.serviceFunctionalityLoader).loadServiceFunctionality(serviceFunctionalityPath);
+        (function () {
+            serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
         }).should.throw();
     });
 
     it('Case 6: The service description file is completely correct', function case6() {
-        var serviceFunctionalityLoader = require(microrestModules.serviceFunctionalityLoader);
         var serviceFunctionalityPath = process.cwd() + '/test/env/serviceFunctionalities/functionalityCase6.js';
-        var serviceFunctionality = serviceFunctionalityLoader.loadServiceFunctionality(serviceFunctionalityPath);
+        var serviceFunctionality = serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
         should.exist(serviceFunctionality);
         serviceFunctionality.should.be.instanceof(Object);
         serviceFunctionality.should.have.ownProperty('greet');

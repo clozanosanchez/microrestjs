@@ -11,13 +11,29 @@
  */
 
 var should = require('should');
+var mockery = require('mockery');
 
 var microrestModules = require('../../env/MicrorestModules');
 
-describe('Functionality: Service.getContext()', function getContextFunctionalityTest() {
-    it('Case 1: The context is correct if an empty object is assigned', function case1() {
-        var Service = require(microrestModules.service);
+describe('Functionality: Service.getContext()', function getContextTest() {
+    var Service;
 
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        Service = require(microrestModules.service);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The context is correct if an empty object is assigned', function case1() {
         var context = {};
         var service = new Service(context);
         var returnContext = service.getContext();
@@ -28,8 +44,6 @@ describe('Functionality: Service.getContext()', function getContextFunctionality
     });
 
     it('Case 2: The context is correct if a non-empty object is assigned', function case2() {
-        var Service = require(microrestModules.service);
-
         var context = {
             info: {
                 name: 'test'
@@ -44,8 +58,6 @@ describe('Functionality: Service.getContext()', function getContextFunctionality
     });
 
     it('Case 3: The context is correct if an string (or a different object) is assigned', function case3() {
-        var Service = require(microrestModules.service);
-
         var context = 'test';
         var service = new Service(context);
         var returnContext = service.getContext();
@@ -56,8 +68,6 @@ describe('Functionality: Service.getContext()', function getContextFunctionality
     });
 
     it('Case 4: The context is an empty object if null is assigned', function case4() {
-        var Service = require(microrestModules.service);
-
         var context = null;
         var service = new Service(context);
         var returnContext = service.getContext();
@@ -68,8 +78,6 @@ describe('Functionality: Service.getContext()', function getContextFunctionality
     });
 
     it('Case 5: The context is an empty object if undefined is assigned', function case5() {
-        var Service = require(microrestModules.service);
-
         var service = new Service(context);
         var returnContext = service.getContext();
 
@@ -79,10 +87,25 @@ describe('Functionality: Service.getContext()', function getContextFunctionality
     });
 });
 
-describe('Functionality: Service.getIdentificationName()', function getIdentificationNameFunctionalityTest() {
-    it('Case 1: The identification name is correct if the context is defined properly', function case1() {
-        var Service = require(microrestModules.service);
+describe('Functionality: Service.getIdentificationName()', function getIdentificationNameTest() {
+    var Service;
 
+    beforeEach(function beforeEach() {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+
+        Service = require(microrestModules.service);
+    });
+
+    afterEach(function afterEach() {
+        mockery.deregisterAll();
+        mockery.disable();
+    });
+
+    it('Case 1: The identification name is correct if the context is defined properly', function case1() {
         var context = {
             info: {
                 name: 'test',
@@ -99,8 +122,6 @@ describe('Functionality: Service.getIdentificationName()', function getIdentific
     });
 
     it('Case 2: The identification name is empty if the context is not defined properly', function case2() {
-        var Service = require(microrestModules.service);
-
         var context = {};
         var service = new Service(context);
         var identificationName = service.getIdentificationName();
