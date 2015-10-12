@@ -41,7 +41,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
         microrest.constructor.name.should.be.equal('Microrest');
 
         microrest.should.have.ownProperty('configuration');
-        microrest.configuration.should.be.instanceof(Object);
+        microrest.configuration.should.be.Object();
         microrest.configuration.should.not.be.empty();
 
         microrest.should.have.ownProperty('platformCredentials');

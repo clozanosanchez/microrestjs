@@ -56,31 +56,31 @@ describe('Functionality: CheckDirectory.isDirectorySync()', function isDirectory
     it('Case 3: Throws an error if the path does not exist', function case3() {
         var path = fs.realpathSync('./test/env') + '/NotExistDirectory';
 
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectorySync(path);
         }).should.throw();
     });
 
     it('Case 4: The path parameter is null', function case4() {
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectorySync(null);
         }).should.throw();
     });
 
     it('Case 5: The path parameter is undefined', function case5() {
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectorySync();
         }).should.throw();
     });
 
     it('Case 6: The path parameter is not a string', function case6() {
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectorySync(1);
         }).should.throw();
     });
 
     it('Case 7: The path parameter is an empty string', function case7() {
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectorySync('');
         }).should.throw();
     });
@@ -178,7 +178,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     it('Case 8: The callback parameter is null', function case8() {
         var path = fs.realpathSync('./test/env');
 
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectory(path, null);
         }).should.throw();
     });
@@ -186,7 +186,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     it('Case 9: The callback parameter is undefined', function case9() {
         var path = fs.realpathSync('./test/env');
 
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectory(path);
         }).should.throw();
     });
@@ -194,7 +194,7 @@ describe('Functionality: CheckDirectory.isDirectory()', function isDirectoryTest
     it('Case 10: The callback parameter is not a function', function case10() {
         var path = fs.realpathSync('./test/env');
 
-        (function() {
+        (function () {
             checkDirectoryModule.isDirectory(path, 1);
         }).should.throw();
     });

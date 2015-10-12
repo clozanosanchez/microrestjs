@@ -37,7 +37,7 @@ describe('Functionality: CredentialsGenerator.generateCredentials()', function g
         credentialsGeneratorModule.generateCredentials(function (error, credentials) {
             should.not.exist(error);
             should.exist(credentials);
-            credentials.should.be.instanceof(Object);
+            credentials.should.be.Object();
             credentials.should.have.property('key');
             credentials.key.should.be.String();
             credentials.should.have.property('certificate');

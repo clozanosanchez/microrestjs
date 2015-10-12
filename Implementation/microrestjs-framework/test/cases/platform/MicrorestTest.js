@@ -43,7 +43,7 @@ describe('Functionality: Microrest.getInstance() with logger enabled', function 
         microrest.constructor.name.should.be.equal('Microrest');
 
         microrest.should.have.ownProperty('configuration');
-        microrest.configuration.should.be.instanceof(Object);
+        microrest.configuration.should.be.Object();
         microrest.configuration.should.not.be.empty();
 
         microrest.should.have.ownProperty('platformCredentials');
@@ -86,7 +86,7 @@ describe('Functionality: Microrest.getInstance() with logger disabled', function
         microrest.constructor.name.should.be.equal('Microrest');
 
         microrest.should.have.ownProperty('configuration');
-        microrest.configuration.should.be.instanceof(Object);
+        microrest.configuration.should.be.Object();
         microrest.configuration.should.not.be.empty();
 
         microrest.should.have.ownProperty('platformCredentials');

@@ -131,7 +131,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
             level: 'info'
         };
 
-        (function() {
+        (function () {
             loggerManagerModule.configure(loggerConfiguration);
         }).should.throw();
     });

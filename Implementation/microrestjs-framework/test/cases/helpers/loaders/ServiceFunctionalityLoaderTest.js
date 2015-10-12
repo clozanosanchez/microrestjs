@@ -69,7 +69,7 @@ describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()',
         var serviceFunctionalityPath = process.cwd() + '/test/env/serviceFunctionalities/functionalityCase6.js';
         var serviceFunctionality = serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
         should.exist(serviceFunctionality);
-        serviceFunctionality.should.be.instanceof(Object);
+        serviceFunctionality.should.be.Object();
         serviceFunctionality.should.have.ownProperty('greet');
     });
 });

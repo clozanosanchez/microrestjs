@@ -110,7 +110,7 @@ Server.prototype.listen = function listen(port) {
 Server.prototype.route = function route(runnableService) {
     if (checkTypes.not.object(runnableService) || checkTypes.emptyObject(runnableService)) {
         //TODO: Improve the condition. Check if is a Service instance.
-        throw new Error('The parameter service must be a Service object');
+        throw new Error('The parameter service must be a RunnableService object');
     }
 
     var router = _routeOperations(runnableService);
@@ -135,6 +135,7 @@ Server.prototype.shutdown = function shutdown() {
 
     this.platformCredentials = null;
     this.app = null;
+    this.routedServices = null;
     this.httpsServer = null;
 };
 

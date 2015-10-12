@@ -51,7 +51,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         var configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
-        configuration.should.be.instanceof(Object);
+        configuration.should.be.Object();
     });
 
     it('Case 2: The configuration is completely correct with server.port=0', function case2() {
@@ -72,7 +72,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         var configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
-        configuration.should.be.instanceof(Object);
+        configuration.should.be.Object();
     });
 
     it('Case 3: The configuration is completely correct with server.port=65535', function case3() {
@@ -93,7 +93,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         var configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
-        configuration.should.be.instanceof(Object);
+        configuration.should.be.Object();
     });
 
     it('Case 4: The configuration cannot be loaded because the file does not exist', function case4() {

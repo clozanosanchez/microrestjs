@@ -55,77 +55,77 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
     });
 
     it('Case 2: The factory does not instantiate when the name is null', function case2() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService(null, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 3: The factory does not instantiate when the name is undefined', function case3() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService(undefined, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 4: The factory does not instantiate when the name is not a string', function case4() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService(1, 1, 'directory');
         }).should.throw();
     });
 
     it('Case 5: The factory does not instantiate when the name is an empty string', function case5() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('', 1, 'directory');
         }).should.throw();
     });
 
     it('Case 6: The factory does not instantiate when the api is null', function case6() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', null, 'directory');
         }).should.throw();
     });
 
     it('Case 7: The factory does not instantiate when the api is undefined', function case7() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', undefined, 'directory');
         }).should.throw();
     });
 
     it('Case 8: The factory does not instantiate when the api is not an integer', function case8() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 'api', 'directory');
         }).should.throw();
     });
 
     it('Case 9: The factory does not instantiate when the api is not a positive integer', function case9() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 0, 'directory');
         }).should.throw();
     });
 
     it('Case 10: The factory does not instantiate when the location is null', function case10() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 1, null);
         }).should.throw();
     });
 
     it('Case 11: The factory does not instantiate when the location is undefined', function case11() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 1, undefined);
         }).should.throw();
 
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 1);
         }).should.throw();
     });
 
     it('Case 12: The factory does not instantiate when the location is not a string', function case12() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 1, 1);
         }).should.throw();
     });
 
     it('Case 13: The factory does not instantiate when the location is an empty string', function case13() {
-        (function() {
+        (function () {
             callableServiceFactoryModule.getService('serviceName', 1, '');
         }).should.throw();
     });

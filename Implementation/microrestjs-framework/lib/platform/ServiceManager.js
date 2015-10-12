@@ -144,15 +144,17 @@ ServiceManager.prototype.addCertificateToServices = function addCertificateToSer
  * @function
  */
 ServiceManager.prototype.shutdown = function shutdown() {
-    var servicesNames = Object.keys(this.services);
-    for (var i = 0; i < servicesNames.length; i++) {
-        var service = servicesNames[i];
-        if (checkTypes.object(this.services[service]) && checkTypes.function(this.services[service].onDestroyService)) {
-            this.services[service].onDestroyService();
-        }
+    if (checkTypes.assigned(this.services)) {
+        var servicesNames = Object.keys(this.services);
+        for (var i = 0; i < servicesNames.length; i++) {
+            var service = servicesNames[i];
+            if (checkTypes.object(this.services[service]) && checkTypes.function(this.services[service].onDestroyService)) {
+                this.services[service].onDestroyService();
+            }
 
-        this.services[service].certificate = null;
-        this.services[service] = null;
+            this.services[service].certificate = null;
+            this.services[service] = null;
+        }
     }
 
     this.services = null;

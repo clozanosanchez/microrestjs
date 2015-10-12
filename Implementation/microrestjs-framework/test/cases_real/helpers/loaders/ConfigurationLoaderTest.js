@@ -36,6 +36,6 @@ describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigura
     it('Case 1: The real configuration file is loaded successfully without errors', function case1() {
         var configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
-        configuration.should.be.instanceof(Object);
+        configuration.should.be.Object();
     });
 });

@@ -50,7 +50,7 @@ describe('Functionality: RunnableService.getInstance()', function getInstanceTes
         runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
@@ -65,7 +65,7 @@ describe('Functionality: RunnableService.getInstance()', function getInstanceTes
         runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
@@ -80,7 +80,7 @@ describe('Functionality: RunnableService.getInstance()', function getInstanceTes
         runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
@@ -96,7 +96,7 @@ describe('Functionality: RunnableService.getInstance()', function getInstanceTes
         runnableService.context.constructor.name.should.be.equal('ServiceContext');
 
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
 
         runnableService.should.have.property('logger');
@@ -140,7 +140,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService('serviceTest1', callableService);
         registered.should.be.true();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.not.empty();
         runnableService.callableServices.should.have.property('serviceTest1');
         runnableService.callableServices.serviceTest1.should.be.instanceof(Object);
@@ -156,7 +156,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService(null, callableService);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
     });
 
@@ -168,7 +168,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService(undefined, callableService);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
     });
 
@@ -180,7 +180,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService(1, callableService);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
     });
 
@@ -192,7 +192,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService('', callableService);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
     });
 
@@ -202,7 +202,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService('serviceTest1', null);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
         runnableService.callableServices.should.not.have.property('serviceTest1');
     });
@@ -213,7 +213,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService('serviceTest1', undefined);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
         runnableService.callableServices.should.not.have.property('serviceTest1');
     });
@@ -224,7 +224,7 @@ describe('Functionality: RunnableService.registerCallableService()', function re
         var registered = runnableService.registerCallableService('serviceTest1', 1);
         registered.should.be.false();
         runnableService.should.have.property('callableServices');
-        runnableService.callableServices.should.be.instanceof(Object);
+        runnableService.callableServices.should.be.Object();
         runnableService.callableServices.should.be.empty();
         runnableService.callableServices.should.not.have.property('serviceTest1');
     });
