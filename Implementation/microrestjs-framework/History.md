@@ -1,3 +1,7 @@
+v0.4.2-beta
+===========
+  * Fixes minor bugs.
+
 v0.4.1-beta
 ===========
   * Enables error 503 Service Unavailable.

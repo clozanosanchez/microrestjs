@@ -1,7 +1,7 @@
 {
   "name": "microrest-framework",
   "description": "Framework to develop RESTful web services",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Carlos Lozano Sánchez <carloslozano@freshhy.com>",
   "license": "MIT",
   "repository": "",
