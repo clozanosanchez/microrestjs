@@ -1,3 +1,7 @@
+v0.4.3-beta
+===========
+  * Disables SSLv2, SSLv3 and TLSv1.0
+
 v0.4.2-beta
 ===========
   * Fixes minor bugs.
