@@ -11,6 +11,7 @@
  */
 
 var https = require('https');
+var constants = require('constants');
 var express = require('express');
 var bodyParser = require('body-parser');
 var checkTypes = require('check-types');
@@ -92,7 +93,8 @@ Server.prototype.listen = function listen(port) {
         key: this.platformCredentials.key,
         cert: this.platformCredentials.certificate,
         rejectUnauthorized: false,
-        requestCert: true
+        requestCert: true,
+        secureOptions: constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1
     };
 
     this.httpsServer = https.createServer(serverOptions, this.app).listen(port);
