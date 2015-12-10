@@ -130,7 +130,7 @@ describe('Functionality: ServiceManager.loadServices()', function loadServicesTe
         }).should.throw();
     });
 
-    it('Case 7: The servicesRootPath parameter is a correct path but the user has not enough permisions.');
+    it('Case 7: The servicesRootPath parameter is a correct path but the user has not enough permissions.');
 
     it('Case 8: Loads all the correct services that are in the path (0 out 0)', function case8() {
         var serviceManager = serviceManagerModule.getInstance();
