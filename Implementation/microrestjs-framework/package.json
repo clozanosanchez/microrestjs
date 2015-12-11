@@ -51,7 +51,7 @@
     "test-ci": "istanbul cover node_modules/mocha/bin/_mocha  --report lcovonly -- --reporter spec --check-leaks --timeout 10000 --recursive  test/cases/",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks --timeout 10000 --recursive test/cases/",
     "test-tap": "mocha --reporter tap --check-leaks --timeout 10000 --recursive test/cases/",
-    "doc": "jsdoc --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js",
-    "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ ./*.js ./lib/*.js ./lib/*/*.js"
+    "doc": "jsdoc --destination ./jsdoc/ -r ./*.js ./lib",
+    "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ -r ./*.js ./lib"
   }
 }
