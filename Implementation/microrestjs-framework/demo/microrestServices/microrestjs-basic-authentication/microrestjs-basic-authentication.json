@@ -1,0 +1,63 @@
+{
+	"microrestSpecification": 1,
+	"info": {
+		"name": "microrestjs-basic-authentication",
+		"version": "0.3.0",
+		"api": 1,
+		"description": "Basic authentication service for Microrestjs",
+		"keywords": ["authentication", "basic-authentication", "Microrestjs"],
+		"date": "2015-09-22",
+		"authors": [
+			{
+				"name": "Carlos Lozano Sánchez",
+			 	"email": "carloslozano@freshhy.com",
+			 	"url": "https://www.linkedin.com/in/clozanosanchez"
+			}
+		],
+		"homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs-basic-authentication",
+		"repository": {
+			"type": "git",
+			"url": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs-basic-authentication.git"
+		}
+	},
+
+	"config": {
+		"location": "directory"
+	},
+
+	"security": {
+		"scheme": "none"
+	},
+
+	"operations": {
+		"authenticate": {
+			"request": { 
+				"path": "/authentication",
+				"method": "POST",
+				"body": {
+					"credentials": {
+						"type": "object"
+					}
+				}
+			},
+
+			"responses": {
+				"CREATED": {
+					"statusCode": 201,
+					"description": "The authentication was successful"
+				}
+			},
+
+			"errors": {
+				"BAD_REQUEST": {
+					"statusCode": 400,
+					"description": "The authentication request was not correct"
+				},
+				"UNAUTHORIZED": {
+					"statusCode": 401,
+					"description": "The authentication failed"
+				}
+			}
+		}
+	}
+}

@@ -26,9 +26,6 @@ jsdoc
 # Services Folder
 services
 
-# Demo Folder
-demo
-
 # Sublime Projects & Workspace
 *.sublime-project
 *.sublime-workspace

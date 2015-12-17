@@ -1,0 +1,68 @@
+{
+    "microrestSpecification": 1,
+    "info": {
+        "name": "yellow-pages",
+        "version": "0.0.1",
+        "api": 1,
+        "description": "Yellow pages",
+        "keywords": ["Yellow pages"],
+        "date": "2015-12-10",
+        "authors": [
+            {
+                "name": "Carlos Lozano Sánchez",
+                "email": "carloslozano@freshhy.com",
+                "url": "https://www.linkedin.com/in/clozanosanchez"
+            }
+        ],
+        "homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs",
+        "repository": {
+            "type": "git",
+            "url": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs-framework.git"
+        }
+    },
+
+    "config": {
+        "location": "directory",
+        "dependencies": {
+            "yellow-pages-people": {
+                "api": 1,
+                "url": "directory"
+            },
+            "yellow-pages-companies": {
+                "api": 1,
+                "url": "directory"
+            }
+        }
+    },
+
+    "security": {
+        "scheme":"basic"
+    },
+
+    "operations": {
+        "search": {
+            "request": { 
+                "path": "/:target",
+                "method": "GET",
+                "parameters": {
+                    "target": {
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    "filter": {
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    }
+                }
+            },
+
+            "responses": {
+                "OK": {
+                    "statusCode": 200
+                }
+            }
+        }
+    }
+}

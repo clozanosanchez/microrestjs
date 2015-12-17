@@ -1,0 +1,18 @@
+{
+    "services": {
+        "path": "./demo/yellowPagesServices/"
+    },
+    
+    "server": {
+        "port": 8444
+    },
+
+    "directory": {
+        "location": "https://localhost:8443/microrestjs-directory/v1/"
+    },
+
+    "logger": {
+        "enable": true,
+        "level": "info"
+    }
+}

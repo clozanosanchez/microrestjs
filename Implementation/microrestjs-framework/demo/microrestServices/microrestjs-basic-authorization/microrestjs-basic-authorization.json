@@ -1,0 +1,63 @@
+{
+	"microrestSpecification": 1,
+	"info": {
+		"name": "microrestjs-basic-authorization",
+		"version": "0.3.0",
+		"api": 1,
+		"description": "Basic authorization service for Microrestjs",
+		"keywords": ["authorization", "basic-authorization", "Microrestjs"],
+		"date": "2015-09-22",
+		"authors": [
+			{
+				"name": "Carlos Lozano Sánchez",
+			 	"email": "carloslozano@freshhy.com",
+			 	"url": "https://www.linkedin.com/in/clozanosanchez"
+			}
+		],
+		"homepage": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs-basic-authorization",
+		"repository": {
+			"type": "git",
+			"url": "https://git.rhrk.uni-kl.de/sanchezc/microrestjs-basic-authorization.git"
+		}
+	},
+
+	"config": {
+		"location": "directory"
+	},
+
+	"security": {
+		"scheme": "none"
+	},
+
+	"operations": {
+		"authorize": {
+			"request": { 
+				"path": "/authorization",
+				"method": "POST",
+				"body": {
+					"authorization": {
+						"type": "object"
+					}
+				}
+			},
+
+			"responses": {
+				"NO_CONTENT": {
+					"statusCode": 204,
+					"description": "The authorization was successful"
+				}
+			},
+
+			"errors": {
+				"BAD_REQUEST": {
+					"statusCode": 400,
+					"description": "The authorization request was not correct"
+				},
+				"FORBIDDEN": {
+					"statusCode": 403,
+					"description": "The authorization was denied"
+				}
+			}
+		}
+	}
+}

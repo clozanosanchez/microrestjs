@@ -1,0 +1,17 @@
+{
+  "name": "yellow-pages",
+  "description": "Yellow pages",
+  "version": "0.0.1",
+  "author": "Carlos Lozano Sánchez <carloslozano@freshhy.com>",
+  "contributors": [],
+  "license": "MIT",
+  "repository": "",
+  "homepage": "",
+  "keywords": ["Yellow pages"],
+  "dependencies": {
+    "async": "1.5.0"
+  },
+  "engines": {
+    "node": "0.12.x"
+  }
+}
