@@ -13,9 +13,9 @@ var files = {
 };
 
 var paths = {
-    rootMicrorestjs: '../../',
-    configurationMicrorestjs: '../../' + files.configurationMicrorestjs,
-    configurationMicrorestjsBackup: '../../' + files.configurationMicrorestjsBackup
+    rootMicrorestjs: '../../../',
+    configurationMicrorestjs: '../../../' + files.configurationMicrorestjs,
+    configurationMicrorestjsBackup: '../../../' + files.configurationMicrorestjsBackup
 };
 
 function server() {
@@ -47,28 +47,28 @@ gulp.task('doConfigurationBackup', function () {
 });
 
 gulp.task('1', ['doConfigurationBackup'], function () {
-    return gulp.src('./configuration1.json')
+    return gulp.src('./configuration_instance1.json')
         .pipe(rename(files.configurationMicrorestjs))
         .pipe(gulp.dest(paths.rootMicrorestjs))
         .pipe(server());
 });
 
 gulp.task('2', ['1'], function () {
-    return gulp.src('./configuration2.json')
+    return gulp.src('./configuration_instance2.json')
         .pipe(rename(files.configurationMicrorestjs))
         .pipe(gulp.dest(paths.rootMicrorestjs))
         .pipe(server());
 });
 
 gulp.task('3', ['2'], function () {
-    return gulp.src('./configuration3.json')
+    return gulp.src('./configuration_instance3.json')
         .pipe(rename(files.configurationMicrorestjs))
         .pipe(gulp.dest(paths.rootMicrorestjs))
         .pipe(server());
 });
 
 gulp.task('4', ['3'], function () {
-    return gulp.src('./configuration4.json')
+    return gulp.src('./configuration_instance4.json')
         .pipe(rename(files.configurationMicrorestjs))
         .pipe(gulp.dest(paths.rootMicrorestjs))
         .pipe(server());

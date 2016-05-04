@@ -1,6 +1,6 @@
 {
 	"services": {
-        "path": "./demo/microrestServices/"
+        "path": "./examples/yellow-pages/instance1/"
     },
     
     "server": {

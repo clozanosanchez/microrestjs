@@ -1,6 +1,6 @@
 {
     "services": {
-        "path": "./demo/yellowPagesServices/"
+        "path": "./examples/yellow-pages/instance2/"
     },
     
     "server": {
