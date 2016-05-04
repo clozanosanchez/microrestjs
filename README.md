@@ -3,10 +3,10 @@ microrestjs
 The platform for designing, developing and deploying microservices.
 
 The platform is composed of a:
-  *framework: [clozanosanchez/microrestjs](https://github.com/clozanosanchez/microrestjs)
-  *service directory: [clozanosanchez/microrestjs-directory](https://github.com/clozanosanchez/microrestjs-directory)
-  *basic authentication service: [clozanosanchez/microrestjs-basic-authentication](https://github.com/clozanosanchez/microrestjs-basic-authentication)
-  *basic authorization service: [clozanosanchez/microrestjs-basic-authorization](https://github.com/clozanosanchez/microrestjs-basic-authorization)
+  * framework: [clozanosanchez/microrestjs](https://github.com/clozanosanchez/microrestjs)
+  * service directory: [clozanosanchez/microrestjs-directory](https://github.com/clozanosanchez/microrestjs-directory)
+  * basic authentication service: [clozanosanchez/microrestjs-basic-authentication](https://github.com/clozanosanchez/microrestjs-basic-authentication)
+  * basic authorization service: [clozanosanchez/microrestjs-basic-authorization](https://github.com/clozanosanchez/microrestjs-basic-authorization)
 -
 The current repository corresponds to the framework to develop and deploy microservices that respect the Microrestjs Service Description Specification.
 -
