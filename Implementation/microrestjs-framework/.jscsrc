@@ -1,5 +1,4 @@
 {
-    "plugins": ["jscs-jsdoc"],
     "fileExtensions": [".js", ".jscs"],
 
     "disallowAnonymousFunctions": true,
