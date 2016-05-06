@@ -1,3 +1,9 @@
+v0.4.4-beta
+===========
+  * Reorganize the repository
+  * Adds the yellow-pages example
+  * Adds the thesis document
+
 v0.4.3-beta
 ===========
   * Disables SSLv2, SSLv3 and TLSv1.0
