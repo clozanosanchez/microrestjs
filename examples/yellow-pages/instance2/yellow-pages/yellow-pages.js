@@ -1,7 +1,5 @@
 'use strict';
 
-var async = require('async');
-
 module.exports.search = function search(request, response, sendFunction) {
     var time = process.hrtime();
 
@@ -16,41 +14,42 @@ module.exports.search = function search(request, response, sendFunction) {
         }
     };
 
-    async.parallel({
-        people: function (callback) {
-            if (!filter || filter === 'people') {
-                yellowPagesPeopleService.execute(yellowPagesRequest, callback);
-                return;
-            }
+    if (filter === 'people') {
+        yellowPagesPeopleService.execute(yellowPagesRequest).then((yellowPagesResponse) => {
+            var body = {};
+            body.people = yellowPagesResponse.getBody();
 
-            callback(null, undefined);
-        },
-        companies: function (callback) {
-            if (!filter || filter === 'companies') {
-                yellowPagesCompaniesService.execute(yellowPagesRequest, callback);
-                return;
-            }
-
-            callback(null, undefined);
-        }
-    }, function (error, yellowPagesResponse) {
-        if (error) {
+            response.setStatus(200).setBody(body);
+            sendFunction();
+            console.log(process.hrtime(time));
+        }).catch((error) => {
             response.setStatus(500);
             sendFunction();
-            return;
-        }
+        });
+    } else if (filter === 'companies') {
+        yellowPagesCompaniesService.execute(yellowPagesRequest).then((yellowPagesResponse) => {
+            var body = {};
+            body.companies = yellowPagesResponse.getBody();
 
-        var body = {};
-        if (yellowPagesResponse.people) {
-            body.people = yellowPagesResponse.people.getBody();
-        }
+            response.setStatus(200).setBody(body);
+            sendFunction();
+            console.log(process.hrtime(time));
+        }).catch((error) => {
+            response.setStatus(500);
+            sendFunction();
+        });
+    } else {
+        Promise.all([yellowPagesPeopleService.execute(yellowPagesRequest), yellowPagesCompaniesService.execute(yellowPagesRequest)]).then((yellowPagesResponse) => {
+            var body = {};
+            body.people = yellowPagesResponse[0].getBody();
+            body.companies = yellowPagesResponse[1].getBody();
 
-        if (yellowPagesResponse.companies) {
-            body.companies = yellowPagesResponse.companies.getBody();
-        }
-
-        response.setStatus(200).setBody(body);
-        sendFunction();
-        console.log(process.hrtime(time));
-    });
+            response.setStatus(200).setBody(body);
+            sendFunction();
+            console.log(process.hrtime(time));
+        }).catch((error) => {
+            response.setStatus(500);
+            sendFunction();
+        });
+    }
 };

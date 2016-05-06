@@ -1,7 +1,7 @@
 {
   "name": "microrestjs",
   "description": "The platform for designing, developing and deploying microservices",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "author": "Carlos Lozano Sánchez <clozanosanchez91@gmail.com",
   "license": "MIT",
   "repository": "clozanosanchez/microrestjs",
@@ -38,7 +38,7 @@
     "del": "2.0.2"
   },
   "engines": {
-    "node": "0.12.x"
+    "node": ">=6.0.0"
   },
   "files": [
     "LICENSE",
