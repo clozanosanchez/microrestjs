@@ -200,7 +200,7 @@ describe('Functionality: ServiceManager.deployServices()', function deployServic
     });
 
     it('Case 1: Deploy all the services correctly (0 out 0)', function case1() {
-        var server = serverModule.getInstance();
+        var server = new serverModule.Server();
 
         var serviceManager = serviceManagerModule.getInstance();
         serviceManager.deployServices(server);
@@ -209,7 +209,7 @@ describe('Functionality: ServiceManager.deployServices()', function deployServic
     });
 
     it('Case 2: Deploy all the services correctly (5 out 5)', function case2() {
-        var server = serverModule.getInstance();
+        var server = new serverModule.Server();
 
         var serviceManager = serviceManagerModule.getInstance();
         serviceManager.loadServices('./test/env/servicesTest/good/five');
