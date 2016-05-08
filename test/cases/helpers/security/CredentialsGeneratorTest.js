@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: CredentialsGenerator.generateCredentials()', function generateCredentialsTest() {
-    var credentialsGeneratorModule;
+    let credentialsGeneratorModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -34,8 +34,7 @@ describe('Functionality: CredentialsGenerator.generateCredentials()', function g
     });
 
     it('Case 1: The credentials are generated correctly', function case1(done) {
-        credentialsGeneratorModule.generateCredentials(function (error, credentials) {
-            should.not.exist(error);
+        credentialsGeneratorModule.generateCredentials().then((credentials) => {
             should.exist(credentials);
             credentials.should.be.Object();
             credentials.should.have.property('key');
@@ -43,24 +42,8 @@ describe('Functionality: CredentialsGenerator.generateCredentials()', function g
             credentials.should.have.property('certificate');
             credentials.certificate.should.be.String();
             done();
+        }).catch((error) => {
+            should.not.exist(error);
         });
-    });
-
-    it('Case 2: The callback parameter is null', function case2() {
-        (function () {
-            credentialsGeneratorModule.generateCredentials(null);
-        }).should.throw();
-    });
-
-    it('Case 3: The callback parameter is undefined', function case3() {
-        (function () {
-            credentialsGeneratorModule.generateCredentials();
-        }).should.throw();
-    });
-
-    it('Case 4: The callback parameter is not a function', function case4() {
-        (function () {
-            credentialsGeneratorModule.generateCredentials(1);
-        }).should.throw();
     });
 });

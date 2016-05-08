@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../env/MicrorestModules');
+const microrestModules = require('../../env/MicrorestModules');
 
 describe('Functionality: Microrest.getInstance() with logger enabled', function getInstanceTest() {
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -36,7 +36,7 @@ describe('Functionality: Microrest.getInstance() with logger enabled', function 
     });
 
     it('Case 1: The returned object is instance of Microrest and has the appropriate properties', function case1() {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -59,7 +59,7 @@ describe('Functionality: Microrest.getInstance() with logger enabled', function 
 });
 
 describe('Functionality: Microrest.getInstance() with logger disabled', function getInstanceTest(){
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -79,7 +79,7 @@ describe('Functionality: Microrest.getInstance() with logger disabled', function
     });
 
     it('Case 1: The returned instance is instance of Microrest', function case1() {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -102,7 +102,7 @@ describe('Functionality: Microrest.getInstance() with logger disabled', function
 });
 
 describe('Functionality: Microrest.run() ', function runTest() {
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -122,7 +122,7 @@ describe('Functionality: Microrest.run() ', function runTest() {
     });
 
     it('Case 1: The platform runs correctly', function case1(done) {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         microrest.run();
 
@@ -133,7 +133,7 @@ describe('Functionality: Microrest.run() ', function runTest() {
 });
 
 describe('Functionality: Microrest.shutdown()', function shutdownTest() {
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -153,7 +153,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 1: The platform shutdowns correctly before running', function case1() {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         microrest.shutdown();
 
@@ -171,7 +171,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 2: The platform shutdowns correctly when running', function case2(done) {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         setTimeout(function () {
             microrest.run();
@@ -195,7 +195,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 3: Several shutdowns does not cause problems', function case3(done) {
-        var microrest = microrestModule.getInstance();
+        const microrest = microrestModule.getInstance();
 
         setTimeout(function () {
             microrest.run();
