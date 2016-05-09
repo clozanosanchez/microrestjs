@@ -44,7 +44,7 @@
   "files": [
     "LICENSE",
     "History.md",
-    "Readme.md",
+    "README.md",
     "Launcher.js",
     "lib/"
   ],
@@ -54,6 +54,7 @@
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks --timeout 10000 --recursive test/cases/",
     "test-tap": "mocha --reporter tap --check-leaks --timeout 10000 --recursive test/cases/",
     "doc": "jsdoc --destination ./jsdoc/ -r ./*.js ./lib",
-    "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ -r ./*.js ./lib"
+    "doc-all": "jsdoc --access 'all' --destination ./jsdoc/ -r ./*.js ./lib",
+    "example-yellow-pages": "cd examples/yellow-pages/deploy && gulp"
   }
 }
