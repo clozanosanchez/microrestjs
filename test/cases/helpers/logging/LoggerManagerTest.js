@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: LoggerManager.configure()', function configureTest() {
-    var loggerManagerModule;
+    let loggerManagerModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -34,7 +34,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 1: The loggerConfiguration parameter is completely correct with enable=true', function case1() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true,
             level: 'info'
         };
@@ -43,7 +43,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 2: The loggerConfiguration parameter is completely correct with enable=false', function case2() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: false,
             level: 'info'
         };
@@ -52,7 +52,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 3: The loggerConfiguration is null', function case3() {
-        var loggerConfiguration = null;
+        const loggerConfiguration = null;
 
         (function () {
             loggerManagerModule.configure(loggerConfiguration);
@@ -60,7 +60,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 4: The loggerConfiguration is undefined', function case4() {
-        var loggerConfiguration = undefined;
+        const loggerConfiguration = undefined;
 
         (function () {
             loggerManagerModule.configure(loggerConfiguration);
@@ -68,7 +68,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 5: The loggerConfiguration is not an object', function case5() {
-        var loggerConfiguration = 1;
+        const loggerConfiguration = 1;
 
         (function () {
             loggerManagerModule.configure(loggerConfiguration);
@@ -76,7 +76,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 6: The loggerConfiguration is a empty object', function case6() {
-        var loggerConfiguration = {};
+        const loggerConfiguration = {};
 
         (function () {
             loggerManagerModule.configure(loggerConfiguration);
@@ -84,7 +84,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 7: The loggerConfiguration does not have the property enable', function case7() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             level: 'info'
         };
 
@@ -94,7 +94,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 8: The loggerConfiguration does not have the property level', function case8() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true
         };
 
@@ -104,7 +104,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 9: The property enable is null', function case9() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: null,
             level: 'info'
         };
@@ -115,7 +115,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 10: The property enable is undefined', function case10() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: undefined,
             level: 'info'
         };
@@ -126,7 +126,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 11: The property enable is not boolean', function case11() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: 1,
             level: 'info'
         };
@@ -137,7 +137,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 12: The property info is null', function case12() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true,
             level: null
         };
@@ -148,7 +148,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 13: The property info is undefined', function case13() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true,
             level: undefined
         };
@@ -159,7 +159,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 14: The property info is not a string', function case14() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true,
             level: 1
         };
@@ -170,7 +170,7 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
     });
 
     it('Case 15: The property info is an empty string', function case15() {
-        var loggerConfiguration = {
+        const loggerConfiguration = {
             enable: true,
             level: ''
         };
@@ -180,8 +180,8 @@ describe('Functionality: LoggerManager.configure()', function configureTest() {
 });
 
 describe('Functionality: LoggerManager.getLogger()', function getLoggerTest() {
-    var winston;
-    var loggerManagerModule;
+    let winston;
+    let loggerManagerModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -200,29 +200,29 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerTest() {
     });
 
     it('Case 1: A default logger is created correctly', function case1() {
-        var logger = loggerManagerModule.getLogger('getLoggerCase1');
+        const logger = loggerManagerModule.getLogger('getLoggerCase1');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
     });
 
     it('Case 2: A existing logger is retrieved correctly', function case2() {
-        var logger = loggerManagerModule.getLogger('getLoggerCase2');
+        const logger = loggerManagerModule.getLogger('getLoggerCase2');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
 
-        var loggerAgain = loggerManagerModule.getLogger('getLoggerCase2');
+        const loggerAgain = loggerManagerModule.getLogger('getLoggerCase2');
         should.exist(loggerAgain);
         loggerAgain.should.be.instanceof(winston.Logger);
         loggerAgain.should.be.deepEqual(logger);
     });
 
     it('Case 3: A custom logger is created correctly', function case3() {
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var logger = loggerManagerModule.getLogger('getLoggerCase3', loggerOptions);
+        const logger = loggerManagerModule.getLogger('getLoggerCase3', loggerOptions);
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('warn');
@@ -230,36 +230,36 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerTest() {
     });
 
     it('Case 4: A custom logger is retrieved correctly', function case4() {
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var logger = loggerManagerModule.getLogger('getLoggerCase4', loggerOptions);
+        const logger = loggerManagerModule.getLogger('getLoggerCase4', loggerOptions);
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('warn');
         logger.transports.should.have.property('console');
 
-        var loggerAgain = loggerManagerModule.getLogger('getLoggerCase4');
+        const loggerAgain = loggerManagerModule.getLogger('getLoggerCase4');
         should.exist(loggerAgain);
         loggerAgain.should.be.instanceof(winston.Logger);
         loggerAgain.should.be.deepEqual(logger);
     });
 
     it('Case 5: A existing logger is not replace', function case5() {
-        var logger = loggerManagerModule.getLogger('getLoggerCase5');
+        const logger = loggerManagerModule.getLogger('getLoggerCase5');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('none');
         logger.transports.should.be.empty();
 
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var sameLogger = loggerManagerModule.getLogger('getLoggerCase5', loggerOptions);
+        const sameLogger = loggerManagerModule.getLogger('getLoggerCase5', loggerOptions);
         should.exist(sameLogger);
         sameLogger.should.be.instanceof(winston.Logger);
         sameLogger.level.should.be.equal('none');
@@ -293,8 +293,8 @@ describe('Functionality: LoggerManager.getLogger()', function getLoggerTest() {
 });
 
 describe('Functionality: LoggerManager.createLogger()', function createLoggerTest() {
-    var winston;
-    var loggerManagerModule;
+    let winston;
+    let loggerManagerModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -313,29 +313,29 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerTes
     });
 
     it('Case 1: A default logger is created correctly', function case1() {
-        var logger = loggerManagerModule.createLogger('createLoggerCase1');
+        const logger = loggerManagerModule.createLogger('createLoggerCase1');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
     });
 
     it('Case 2: A default logger is created and can be retrieved correctly', function case2() {
-        var logger = loggerManagerModule.createLogger('createLoggerCase2');
+        const logger = loggerManagerModule.createLogger('createLoggerCase2');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
 
-        var loggerAgain = loggerManagerModule.getLogger('createLoggerCase2');
+        const loggerAgain = loggerManagerModule.getLogger('createLoggerCase2');
         should.exist(loggerAgain);
         loggerAgain.should.be.instanceof(winston.Logger);
         loggerAgain.should.be.deepEqual(logger);
     });
 
     it('Case 3: A custom logger is created correctly', function case3() {
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var logger = loggerManagerModule.createLogger('createLoggerCase3', loggerOptions);
+        const logger = loggerManagerModule.createLogger('createLoggerCase3', loggerOptions);
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('warn');
@@ -343,42 +343,42 @@ describe('Functionality: LoggerManager.createLogger()', function createLoggerTes
     });
 
     it('Case 4: A custom logger is retrieved correctly', function case4() {
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var logger = loggerManagerModule.createLogger('createLoggerCase4', loggerOptions);
+        const logger = loggerManagerModule.createLogger('createLoggerCase4', loggerOptions);
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('warn');
         logger.transports.should.have.property('console');
 
-        var loggerAgain = loggerManagerModule.getLogger('createLoggerCase4');
+        const loggerAgain = loggerManagerModule.getLogger('createLoggerCase4');
         should.exist(loggerAgain);
         loggerAgain.should.be.instanceof(winston.Logger);
         loggerAgain.should.be.deepEqual(logger);
     });
 
     it('Case 5: A existing logger is replace', function case5() {
-        var logger = loggerManagerModule.createLogger('createLoggerCase5');
+        const logger = loggerManagerModule.createLogger('createLoggerCase5');
         should.exist(logger);
         logger.should.be.instanceof(winston.Logger);
         logger.level.should.be.equal('none');
         logger.transports.should.be.empty();
 
-        var loggerOptions = {
+        const loggerOptions = {
             level: 'warn',
             transports: ['console']
         };
 
-        var newLogger = loggerManagerModule.createLogger('createLoggerCase5', loggerOptions);
+        const newLogger = loggerManagerModule.createLogger('createLoggerCase5', loggerOptions);
         should.exist(newLogger);
         newLogger.should.be.instanceof(winston.Logger);
         newLogger.level.should.be.equal('warn');
         newLogger.transports.should.have.property('console');
 
-        var loggerAgain = loggerManagerModule.getLogger('createLoggerCase5');
+        const loggerAgain = loggerManagerModule.getLogger('createLoggerCase5');
         should.exist(loggerAgain);
         loggerAgain.should.be.instanceof(winston.Logger);
         loggerAgain.should.not.be.deepEqual(logger);

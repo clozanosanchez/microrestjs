@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: ServiceContextLoader.loadServiceContext()', function loadServiceContextTest() {
-    var serviceContextLoaderModule;
+    let serviceContextLoaderModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -70,7 +70,7 @@ describe('Functionality: ServiceContextLoader.loadServiceContext()', function lo
     });
 
     it('Case 5: The serviceDescriptionPath parameter is a path that does not exist', function case5() {
-        var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionNotExist.json';
+        const serviceContextPath = `${process.cwd()}/test/env/serviceDescriptions/descriptionNotExist.json`;
 
         (function () {
             serviceContextLoaderModule.loadServiceContext(serviceContextPath);
@@ -78,8 +78,8 @@ describe('Functionality: ServiceContextLoader.loadServiceContext()', function lo
     });
 
     it('Case 6: The service description file is completely correct', function case6() {
-        var serviceContextPath = process.cwd() + '/test/env/serviceDescriptions/descriptionCase6.json';
-        var serviceContext = serviceContextLoaderModule.loadServiceContext(serviceContextPath);
+        const serviceContextPath = `${process.cwd()}/test/env/serviceDescriptions/descriptionCase6.json`;
+        const serviceContext = serviceContextLoaderModule.loadServiceContext(serviceContextPath);
         should.exist(serviceContext);
         serviceContext.should.be.instanceof(Object);
         serviceContext.constructor.name.should.be.equal('ServiceContext');

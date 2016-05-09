@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()', function loadServiceFunctionalityTest() {
-    var serviceFunctionalityLoaderModule;
+    let serviceFunctionalityLoaderModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -58,7 +58,7 @@ describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()',
     });
 
     it('Case 5: The serviceFunctionalityPath parameter is a path that does not exist', function case5() {
-        var serviceFunctionalityPath = process.cwd() + '/test/env/serviceFunctionalities/functionalityNotExist.js';
+        const serviceFunctionalityPath = `${process.cwd()}/test/env/serviceFunctionalities/functionalityNotExist.js`;
 
         (function () {
             serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
@@ -66,8 +66,8 @@ describe('Functionality: ServiceFunctionalityLoader.loadServiceFunctionality()',
     });
 
     it('Case 6: The service description file is completely correct', function case6() {
-        var serviceFunctionalityPath = process.cwd() + '/test/env/serviceFunctionalities/functionalityCase6.js';
-        var serviceFunctionality = serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
+        const serviceFunctionalityPath = `${process.cwd()}/test/env/serviceFunctionalities/functionalityCase6.js`;
+        const serviceFunctionality = serviceFunctionalityLoaderModule.loadServiceFunctionality(serviceFunctionalityPath);
         should.exist(serviceFunctionality);
         serviceFunctionality.should.be.Object();
         serviceFunctionality.should.have.ownProperty('greet');

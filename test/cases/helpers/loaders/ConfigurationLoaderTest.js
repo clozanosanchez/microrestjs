@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: ConfigurationLoader.loadConfiguration()', function loadConfigurationTest() {
-    var configurationLoaderModule;
+    let configurationLoaderModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -34,7 +34,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 1: The configuration is completely correct', function case1() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -49,13 +49,13 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         mockery.registerMock(microrestModules.configurationRealFile, testConfiguration);
 
-        var configuration = configurationLoaderModule.loadConfiguration();
+        const configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
         configuration.should.be.Object();
     });
 
     it('Case 2: The configuration is completely correct with server.port=0', function case2() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -70,13 +70,13 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         mockery.registerMock(microrestModules.configurationRealFile, testConfiguration);
 
-        var configuration = configurationLoaderModule.loadConfiguration();
+        const configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
         configuration.should.be.Object();
     });
 
     it('Case 3: The configuration is completely correct with server.port=65535', function case3() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -91,7 +91,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
 
         mockery.registerMock(microrestModules.configurationRealFile, testConfiguration);
 
-        var configuration = configurationLoaderModule.loadConfiguration();
+        const configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
         configuration.should.be.Object();
     });
@@ -103,7 +103,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 5: The configuration is empty', function case5() {
-        var testConfiguration = {};
+        const testConfiguration = {};
 
         mockery.registerMock(microrestModules.configurationRealFile, testConfiguration);
 
@@ -111,7 +111,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 6: The configuration does not have the property services', function case6() {
-        var testConfiguration = {
+        const testConfiguration = {
             server: {
                 port: 8443
             }, directory: {
@@ -128,7 +128,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 7: The configuration does not have the property server', function case7() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, directory: {
@@ -145,7 +145,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 8: The configuration does not have the property directory', function case8() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -162,7 +162,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 9: The configuration does not have the property logger', function case9() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -178,7 +178,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 10: The property services.path is empty', function case10() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: ''
             }, server: {
@@ -197,7 +197,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 11: The property services.path is not a string', function case11() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: 1
             }, server: {
@@ -216,7 +216,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 12: The property server.port is lower than 0', function case12() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -235,7 +235,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 13: The property server.port is greater than 65535', function case13() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -254,7 +254,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 14: The property server.port is not an integer', function case14() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -273,7 +273,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 15: The property directory.location is empty', function case15() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -292,7 +292,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 16: The property directory.location is not a string', function case16() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -311,7 +311,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 17: The property logger.enable is not defined', function case17() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -329,7 +329,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 18: The property logger.enable is not a boolean', function case18() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -348,7 +348,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 19: The property logger.level is not defined', function case19() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -366,7 +366,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 20: The property logger.level is empty', function case20() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
@@ -385,7 +385,7 @@ describe('Functionality: ConfigurationLoader.loadConfiguration()', function load
     });
 
     it('Case 21: The property logger.level is not a string', function case21() {
-        var testConfiguration = {
+        const testConfiguration = {
             services: {
                 path: './services/'
             }, server: {
