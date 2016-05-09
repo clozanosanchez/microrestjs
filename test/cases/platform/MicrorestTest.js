@@ -15,7 +15,7 @@ const mockery = require('mockery');
 
 const microrestModules = require('../../env/MicrorestModules');
 
-describe('Functionality: Microrest.getInstance() with logger enabled', function getInstanceTest() {
+describe('Functionality: Microrest() with logger enabled', function getInstanceTest() {
     let microrestModule;
 
     beforeEach(function beforeEach() {
@@ -36,7 +36,7 @@ describe('Functionality: Microrest.getInstance() with logger enabled', function 
     });
 
     it('Case 1: The returned object is instance of Microrest and has the appropriate properties', function case1() {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -58,7 +58,7 @@ describe('Functionality: Microrest.getInstance() with logger enabled', function 
     });
 });
 
-describe('Functionality: Microrest.getInstance() with logger disabled', function getInstanceTest(){
+describe('Functionality: Microrest() with logger disabled', function getInstanceTest(){
     let microrestModule;
 
     beforeEach(function beforeEach() {
@@ -79,7 +79,7 @@ describe('Functionality: Microrest.getInstance() with logger disabled', function
     });
 
     it('Case 1: The returned instance is instance of Microrest', function case1() {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -122,7 +122,7 @@ describe('Functionality: Microrest.run() ', function runTest() {
     });
 
     it('Case 1: The platform runs correctly', function case1(done) {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         microrest.run();
 
@@ -153,7 +153,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 1: The platform shutdowns correctly before running', function case1() {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         microrest.shutdown();
 
@@ -171,7 +171,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 2: The platform shutdowns correctly when running', function case2(done) {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         setTimeout(function () {
             microrest.run();
@@ -195,7 +195,7 @@ describe('Functionality: Microrest.shutdown()', function shutdownTest() {
     });
 
     it('Case 3: Several shutdowns does not cause problems', function case3(done) {
-        const microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         setTimeout(function () {
             microrest.run();

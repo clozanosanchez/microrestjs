@@ -8,18 +8,16 @@
  * @copyright 2015 Carlos Lozano Sánchez
  */
 
-var microrest = require('./lib/platform/Microrest').getInstance();
+const Microrest = require('./lib/platform/Microrest').Microrest;
 
-process.on('SIGINT', function _gracefulShutdown() {
+let microrest = new Microrest();
+
+process.on('SIGINT', _gracefulShutdown);
+process.on('SIGTERM', _gracefulShutdown);
+function _gracefulShutdown() {
     microrest.shutdown();
     microrest = null;
     process.exit(0);
-});
-
-process.on('SIGTERM', function _gracefulShutdown() {
-    microrest.shutdown();
-    microrest = null;
-    process.exit(0);
-});
+}
 
 microrest.run();
