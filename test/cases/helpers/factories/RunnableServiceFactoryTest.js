@@ -10,14 +10,14 @@
  * @testsuite
  */
 
-var fs = require('fs');
-var should = require('should');
-var mockery = require('mockery');
+const fs = require('fs');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: RunnableServiceFactory.createService()', function createServiceTest() {
-    var runnableServiceFactoryModule;
+    let runnableServiceFactoryModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -35,10 +35,10 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 1: The factory returns the correct RunnableService', function case1() {
-        var serviceName = 'test1';
-        var path = fs.realpathSync('./test/env/servicesTest/good/one') + '/' + serviceName;
+        const serviceName = 'test1';
+        const path = `${fs.realpathSync('./test/env/servicesTest/good/one')}/${serviceName}`;
 
-        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
+        const runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         //Check that the returned object is a RunnableService
         should.exist(runnableService);
@@ -69,10 +69,10 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 2: The factory tries to return the most correct RunnableService', function case2() {
-        var serviceName = 'test1';
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = 'test1';
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
-        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
+        const runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         //Check that the returned object is a RunnableService
         should.exist(runnableService);
@@ -106,18 +106,18 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 3: The factory returns null if the service description is wrong', function case3() {
-        var serviceName = 'test2';
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = 'test2';
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
-        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
+        const runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         should.not.exist(runnableService);
         should.equal(runnableService, null);
     });
 
     it('Case 4: The factory does not instantiate if the serviceName is null', function case4() {
-        var serviceName = null;
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = null;
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -125,8 +125,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 5: The factory does not instantiate if the serviceName is undefined', function case5() {
-        var serviceName = undefined;
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = undefined;
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -134,8 +134,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 6: The factory does not instantiate if the serviceName is not a string', function case6() {
-        var serviceName = 1;
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = 1;
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -143,8 +143,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 7: The factory does not instantiate if the serviceName is an empty string', function case7() {
-        var serviceName = '';
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName;
+        const serviceName = '';
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}`;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -152,8 +152,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 8: The factory does not instantiate if the servicePath is null', function case8() {
-        var serviceName = 'test1';
-        var path = null;
+        const serviceName = 'test1';
+        const path = null;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -161,8 +161,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 9: The factory does not instantiate if the servicePath is undefined', function case9() {
-        var serviceName = 'test1';
-        var path = undefined;
+        const serviceName = 'test1';
+        const path = undefined;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -170,8 +170,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 10: The factory does not instantiate if the servicePath is not a string', function case10() {
-        var serviceName = 'test1';
-        var path = 1;
+        const serviceName = 'test1';
+        const path = 1;
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -179,8 +179,8 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 11: The factory does not instantiate if the servicePath is a empty string', function case11() {
-        var serviceName = 'test1';
-        var path = '';
+        const serviceName = 'test1';
+        const path = '';
 
         (function () {
             runnableServiceFactoryModule.createService(serviceName, path);
@@ -188,10 +188,10 @@ describe('Functionality: RunnableServiceFactory.createService()', function creat
     });
 
     it('Case 12: The factory does not instantiate if the servicePath is not a directory', function case12() {
-        var serviceName = 'test1';
-        var path = fs.realpathSync('./test/env/servicesTest/bad/others') + '/' + serviceName + '/test1.js';
+        const serviceName = 'test1';
+        const path = `${fs.realpathSync('./test/env/servicesTest/bad/others')}/${serviceName}/test1.js`;
 
-        var runnableService = runnableServiceFactoryModule.createService(serviceName, path);
+        const runnableService = runnableServiceFactoryModule.createService(serviceName, path);
 
         should.not.exist(runnableService);
         should.equal(runnableService, null);
