@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigurationTest() {
-    var configurationLoaderModule;
+    let configurationLoaderModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -34,7 +34,7 @@ describe('Real: ConfigurationLoader.loadConfiguration()', function loadConfigura
     });
 
     it('Case 1: The real configuration file is loaded successfully without errors', function case1() {
-        var configuration = configurationLoaderModule.loadConfiguration();
+        const configuration = configurationLoaderModule.loadConfiguration();
         should.exist(configuration);
         configuration.should.be.Object();
     });

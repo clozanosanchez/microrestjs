@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../env/MicrorestModules');
+const microrestModules = require('../../env/MicrorestModules');
 
 describe('Real: Microrest.getInstance()', function getInstanceTest() {
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -34,7 +34,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
     });
 
     it('Case 1: The returned object is instance of Microrest and has the appropriate properties', function case1() {
-        var microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -57,7 +57,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
 });
 
 describe('Real: Microrest.run()', function runTest() {
-    var microrestModule;
+    let microrestModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -75,7 +75,7 @@ describe('Real: Microrest.run()', function runTest() {
     });
 
     it('Case 1: Microrest listens connections successfully', function case1(done) {
-        var microrest = microrestModule.getInstance();
+        const microrest = new microrestModule.Microrest();
 
         microrest.run();
 
