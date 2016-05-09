@@ -10,13 +10,13 @@
  * @testsuite
  */
 
-var should = require('should');
-var mockery = require('mockery');
+const should = require('should');
+const mockery = require('mockery');
 
-var microrestModules = require('../../../env/MicrorestModules');
+const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: CheckSchema.check()', function checkTest() {
-    var checkSchemaModule;
+    let checkSchemaModule;
 
     beforeEach(function beforeEach() {
         mockery.enable({
