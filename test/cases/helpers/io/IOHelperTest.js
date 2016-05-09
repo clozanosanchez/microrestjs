@@ -10,7 +10,7 @@
  * @testsuite
  */
 
-var mockery = require('mockery');
+const mockery = require('mockery');
 
 describe('Functionality: IOHelper.convertExpressRequestToRunnableServiceRequest()', function convertExpressRequestToRunnableServiceRequestTest() {
     it('NOT TESTED');
