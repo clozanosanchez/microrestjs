@@ -16,7 +16,7 @@ const mockery = require('mockery');
 const microrestModules = require('../../env/MicrorestModules');
 
 describe('Real: Microrest.getInstance()', function getInstanceTest() {
-    let microrestModule;
+    let Microrest;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -25,7 +25,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
             useCleanCache: true
         });
 
-        microrestModule = require(microrestModules.microrest);
+        Microrest = require(microrestModules.microrest);
     });
 
     afterEach(function afterEach() {
@@ -34,7 +34,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
     });
 
     it('Case 1: The returned object is instance of Microrest and has the appropriate properties', function case1() {
-        const microrest = new microrestModule.Microrest();
+        const microrest = new Microrest();
 
         should.exist(microrest);
         microrest.should.be.instanceof(Object);
@@ -57,7 +57,7 @@ describe('Real: Microrest.getInstance()', function getInstanceTest() {
 });
 
 describe('Real: Microrest.run()', function runTest() {
-    let microrestModule;
+    let Microrest;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -66,7 +66,7 @@ describe('Real: Microrest.run()', function runTest() {
             useCleanCache: true
         });
 
-        microrestModule = require(microrestModules.microrest);
+        Microrest = require(microrestModules.microrest);
     });
 
     afterEach(function afterEach() {
@@ -75,7 +75,7 @@ describe('Real: Microrest.run()', function runTest() {
     });
 
     it('Case 1: Microrest listens connections successfully', function case1(done) {
-        const microrest = new microrestModule.Microrest();
+        const microrest = new Microrest();
 
         microrest.run();
 

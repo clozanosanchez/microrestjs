@@ -36,14 +36,14 @@ module.exports.authenticate = function authenticate(request, response, sendRespo
         return;
     }
 
-    if (checkTypes.not.unemptyString(credentials.username) || checkTypes.not.unemptyString(credentials.password)) {
+    if (checkTypes.emptyString(credentials.username) || checkTypes.emptyString(credentials.password)) {
         response.setStatus(401);
         sendResponse();
         return;
     }
 
     var userId = _checkCredentials(credentials.username, credentials.password, this.users);
-    if (checkTypes.not.string(userId) || checkTypes.not.unemptyString(userId)) {
+    if (checkTypes.not.string(userId) || checkTypes.emptyString(userId)) {
         response.setStatus(401);
         sendResponse();
         return;

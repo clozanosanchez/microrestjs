@@ -17,7 +17,7 @@ const microrestModules = require('../../../env/MicrorestModules');
 
 describe('Functionality: CallableServiceFactory.getService()', function getServiceTest() {
     let callableServiceFactoryModule;
-    let serviceContextModule;
+    let ServiceContext;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -27,7 +27,7 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
         });
 
         callableServiceFactoryModule = require(microrestModules.callableServiceFactory);
-        serviceContextModule = require(microrestModules.serviceContext);
+        ServiceContext = require(microrestModules.serviceContext);
     });
 
     afterEach(function afterEach() {
@@ -38,7 +38,7 @@ describe('Functionality: CallableServiceFactory.getService()', function getServi
     it('Case 1: The factory returns the correct CallableService', function case1() {
         const callableService = callableServiceFactoryModule.getService('serviceTest', 1, 'directory');
 
-        const expectedContext = new serviceContextModule.ServiceContext({
+        const expectedContext = new ServiceContext({
             info: {
                 name: 'serviceTest',
                 api: 1

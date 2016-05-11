@@ -46,9 +46,9 @@ module.exports.authorize = function authorize(request, response, sendResponse) {
 
     var authorization = requestBody.authorization;
     if (checkTypes.not.object(authorization) || checkTypes.emptyObject(authorization) ||
-        checkTypes.not.string(authorization.userId) || checkTypes.not.unemptyString(authorization.userId) ||
-        checkTypes.not.string(authorization.service) || checkTypes.not.unemptyString(authorization.service) ||
-        checkTypes.not.string(authorization.operation) || checkTypes.not.unemptyString(authorization.operation)) {
+        checkTypes.not.string(authorization.userId) || checkTypes.emptyString(authorization.userId) ||
+        checkTypes.not.string(authorization.service) || checkTypes.emptyString(authorization.service) ||
+        checkTypes.not.string(authorization.operation) || checkTypes.emptyString(authorization.operation)) {
         response.setStatus(400);
         sendResponse();
         return;

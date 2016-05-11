@@ -16,8 +16,8 @@ const mockery = require('mockery');
 const microrestModules = require('../../env/MicrorestModules');
 
 describe('Functionality: CallableService()', function getInstanceTest() {
-    let callableServiceModule;
-    let serviceContextModule;
+    let CallableService;
+    let ServiceContext;
 
     beforeEach(function beforeEach() {
         mockery.enable({
@@ -26,8 +26,8 @@ describe('Functionality: CallableService()', function getInstanceTest() {
             useCleanCache: true
         });
 
-        callableServiceModule = require(microrestModules.callableService);
-        serviceContextModule = require(microrestModules.serviceContext);
+        CallableService = require(microrestModules.callableService);
+        ServiceContext = require(microrestModules.serviceContext);
     });
 
     afterEach(function afterEach() {
@@ -36,7 +36,7 @@ describe('Functionality: CallableService()', function getInstanceTest() {
     });
 
     it('Case 1: The returned instance is instance of CallableService', function case1() {
-        const callableService = new callableServiceModule.CallableService({});
+        const callableService = new CallableService({});
 
         should.exist(callableService);
         callableService.should.be.instanceof(Object);
@@ -44,7 +44,7 @@ describe('Functionality: CallableService()', function getInstanceTest() {
     });
 
     it('Case 2: The returned instance has the appropriate properties', function case2() {
-        const callableService = new callableServiceModule.CallableService({});
+        const callableService = new CallableService({});
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -52,7 +52,7 @@ describe('Functionality: CallableService()', function getInstanceTest() {
     });
 
     it('Case 3: The returned instance has the appropriate properties if context is null', function case3() {
-        const callableService = new callableServiceModule.CallableService(null);
+        const callableService = new CallableService(null);
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -60,7 +60,7 @@ describe('Functionality: CallableService()', function getInstanceTest() {
     });
 
     it('Case 4: The returned instance has the appropriate properties if context is undefined', function case4() {
-        const callableService = new callableServiceModule.CallableService();
+        const callableService = new CallableService();
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);
@@ -68,8 +68,8 @@ describe('Functionality: CallableService()', function getInstanceTest() {
     });
 
     it('Case 5: The returned instance has the appropriate properties if context is a ServiceContext object', function case5() {
-        const serviceContext = new serviceContextModule.ServiceContext({});
-        const callableService = new callableServiceModule.CallableService(serviceContext);
+        const serviceContext = new ServiceContext({});
+        const callableService = new CallableService(serviceContext);
 
         callableService.should.have.property('context');
         callableService.context.should.be.instanceof(Object);

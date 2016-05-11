@@ -8,7 +8,7 @@
  * @copyright 2015 Carlos Lozano Sánchez
  */
 
-const Microrest = require('./lib/platform/Microrest').Microrest;
+const Microrest = require('./lib/platform/Microrest');
 
 let microrest = new Microrest();
 

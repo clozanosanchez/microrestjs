@@ -21,7 +21,7 @@ module.exports.register = function register(request, response, sendResponse) {
 
     var info = requestBody.info;
     if (checkTypes.not.object(info) || checkTypes.emptyObject(info) ||
-        checkTypes.not.string(info.name) || checkTypes.not.unemptyString(info.name) ||
+        checkTypes.not.string(info.name) || checkTypes.emptyString(info.name) ||
         checkTypes.not.integer(info.api) || checkTypes.not.positive(info.api)){
         response.setStatus(400);
         sendResponse();
@@ -29,7 +29,7 @@ module.exports.register = function register(request, response, sendResponse) {
     }
 
     var port = requestBody.port;
-    if (checkTypes.not.integer(port) || checkTypes.negative(port) || port > 65535){
+    if (checkTypes.not.integer(port) || checkTypes.not.inRange(port, 0, 65535)){
         response.setStatus(400);
         sendResponse();
         return;
