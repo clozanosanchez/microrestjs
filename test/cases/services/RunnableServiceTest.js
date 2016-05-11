@@ -5,7 +5,7 @@
  *
  * @author Carlos Lozano Sánchez
  * @license MIT
- * @copyright 2015 Carlos Lozano Sánchez
+ * @copyright 2015-2016 Carlos Lozano Sánchez
  *
  * @testsuite
  */
