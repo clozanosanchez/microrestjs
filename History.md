@@ -1,8 +1,20 @@
+v0.5.0-beta
+===========
+  * Official support for Node.js 6.
+  * Adopts ECMAScript 6 features (class, const, let, =>, Promise, for-of, ...).
+  * Deprecates Callback style.
+  * Adopts Promise style.
+  * Modifies ServiceContext to be immutable and safer.
+  * Improves error handling.
+  * Updates dependencies.
+  * Deprecates JSHint and JSCS.
+  * Adopts ESLint.
+
 v0.4.4-beta
 ===========
-  * Reorganize the repository
-  * Adds the yellow-pages example
-  * Adds the thesis document
+  * Reorganize the repository.
+  * Adds the yellow-pages example.
+  * Adds the thesis document.
 
 v0.4.3-beta
 ===========
