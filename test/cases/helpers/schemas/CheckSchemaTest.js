@@ -72,6 +72,6 @@ describe('Functionality: CheckSchema.check()', function checkTest() {
     it('Case 7: The schema and object parameter are empty objects', function case7() {
         (function () {
             checkSchemaModule.check({}, {});
-        }).should.not.throw();
+        }).should.throw();
     });
 });
