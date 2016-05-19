@@ -1,3 +1,7 @@
+v0.5.1-beta
+===========
+  * Updates the official services of the yellow pages example.
+
 v0.5.0-beta
 ===========
   * Official support for Node.js 6.
