@@ -1,0 +1,30 @@
+{
+  "name": "microrestjs-basic-authentication",
+  "description": "Official basic authentication service for Microrestjs",
+  "version": "0.5.0",
+  "author": "Carlos Lozano Sánchez <clozanosanchez91@gmail.com>",
+  "license": "MIT",
+  "repository": "clozanosanchez/microrestjs-basic-authentication",
+  "homepage": "https://github.com/clozanosanchez/microrestjs-basic-authentication",
+  "keywords": [
+    "authentication", 
+    "basic-authentication", 
+    "microservice", 
+    "service", 
+    "microrest", 
+    "Microrestjs"
+  ],
+  "dependencies": {
+    "check-types": "7.0.0"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "History.md",
+    "README.md",
+    "microrestjs-basic-authentication.js",
+    "microrestjs-basic-authentication.json"
+  ]
+}
