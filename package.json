@@ -2,7 +2,7 @@
   "name": "microrestjs",
   "description": "The platform for designing, developing and deploying microservices",
   "version": "0.5.0",
-  "author": "Carlos Lozano Sánchez <clozanosanchez91@gmail.com",
+  "author": "Carlos Lozano Sánchez <clozanosanchez91@gmail.com>",
   "license": "MIT",
   "repository": "clozanosanchez/microrestjs",
   "homepage": "https://github.com/clozanosanchez/microrestjs",
@@ -14,7 +14,8 @@
     "service",
     "rest",
     "restful",
-    "api"
+    "api",
+    "Microrestjs"
   ],
   "dependencies": {
     "express": "4.13.4",
