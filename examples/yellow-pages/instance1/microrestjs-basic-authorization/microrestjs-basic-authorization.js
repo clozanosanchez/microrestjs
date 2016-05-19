@@ -1,7 +1,20 @@
 'use strict';
 
-var checkTypes = require('check-types');
+/**
+ * Service to provide basic authorization for executing service operations.
+ *
+ * @author Carlos Lozano Sánchez
+ * @license MIT
+ * @copyright 2015-2016 Carlos Lozano Sánchez
+ */
 
+const checkTypes = require('check-types');
+
+/**
+ * Initializes the authorization service.
+ *
+ * @override
+ */
 module.exports.onCreateService = function onCreateService() {
     this.authorizationList = {
         'yellow-pages/v1': {
@@ -31,12 +44,22 @@ module.exports.onCreateService = function onCreateService() {
     };
 };
 
+/**
+ * Destroys the authorization service.
+ *
+ * @override
+ */
 module.exports.onDestroyService = function onDestroyService() {
     this.authorizationList = null;
 };
 
+/**
+ * Authorizes the execution of a service operation.
+ *
+ * NOTE: Service Operation
+ */
 module.exports.authorize = function authorize(request, response, sendResponse) {
-    var requestBody = request.getBody();
+    const requestBody = request.getBody();
 
     if (checkTypes.not.object(requestBody) || checkTypes.emptyObject(requestBody)) {
         response.setStatus(400);
@@ -44,7 +67,7 @@ module.exports.authorize = function authorize(request, response, sendResponse) {
         return;
     }
 
-    var authorization = requestBody.authorization;
+    const authorization = requestBody.authorization;
     if (checkTypes.not.object(authorization) || checkTypes.emptyObject(authorization) ||
         checkTypes.not.string(authorization.userId) || checkTypes.emptyString(authorization.userId) ||
         checkTypes.not.string(authorization.service) || checkTypes.emptyString(authorization.service) ||
@@ -54,7 +77,7 @@ module.exports.authorize = function authorize(request, response, sendResponse) {
         return;
     }
 
-    var authorized = _checkAuthorization(authorization.userId, authorization.service, authorization.operation, this.authorizationList);
+    const authorized = _checkAuthorization(authorization.userId, authorization.service, authorization.operation, this.authorizationList);
     if (authorized === false) {
         response.setStatus(403);
         sendResponse();
@@ -65,8 +88,19 @@ module.exports.authorize = function authorize(request, response, sendResponse) {
     sendResponse();
 };
 
+/**
+ * Checks if the user has authorization to execute the service operation.
+ *
+ * @private
+ * @function
+ * @param {String} userId - User to be authorized.
+ * @param {String} serviceName - Service to be authorized.
+ * @param {String} operationName - Operation to be authorized.
+ * @param {Object} authorizationList - List of authorized users, services and operations.
+ * @returns {Boolean} - true, if the user has authorization; false, otherwise.
+ */
 function _checkAuthorization(userId, serviceName, operationName, authorizationList) {
-    for (var service in authorizationList) {
+    for (const service of Object.keys(authorizationList)) {
         if (service === serviceName) {
             return _checkUsers(userId, authorizationList[service].users) ||
                     _checkOperations(userId, operationName, authorizationList[service].operations);
@@ -76,8 +110,18 @@ function _checkAuthorization(userId, serviceName, operationName, authorizationLi
     return false;
 }
 
+/**
+ * Checks if the user has authorization to execute the service operation.
+ *
+ * @private
+ * @function
+ * @param {String} userId - User to be authorized.
+ * @param {String} operationName - Operation to be authorized.
+ * @param {Object} operationList - List of operations.
+ * @returns {Boolean} - true, if the user has authorization; false, otherwise.
+ */
 function _checkOperations(userId, operationName, operationsList) {
-    for (var operation in operationsList) {
+    for (const operation of Object.keys(operationsList)) {
         if (operation === operationName) {
             return _checkUsers(userId, operationsList[operation].users);
         }
@@ -86,9 +130,18 @@ function _checkOperations(userId, operationName, operationsList) {
     return false;
 }
 
+/**
+ * Checks if the user has authorization to execute the service operation.
+ *
+ * @private
+ * @function
+ * @param {String} userId - User to be authorized.
+ * @param {Object} userList - List of authorized users.
+ * @returns {Boolean} - true, if the user has authorization; false, otherwise.
+ */
 function _checkUsers(userId, usersList) {
-    for (var i = 0; i < usersList.length; i++) {
-        if (usersList[i] === userId) {
+    for (const user of usersList) {
+        if (user === userId) {
             return true;
         }
     }

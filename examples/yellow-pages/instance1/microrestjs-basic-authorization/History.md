@@ -9,7 +9,7 @@ Compatible with [Microrestjs](https://github.com/clozanosanchez/microrestjs) v0.
 
 v0.3.0-beta
 ===========
-  * Provides basic authentication for microservices.
+  * Provides basic authorization for microservices.
 
 Compatible from [Microrestjs](https://github.com/clozanosanchez/microrestjs) v0.3.0-beta to v0.4.4-beta.
   
